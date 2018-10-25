@@ -20,4 +20,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::redirect('/story', '/story/create', 301);
-Route::get('/story/create', 'StoryController@create');
+Route::get('/story/create', 'StoryController@create')->name('createStory');
+
+Route::get('/constraint/random', 'ConstraintController@random');
