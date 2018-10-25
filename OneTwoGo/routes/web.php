@@ -25,3 +25,7 @@ TOREMOVE WHEN StoryController will be uploaded
 Route::get('/story', function() {
   return view('story/show');
 })->name('story');
+Route::redirect('/story', '/story/create', 301);
+Route::get('/story/create', 'StoryController@create')->name('createStory');
+
+Route::get('/constraint/random', 'ConstraintController@random');
