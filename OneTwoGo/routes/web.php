@@ -19,5 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::redirect('/story', '/story/create', 301);
-Route::get('/story/create', 'StoryController@create');
+/*
+TOREMOVE WHEN StoryController will be uploaded
+*/
+Route::get('/story', function() {
+  return view('story/show');
+})->name('story');
