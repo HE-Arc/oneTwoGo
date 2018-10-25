@@ -33,16 +33,19 @@
           <!-- Left Side Of Navbar -->
           <ul class="navbar-nav ml-auto mr-auto">
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="#">Play</a>
+              <a class="nav-link" href="#">Create</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="#">Trending</a>
+              <a class="nav-link" href="#">Random</a>
             </li>
             <li class="nav-item mr-4 ml-4">
               <a class="nav-link" href="#">Fresh</a>
             </li>
             <li class="nav-item mr-4 ml-4">
               <a class="nav-link" href="#">Hot!</a>
+            </li>
+            <li class="nav-item mr-4 ml-4">
+              <a class="nav-link" href="#">Top!</a>
             </li>
           </ul>
         </div>
