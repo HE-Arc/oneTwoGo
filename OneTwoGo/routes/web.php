@@ -19,13 +19,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::redirect('/story', '/story/create', 301);
+Route::get('/story/create', 'StoryController@create')->name('createStory');
+Route::get('/constraint/random', 'ConstraintController@random');
 /*
 TOREMOVE WHEN StoryController will be uploaded
 */
-Route::get('/story', function() {
+Route::get('/story/show', function() {
   return view('story/show');
-})->name('story');
-Route::redirect('/story', '/story/create', 301);
-Route::get('/story/create', 'StoryController@create')->name('createStory');
-
-Route::get('/constraint/random', 'ConstraintController@random');
+})->name('story/showDebug');
