@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(ThemeSeeder::class);
+        //$this->call(ThemeSeeder::class);
+        $this->call(ConstraintSeeder::class);
     }
 }
