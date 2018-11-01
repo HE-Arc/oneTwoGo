@@ -13,7 +13,7 @@
         <tbody>
           @foreach($constraints as $constraint)
             <tr>
-              <td>{{$constraint->name}}</td>
+              <td>{{$constraint->word}}</td>
               <td>
                 <form action="{{ route('constraints.destroy',$constraint->id) }}" method="POST">
                   <a class="btn btn-info" href="{{ route('constraints.show',$constraint->id) }}">Show</a>
@@ -28,7 +28,7 @@
         </tbody>
       </table>
       <div class="pull-right">
-        <a class="btn btn-primary" href="{{ route('constraints.create') }}"> Add Theme</a>
+        <a class="btn btn-primary" href="{{ route('constraints.create') }}"> Add Constraint</a>
       </div>
     </div>
   </div>

@@ -83,6 +83,7 @@
 
                 <div class="links">
                     <a href="{{ url('/themes') }}">Themes</a>
+                    <a href="{{ url('/constraints') }}">Contraintes</a>
                     <a href="https://laravel.com/docs">Documentation</a>
                     <a href="https://laracasts.com">Laracasts</a>
                     <a href="https://laravel-news.com">News</a>

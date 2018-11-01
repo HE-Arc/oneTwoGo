@@ -19,3 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource("/themes", "ThemeController");
+Route::resource("/constraints", "ConstraintController");
+
+Route::get('resizeImage', 'ImageController@resizeImage');
+Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);

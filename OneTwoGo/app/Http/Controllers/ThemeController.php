@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Theme;
+use App\Constraint;
+use App\ConstraintsThemes;
+//use Intervention\Image\ImageManagerStatic as Image;
 
 class ThemeController extends Controller
 {
@@ -51,7 +54,8 @@ class ThemeController extends Controller
      */
     public function edit(Theme $theme)
     {
-        return view('themes.edit',compact('theme'));
+        $constraints = Constraint::all();
+        return view('themes.edit', ["theme" => $theme, "constraints" => $constraints]);
     }
 
     /**
@@ -67,12 +71,17 @@ class ThemeController extends Controller
             'name' => 'required'
         ]);
 
-        if($request->has('image'))
+        /*if($request->has('image'))
         {
           $image = $request->file('image');
+          $image_resize = Image::make($image->getRealPath());
+          $image_resize->resize(20, 20);
           $extension = $image->getClientOriginalExtension();
-          $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
-        }
+          $image_resize->storeAs('themes', $theme->id.'.'.$extension,'public');
+          Storage::put('app/public/themes/'.$theme->id.'.'.$extension)
+          $theme->update(['image' => 'themes\\'.$theme->id.'.'.$extension]);
+          // $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
+        }*/
 
         if($request->name != $theme->name)
         {

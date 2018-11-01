@@ -23,8 +23,12 @@
             <div class="form-group">
               <strong>Name:</strong>
               <input type="text" name="name" value="{{ $theme->name }}" class="form-control" placeholder="Name">
-              <img src="{{ asset('storage/'.$theme->image) }}" />
+              <!--<img src="{{ asset('storage/'.$theme->image) }}" />
               <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
+            -->
+              @foreach ($constraints->all() as $constraint)
+                <input type="checkbox" name="constraints[]" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
+              @endforeach
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 text-center">
