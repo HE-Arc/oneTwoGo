@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Session;
 
 class ConstraintController extends Controller
 {
@@ -18,7 +19,7 @@ class ConstraintController extends Controller
             unset($allconstraints[$id]);
             $allconstraints = array_values($allconstraints);
         }
-        $_SESSION['constraints'] = $allconstraints;
+        Session::put('constraints', $randomconstraints);
         return $randomconstraints;
     }
 }

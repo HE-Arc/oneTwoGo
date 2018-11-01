@@ -5,16 +5,20 @@
     <h2>Commence à écrire ton histoire !</h2>
     <div id="carouselThemes" class="carousel slide" data-ride="carousel" data-interval="false" style="width:600px">
         <ol class="carousel-indicators">
-            <li data-target="#carouselThemes" data-slide-to="0" class="active"></li>
+            @for ($i = 0; $i < sizeof($themes); $i++)
+                <li data-target="#carouselThemes" data-slide-to="{{$i}}" @if ($i == 0)class="active"@endif></li>
+            @endfor
         </ol>
         <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" src="..." alt="First slide">
-                <div class="carousel-caption d-none d-md-block">
-                    <h5>Nom du theme</h5>
-                    <p>Description du theme</p>
+            @for ($i = 0; $i < sizeof($themes); $i++)
+                <div class="carousel-item @if ($i == 0) active @endif">
+                    <img class="d-block w-100" src="{{$themes[$i]['img']}}" alt={{$themes[$i]['name']}}>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5>{{$themes[$i]['name']}}</h5>
+                        <p>{{$themes[$i]['description']}}</p>
+                    </div>
                 </div>
-            </div>
+            @endfor
         </div>
         <a class="carousel-control-prev" href="#carouselThemes" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -31,13 +35,14 @@
         <i id='randomize' class="bigger fas fa-random"></i>
     </div>
     <h3>Histoire</h3>
-    <form action='add' style='width:600px' id='storyForm'>
+    <form id='storyForm' action='{{route('storeStory')}}' method="post" style='width:600px'>
+        @csrf
         <label for='title'>Title</label>
         <div>
-            <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%'>
+            <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%' value='Default title'>
         </div>
         <div>
-            <textarea id="story" class="form-control" rows="10"></textarea>
+            <textarea id="text" name='text' class="form-control" rows="10">a b c d e f g h i j k l m n o p q r s t u v w x y z</textarea>
         </div>
         <div>
             <i id='validate' visibility='hidden' class="bigger fas fa-check"></i>
@@ -49,7 +54,8 @@
 
         let constraintsDOM = document.getElementById("constraints");
         let randomizeDOM = document.getElementById("randomize");
-        let storyDOM = document.getElementById("story");
+        let titleDOM = document.getElementById("title");
+        let textDOM = document.getElementById("text");
         let validateDOM = document.getElementById("validate");
         let carouselDOM = document.getElementById("carouselThemes");
         let formDOM = document.getElementById("storyForm");
@@ -83,8 +89,9 @@
                 })
         }
 
+        //Same verification algorithme as in the view
         function verify() {
-            let storyWords = parseTextToWords(storyDOM.value);
+            let storyWords = parseTextToWords(textDOM.value);
             resetConstraintsQte();
             for (let i = 0; i < storyWords.length; i++) {
                 let storyWord = storyWords[i];
@@ -95,6 +102,7 @@
             updateConstraints();
 
             let isValid = isStoryValid();
+            isValid &= titleDOM.value.length > 0;
             validateDOM.style.visibility = isValid ? "visible" : "hidden";
             return isValid;
         }
@@ -146,13 +154,15 @@
         getRandomConstraints();
         randomizeDOM.addEventListener("click", getRandomConstraints);
         validateDOM.addEventListener("click", submit);
-        storyDOM.addEventListener("keyup", verify);
-        storyDOM.addEventListener("change", verify);
 
-        carouselDOM.addEventListener('slid.bs.carousel', function() {
-            console.log("a");
+        titleDOM.addEventListener("keyup", verify);
+        titleDOM.addEventListener("change", verify);
+        textDOM.addEventListener("keyup", verify);
+        textDOM.addEventListener("change", verify);
+
+        $('#carouselThemes').on('slide.bs.carousel', function () {
+            getRandomConstraints();
         })
-
     });
 </script>
 @endsection

@@ -20,8 +20,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::redirect('/story', '/story/create', 301);
+
 Route::get('/story/create', 'StoryController@create')->name('createStory');
-Route::get('/story/add', 'StoryController@add')->name('addStory');
+Route::post('/story/store', 'StoryController@store')->name('storeStory');
+
 Route::get('/constraint/random', 'ConstraintController@random');
 /*
 TOREMOVE WHEN StoryController will be uploaded
