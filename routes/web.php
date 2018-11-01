@@ -23,6 +23,14 @@ Route::resource("/constraints", "ConstraintController");
 
 Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
+
+Route::redirect('/story', '/story/create', 301);
+Route::get('/story/create', 'StoryController@create')->name('createStory');
+Route::get('/story/add', 'StoryController@add')->name('addStory');
+Route::get('/constraint/random', 'ConstraintController@random');
+/*
+TOREMOVE WHEN StoryController will be uploaded
+*/
 Route::get('/story/show', function() {
   return view('story/show');
 })->name('story/showDebug');
