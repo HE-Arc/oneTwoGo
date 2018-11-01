@@ -19,7 +19,7 @@ class CreateStoriesTable extends Migration
           $table->unsignedInteger('user_id');
           $table->foreign('user_id')->references('id')->on('users');
           $table->unsignedInteger('theme_id');
-          $table->foreign('theme_id')->references('id')->on('theme');
+          $table->foreign('theme_id')->references('id')->on('themes');
 
           $table->string('title');
           $table->longText('text');
