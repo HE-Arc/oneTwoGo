@@ -31,7 +31,7 @@
         <i id='randomize' class="bigger fas fa-random"></i>
     </div>
     <h3>Histoire</h3>
-    <form action='test' style='width:600px'>
+    <form action='add' style='width:600px' id='storyForm'>
         <label for='title'>Title</label>
         <div>
             <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%'>
@@ -52,6 +52,7 @@
         let storyDOM = document.getElementById("story");
         let validateDOM = document.getElementById("validate");
         let carouselDOM = document.getElementById("carouselThemes");
+        let formDOM = document.getElementById("storyForm");
 
         let constraintsWords = [];
         let constraintsWordsQte;
@@ -95,6 +96,7 @@
 
             let isValid = isStoryValid();
             validateDOM.style.visibility = isValid ? "visible" : "hidden";
+            return isValid;
         }
 
         function parseTextToWords(str) {
@@ -136,8 +138,14 @@
             }
         }
 
+        function submit() {
+            if(verify()) //over engineering
+                formDOM.submit();
+        }
+
         getRandomConstraints();
         randomizeDOM.addEventListener("click", getRandomConstraints);
+        validateDOM.addEventListener("click", submit);
         storyDOM.addEventListener("keyup", verify);
         storyDOM.addEventListener("change", verify);
 
