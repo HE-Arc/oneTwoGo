@@ -19,15 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::redirect('/story', '/story/create', 301);
-
+Route::get('/story/index', 'StoryController@index')->name('displayStories');
 Route::get('/story/create', 'StoryController@create')->name('createStory');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
+Route::get('/story/show', 'StoryController@show')->name('showStory');
+Route::get('/story/preview', 'StoryController@preview')->name('showPreviewStory');
 
 Route::get('/constraint/random', 'ConstraintController@random');
-/*
-TOREMOVE WHEN StoryController will be uploaded
-*/
-Route::get('/story/show', function() {
-  return view('story/show');
-})->name('story/showDebug');

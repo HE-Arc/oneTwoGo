@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\story;
+use App\Story;
 use Illuminate\Http\Request;
 use Session;
 
@@ -15,7 +15,8 @@ class StoryController extends Controller
      */
     public function index()
     {
-        //
+        $stories = Story::all();
+        return view('story.index', ['stories'=>$stories]);
     }
 
     /**
@@ -52,11 +53,11 @@ class StoryController extends Controller
         if($isValid)
         {
             //Story::create($request->all());
-            return redirect()->route('story.index')->with('success', 'Story created successfully.');
+            return redirect()->route('displayStories')->with('success', 'Story created successfully.');
         }
         else
         {
-            return redirect()->route('story.index')->with('failure', 'Story couldn\' be added.');
+            return redirect()->route('displayStories')->with('failure', 'Story couldn\' be added.');
         }
     }
 
@@ -82,21 +83,32 @@ class StoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\story  $story
+     * @param  \App\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function show(story $story)
+    public function preview(Story $story)
     {
-        //
+        return view('story.preview', compact('story'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Story  $story
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Story $story)
+    {
+        return view('story.show', compact('story'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\story  $story
+     * @param  \App\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function edit(story $story)
+    public function edit(Story $story)
     {
         //
     }
@@ -105,10 +117,10 @@ class StoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\story  $story
+     * @param  \App\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, story $story)
+    public function update(Request $request, Story $story)
     {
         //
     }
@@ -116,10 +128,10 @@ class StoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\story  $story
+     * @param  \App\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function destroy(story $story)
+    public function destroy(Story $story)
     {
         //
     }
