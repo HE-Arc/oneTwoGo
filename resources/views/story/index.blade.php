@@ -17,7 +17,7 @@
   @endif
 
     @foreach($stories as $story)
-      @include('story.index', ['story' => $story])
+      @include('story.preview', ['story' => $story])
     @endforeach
 
 @endsection

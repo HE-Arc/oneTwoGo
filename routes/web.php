@@ -19,9 +19,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/story', 'StoryController@index')->name('displayStories');
+Route::get('/story/index', 'StoryController@index')->name('displayStories');
 Route::get('/story/create', 'StoryController@create')->name('createStory');
 Route::get('/story/add', 'StoryController@add')->name('addStory');
 Route::get('/story/show', 'StoryController@show')->name('showStory');
+Route::get('/story/preview', 'StoryController@preview')->name('showPreviewStory');
 
 Route::get('/constraint/random', 'ConstraintController@random');

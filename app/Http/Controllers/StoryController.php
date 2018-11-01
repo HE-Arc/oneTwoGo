@@ -46,6 +46,17 @@ class StoryController extends Controller
      * @param  \App\Story  $story
      * @return \Illuminate\Http\Response
      */
+    public function preview(Story $story)
+    {
+        return view('story.preview', compact('story'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Story  $story
+     * @return \Illuminate\Http\Response
+     */
     public function show(Story $story)
     {
         return view('story.show', compact('story'));
