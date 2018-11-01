@@ -24,7 +24,23 @@ class ConstraintSeeder extends Seeder
       'objectif',
       'ragot',
       'bubulle',
-      'révolution'
+      'révolution',
+      'voler',
+      'rendu',
+      'pilote',
+      'marron',
+      'vache',
+      'inaugurer',
+      'élémentaire',
+      'rachitique',
+      'évicer',
+      'natation',
+      'jaune',
+      'grand',
+      'élimination',
+      'fatigue',
+      'rapidement',
+      'avancement'
     );
 
     for ($i=0; $i < count($constraints); ++$i) {

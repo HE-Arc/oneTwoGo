@@ -26,9 +26,23 @@
               <!--<img src="{{ asset('storage/'.$theme->image) }}" />
               <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
             -->
-              @foreach ($constraints->all() as $constraint)
-                <input type="checkbox" name="constraints[]" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
-              @endforeach
+              <div class="scrollbar scrollbar-dusty-grass">
+                <div class="force-overflow">
+                  <div class="row">
+                      @foreach ($constraints->all() as $constraint)
+                        <div class="col-sm-4">
+                          @foreach ($theme->constraints as $constraintChecked)
+                            @if ($constraint->word == $constraintChecked->word)
+                                <input type="checkbox" name="constraints[]" checked="checked" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
+                            @else
+                                <input type="checkbox" name="constraints[]" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
+                            @endif
+                          @endforeach
+                        </div>
+                      @endforeach
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 text-center">
