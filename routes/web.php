@@ -12,8 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('home');
+})->name('home');
 
 Auth::routes();
 
@@ -23,3 +23,6 @@ Route::resource("/constraints", "ConstraintController");
 
 Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
+Route::get('/story/show', function() {
+  return view('story/show');
+})->name('story/showDebug');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+<<<<<<< HEAD
 use App\Http\Controllers\Controller;
 use App\Constraint;
 
@@ -83,4 +84,24 @@ class ConstraintController extends Controller
 
       return redirect()->route('constraints.index')->with('success','Product deleted successfully');
   }
+=======
+
+class ConstraintController extends Controller
+{
+    public function random()
+    {
+        $nbConstraints = 6;
+        $allconstraints = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"];
+        $randomconstraints = [];
+        for($i = 0; $i < $nbConstraints; $i++)
+        {
+            $id = rand(0, sizeof($allconstraints) - 1);
+            $randomconstraints[] = $allconstraints[$id];
+            unset($allconstraints[$id]);
+            $allconstraints = array_values($allconstraints);
+        }
+        $_SESSION['constraints'] = $allconstraints;
+        return $randomconstraints;
+    }
+>>>>>>> master
 }
