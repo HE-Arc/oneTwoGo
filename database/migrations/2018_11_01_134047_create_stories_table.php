@@ -14,8 +14,18 @@ class CreateStoriesTable extends Migration
     public function up()
     {
         Schema::create('stories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
+          $table->increments('id');
+
+          $table->unsignedInteger('user_id');
+          $table->foreign('user_id')->references('id')->on('users');
+          $table->unsignedInteger('theme_id');
+          $table->foreign('theme_id')->references('id')->on('theme');
+
+          $table->string('title');
+          $table->longText('text');
+          $table->unsignedInteger('deleteVoted');
+
+          $table->timestamps();
         });
     }
 
