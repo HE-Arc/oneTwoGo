@@ -16,8 +16,19 @@
 
   @endif
 
-    @foreach($stories as $story)
-      @include('story.preview', ['story' => $story])
-    @endforeach
+  <div class="row">
+    <div class="col-xs-3">
+      @foreach($stories as $story)
+        @include('story.preview', ['story' => $story])
+      @endforeach
+    </div>
+    <div class="col-xs-1">
+    </div>
+    <div class="col-xs-8">
+      <div id="story-container">
+        ijapodsjapodsjaposjdapoj
+      </div>
+    </div>
+  </div>
 
 @endsection
