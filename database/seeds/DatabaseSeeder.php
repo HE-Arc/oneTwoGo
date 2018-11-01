@@ -13,5 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersSeeder::class);
         $this->call(StoriesSeeder::class);
+        $this->call(ThemeSeeder::class);
+        $this->call(ConstraintSeeder::class);
+        $this->call(ConstraintThemeSeeder::class);
     }
 }
