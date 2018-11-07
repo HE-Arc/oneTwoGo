@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConstraintThemePivotTable extends Migration
+class CreateConstraintThemeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +14,9 @@ class CreateConstraintThemePivotTable extends Migration
     public function up()
     {
         Schema::create('constraint_theme', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('constraint_id')->unsigned()->index();
-            $table->foreign('constraint_id')->references('id')->on('constraints')->onDelete('cascade');
             $table->integer('theme_id')->unsigned()->index();
-            $table->foreign('theme_id')->references('id')->on('themes')->onDelete('cascade');
-            $table->primary(['constraint_id', 'theme_id']);
-            $table->timestamps();
         });
     }
 
@@ -29,6 +27,6 @@ class CreateConstraintThemePivotTable extends Migration
      */
     public function down()
     {
-        Schema::drop('constraint_theme');
+        Schema::dropIfExists('constraint_theme');
     }
 }

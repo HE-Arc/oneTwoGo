@@ -83,9 +83,12 @@ class ThemeController extends Controller
           // $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
         }*/
 
+        $theme->constraints()->sync($request->chkConstraints, $detaching = true);
+
         if($request->name != $theme->name)
         {
-          $theme->update(['name' => $request->name]);
+          //$theme->update(['name' => $request->name]);
+          $theme->update($request->all());
         }
 
         return redirect()->route('themes.index')->with('success','Product updated successfully');

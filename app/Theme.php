@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Constraint;
 
 class Theme extends Model
 {
@@ -10,6 +11,6 @@ class Theme extends Model
 
     public function constraints()
     {
-        return $this->belongsToMany('App\Constraint');
+        return $this->belongsToMany(Constraint::class);
     }
 }

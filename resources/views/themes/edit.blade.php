@@ -31,13 +31,11 @@
                   <div class="row">
                       @foreach ($constraints->all() as $constraint)
                         <div class="col-sm-4">
-                          @foreach ($theme->constraints as $constraintChecked)
-                            @if ($constraint->word == $constraintChecked->word)
-                                <input type="checkbox" name="constraints[]" checked="checked" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
+                            @if ($theme->constraints->contains($constraint->id))
+                                <input type="checkbox" name="chkConstraints[]" checked="checked" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
                             @else
-                                <input type="checkbox" name="constraints[]" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
+                                <input type="checkbox" name="chkConstraints[]" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
                             @endif
-                          @endforeach
                         </div>
                       @endforeach
                   </div>
