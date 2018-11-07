@@ -41,7 +41,7 @@
           <!-- Left Side Of Navbar -->
           <ul class="navbar-nav ml-auto mr-auto">
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('displayStories') }}">Create</a>
+              <a class="nav-link" href="{{ route('createStory') }}">Create</a>
             </li>
             <li class="nav-item mr-4 ml-4">
               <a class="nav-link" href="{{ route('displayStories') }}">Random</a>

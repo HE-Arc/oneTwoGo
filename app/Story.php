@@ -14,7 +14,7 @@ class Story extends Model
 
     protected $table = 'stories';
     protected $fillable = [
-      'title', 'name', 'deleteVoted'
+      'title', 'text', 'user_id', 'deleteVoted'
     ];
 
     /*

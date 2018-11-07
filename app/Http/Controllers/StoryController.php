@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Story;
 use Illuminate\Http\Request;
 use Session;
+use Auth;
+
 
 class StoryController extends Controller
 {
@@ -49,10 +51,15 @@ class StoryController extends Controller
 
         //Same verification algorithme as in the view
         $isValid = $this->verify($request['text']);
-
         if($isValid)
         {
-            //Story::create($request->all());
+            $story = new Story([
+            'title' => $request->get('title'),
+            'text' => $request->get('text'),
+            'user_id' => Auth::user()->getId(),
+            ]);
+            $story->save();
+            exit();
             return redirect()->route('displayStories')->with('success', 'Story created successfully.');
         }
         else
@@ -74,7 +81,6 @@ class StoryController extends Controller
             if(in_array($word, $constraints))
             {
                 unset($constraints[array_search($word, $constraints)]);
-                var_dump($constraints);
             }
         }
         return sizeof($constraints) == 0;
