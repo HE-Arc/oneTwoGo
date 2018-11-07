@@ -29,7 +29,7 @@
 </head>
 <body>
   <div id="app">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
       <a class="navbar-brand" href="{{ url('/') }}">
         {{ config('app.name', 'OTG!') }}
       </a>
@@ -41,19 +41,19 @@
           <!-- Left Side Of Navbar -->
           <ul class="navbar-nav ml-auto mr-auto">
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('createStory') }}">Create</a>
+              <a class="nav-link" href="{{ route('displayStories') }}">Create</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="#">Random</a>
+              <a class="nav-link" href="{{ route('displayStories') }}">Random</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="#">Fresh</a>
+              <a class="nav-link" href="{{ route('displayStories') }}">Fresh</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="#">Hot!</a>
+              <a class="nav-link" href="{{ route('displayStories') }}">Hot!</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="#">Top!</a>
+              <a class="nav-link" href="{{ route('displayStories') }}">Top!</a>
             </li>
           </ul>
         </div>
@@ -91,7 +91,7 @@
         @endguest
       </ul>
     </nav>
-    <main class="py-4">
+    <main class="py-4 mt-5">
       @yield('content')
     </main>
   </div>

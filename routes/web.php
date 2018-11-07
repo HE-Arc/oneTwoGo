@@ -24,6 +24,7 @@ Route::resource("/constraints", "ConstraintController");
 Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 
+Route::redirect('/story', '/story/create', 301);
 Route::get('/story/index', 'StoryController@index')->name('displayStories');
 Route::get('/story/create', 'StoryController@create')->name('createStory');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
