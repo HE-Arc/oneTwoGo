@@ -1,8 +1,19 @@
+@if(!empty($story))
 <div class="card text-center">
   <div class="card-body">
-    <h5 class="card-title">{{$story->title}}</h5>
+    <h5 class="card-title">
+      @if(empty($story->title))
+        No title found !
+      @else
+        {{$story->title}}
+      @endif
+    </h5>
     <p class="card-text text-left">
-      {{$story->text}}
+      @if(empty($story->text))
+        no text found
+      @else
+        {{ $story->text }}
+      @endif
     </p>
     <footer class="blockquote-footer text-right">
       <p>
@@ -19,3 +30,4 @@
     </footer>
   </div>
 </div>
+@endif

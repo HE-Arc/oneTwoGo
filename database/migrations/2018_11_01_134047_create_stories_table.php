@@ -23,7 +23,7 @@ class CreateStoriesTable extends Migration
 
           $table->string('title');
           $table->longText('text');
-          $table->unsignedInteger('deleteVoted');
+          $table->unsignedInteger('deleteVoted')->default(0);
 
           $table->timestamps();
         });

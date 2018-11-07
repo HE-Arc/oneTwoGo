@@ -37,6 +37,7 @@
     <h3>Histoire</h3>
     <form id='storyForm' action='{{route('storeStory')}}' method="post" style='width:600px'>
         @csrf
+        <input type="hidden" name="theme_id" value="1" /><!-- ____________________________________________________________________________________ CHANGER LA VALEUR VIA JS ________________-->
         <label for='title'>Title</label>
         <div>
             <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%' value='Default title'>

@@ -14,7 +14,7 @@ class Story extends Model
 
     protected $table = 'stories';
     protected $fillable = [
-      'title', 'text', 'user_id', 'deleteVoted'
+      'user_id', 'theme_id', 'title', 'text', 'deleteVoted'
     ];
 
     /*
@@ -22,6 +22,11 @@ class Story extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getId()
+    {
+      return $this->id;
+    }
 
     /*
     |--------------------------------------------------------------------------

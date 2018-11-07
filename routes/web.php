@@ -26,8 +26,9 @@ Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@
 
 Route::redirect('/story', '/story/create', 301);
 Route::get('/story/index', 'StoryController@index')->name('displayStories');
-Route::get('/story/create', 'StoryController@create')->name('createStory');
+Route::get('/story/create', 'StoryController@create')->name('createStory')->middleware('auth');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
+Route::get('/story/{id}', 'StoryController@access');
 Route::get('/story/show', 'StoryController@show')->name('showStory');
 Route::get('/story/preview', 'StoryController@preview')->name('showPreviewStory');
 

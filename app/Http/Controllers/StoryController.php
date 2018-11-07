@@ -45,8 +45,9 @@ class StoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required',
-            'text' => 'required'
+          'theme_id' => 'required|integer',
+          'title' => 'required',
+          'text' => 'required',
         ]);
 
         //Same verification algorithme as in the view
@@ -57,14 +58,16 @@ class StoryController extends Controller
             'title' => $request->get('title'),
             'text' => $request->get('text'),
             'user_id' => Auth::user()->getId(),
+            'theme_id' => $request->get('theme_id'),
+            'deleteVoted' => 0,
             ]);
+
             $story->save();
-            exit();
             return redirect()->route('displayStories')->with('success', 'Story created successfully.');
         }
         else
         {
-            return redirect()->route('displayStories')->with('failure', 'Story couldn\' be added.');
+            return redirect()->route('displayStories')->with('failure', 'Story couldn\'t be added.');
         }
     }
 
@@ -95,6 +98,18 @@ class StoryController extends Controller
     public function preview(Story $story)
     {
         return view('story.preview', compact('story'));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Story  $project
+     * @return \Illuminate\Http\Response
+     */
+    public function access($id)
+    {
+        $story = Story::where('id', $id)->get()->first();
+        return view('story.show')->with('story', $story);
     }
 
     /**

@@ -1,6 +1,6 @@
 <div class="card text-center" style="width: 18rem; height: 18rem;">
   <div class="card-body">
-    <h5 class="card-title btn" onclick="showFullStory()">{{$story->title}}</h5>
+    <h5 class="card-title btn" onclick="showFullStory({{$story->getId()}})">{{$story->title}}</h5>
     <p class="card-text text-left block-with-text">
       {{$story->text}}
     </p>
@@ -21,11 +21,11 @@
 </div>
 
 <script>
-function showFullStory()
+function showFullStory(id)
 {
   $.ajax({
       type: 'GET',
-      url : "/story/show",
+      url : "/story/" + id,
       success : function (data) {
           $("#story-container").html(data);
       }
