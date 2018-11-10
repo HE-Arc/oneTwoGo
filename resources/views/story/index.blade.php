@@ -12,7 +12,7 @@
     </div>
     <div class="position-fixed col-md-8 " style="max-width:60%; right:5rem;">
       <div id="story-container">
-        
+
       </div>
     </div>
   </div>

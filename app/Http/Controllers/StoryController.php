@@ -95,9 +95,18 @@ class StoryController extends Controller
      * @param  \App\Story  $story
      * @return \Illuminate\Http\Response
      */
-    public function preview(Story $story)
+    public static function preview(Story $story)
     {
-        return view('story.preview', compact('story'));
+        $commentaries = $story->getCommentaries();
+        $commentariesCount = $commentaries->count();
+        $upvotesCount = $story->getUpvotesCount();
+        $downvotesCount = $story->getDownvotesCount();
+
+        if(!isset($commentariesCount)) $commentariesCount = 0;
+        if(!isset($upvotesCount)) $upvotesCount = 0;
+        if(!isset($downvotesCount)) $downvotesCount = 0;
+
+        return view('story.preview', compact('story', 'commentaries', 'commentariesCount', 'upvotesCount', 'downvotesCount'));
     }
 
     /**
@@ -120,7 +129,11 @@ class StoryController extends Controller
      */
     public function show(Story $story)
     {
-        return view('story.show', compact('story'));
+        $commentaries = $story->getCommentaries();
+        $upvotesCount = $story->getUpvotesCount();
+        $downvotesCount = $stoey->getDownvotesCount();
+
+        return view('story.show', compact('story', 'commentaries', 'upvotesCount', 'downvotesCount'));
     }
 
     /**
@@ -155,5 +168,27 @@ class StoryController extends Controller
     public function destroy(Story $story)
     {
         //
+    }
+
+    public function like($id)
+    {
+      $vote = new Vote([
+        'user_id'    => Auth::user()->getId(),
+        'story_id'   => $this->id,
+        'vote' => 1,
+      ]);
+
+      $vote->save();
+    }
+
+    public function dislike($id)
+    {
+      $vote = new Vote([
+        'user_id'    => Auth::user()->getId(),
+        'story_id'   => $this->id,
+        'vote' => -1,
+      ]);
+
+      $vote->save();
     }
 }
