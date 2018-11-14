@@ -82,7 +82,7 @@ class ThemeController extends Controller
           $theme->update(['image' => 'themes\\'.$theme->id.'.'.$extension]);
           // $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
         }*/
-
+        Debugbar::info($theme);
         if($request->name != $theme->name)
         {
           $theme->update(['name' => $request->name]);

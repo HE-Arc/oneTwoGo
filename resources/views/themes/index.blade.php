@@ -16,7 +16,6 @@
               <td>{{$theme->name}}</td>
               <td>
                 <form action="{{ route('themes.destroy',$theme->id) }}" method="POST">
-                  <a class="btn btn-info" href="{{ route('themes.show',$theme->id) }}">Show</a>
                   <a class="btn btn-primary" href="{{ route('themes.edit',$theme->id) }}">Edit</a>
                   @csrf
                   @method('DELETE')

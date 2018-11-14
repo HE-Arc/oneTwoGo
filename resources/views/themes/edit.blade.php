@@ -21,14 +21,26 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-              <strong>Name:</strong>
               <input type="text" name="name" value="{{ $theme->name }}" class="form-control" placeholder="Name">
               <!--<img src="{{ asset('storage/'.$theme->image) }}" />
               <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
             -->
-              @foreach ($constraints->all() as $constraint)
-                <input type="checkbox" name="constraints[]" value="{{ $constraint->id }}" /> {{ $constraint->word }} <br />
-              @endforeach
+
+              <div class="scrollbar scrollbar-primary">
+                <div class="force-overflow">
+                  <div class="row">
+                    @foreach ($constraints->all() as $constraint)
+                    <div class="col-xs-4 col-sm-4 col-md-4">
+                      <label class="customcheck">
+                        {{ $constraint->word }}
+                        <input type="checkbox" name="constraints[]" id="checkBox-$constraint->id" value="{{ $constraint->id }}" />
+                        <span class="checkmark"></span>
+                      </label>
+                    </div>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -37,5 +49,16 @@
           </div>
         </div>
     </form>
-
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".customcheck").each(function(index) {
+      $(this).click(function(index) {
+        checkBox = $(this).find(":checkbox")[0];
+        console.log(checkBox.checked);
+        checkBox.checked = !checkBox.checked;
+        console.log(checkBox.checked);
+      });
+    });
+  });
+</script>
 @endsection
