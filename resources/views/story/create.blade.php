@@ -6,16 +6,15 @@
     <div id="carouselThemes" class="carousel slide" data-ride="carousel" data-interval="false" style="width:600px">
         <ol class="carousel-indicators">
             @for ($i = 0; $i < sizeof($themes); $i++)
-                <li data-target="#carouselThemes" data-slide-to="{{$i}}" @if ($i == 0)class="active"@endif></li>
+                <li data-target="#carouselThemes" data-slide-to="{{$i}}" data-placeholder="{{$themes[$i]['placeholder']}}" @if ($i == 0)class="active"@endif></li>
             @endfor
         </ol>
         <div class="carousel-inner">
             @for ($i = 0; $i < sizeof($themes); $i++)
                 <div class="carousel-item @if ($i == 0) active @endif">
-                    <img class="d-block w-100" src="{{$themes[$i]['img']}}" alt={{$themes[$i]['name']}}>
+                    <img class="d-block w-100" src="{{$themes[$i]['image']}}" alt={{$themes[$i]['name']}}>
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{$themes[$i]['name']}}</h5>
-                        <p>{{$themes[$i]['description']}}</p>
                     </div>
                 </div>
             @endfor
@@ -40,7 +39,7 @@
         <input type="hidden" name="theme_id" value="1" /><!-- ____________________________________________________________________________________ CHANGER LA VALEUR VIA JS ________________-->
         <label for='title'>Title</label>
         <div>
-            <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%' value='Default title'>
+            <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%' value=''>
         </div>
         <div>
             <textarea id="text" name='text' class="form-control" rows="10">a b c d e f g h i j k l m n o p q r s t u v w x y z</textarea>
@@ -147,6 +146,10 @@
             }
         }
 
+        function updateThemePlaceholder() {
+            titleDOM.placeholder = "alsl";
+        }
+
         function submit() {
             if(verify()) //over engineering
                 formDOM.submit();
@@ -163,6 +166,7 @@
 
         $('#carouselThemes').on('slide.bs.carousel', function () {
             getRandomConstraints();
+            updateThemePlaceholder();
         })
     });
 </script>

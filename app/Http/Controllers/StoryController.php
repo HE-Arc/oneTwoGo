@@ -6,7 +6,7 @@ use App\Story;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
-
+use App\Theme;
 
 class StoryController extends Controller
 {
@@ -32,6 +32,9 @@ class StoryController extends Controller
             array('id' => '1', 'name' => 'theme name', 'description' => 'd1', 'img' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/SIPI_Jelly_Beans_4.1.07.tiff/lossy-page1-256px-SIPI_Jelly_Beans_4.1.07.tiff.jpg'),
             array('id' => '2', 'name' => 'theme name2', 'description' => 'd2', 'img' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/SMPTE_Color_Bars.svg/672px-SMPTE_Color_Bars.svg.png')
         ];
+        $themes = Theme::all();
+        
+        var_dump($themes);
         $page = view('story/create', ['themes' => $themes]);
         return $page;
     }
@@ -61,8 +64,11 @@ class StoryController extends Controller
             'theme_id' => $request->get('theme_id'),
             'deleteVoted' => 0,
             ]);
+            var_dump($story);
 
             $story->save();
+
+            exit();
             return redirect()->route('displayStories')->with('success', 'Story created successfully.');
         }
         else
