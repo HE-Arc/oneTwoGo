@@ -6,15 +6,16 @@
     </p>
     <footer class="blockquote-footer text-right">
       <p>
-        <a type="button" class="btn btn-default btn-sm">
-          <i class="fas fa-thumbs-up"></i>
-        </a>
-        <a type="button" class="btn btn-default btn-sm">
-          <i class="fas fa-thumbs-down"></i>
-        </a>
-        <a type="button" class="btn btn-default btn-sm">
-          <i class="fas fa-comment"></i>
-        </a>
+        <!-- VERY VERY UGLY way to get likes, dislikes and comments but ...
+          I had no choice, impossible to call a controller function from the index view -->
+          {{ $story->getUpvotesCount() }}
+          <i class="fas fa-thumbs-up" style="margin-right:10px;"></i>
+
+          {{ $story->getDownvotesCount() }}
+          <i class="fas fa-thumbs-down" style="margin-right:10px;"></i>
+
+          {{ $story->getCommentaries()->count() }}
+          <i class="fas fa-comment" style="margin-right:10px;"></i>
       </p>
     </footer>
   </div>
