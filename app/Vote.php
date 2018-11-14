@@ -2,11 +2,13 @@
 
 namespace App;
 
-use
 use Illuminate\Database\Eloquent\Model;
 
 class Vote extends Model
 {
+  public const UPVOTE = 1;
+  public const DOWNVOTE = -1;
+
   public function getStory()
   {
       return DB::table('stories')->where('id', $this->story_id)->get()->first();

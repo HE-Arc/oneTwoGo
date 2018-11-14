@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\Vote;
 use App\Story;
 use Illuminate\Http\Request;
 use Session;
@@ -167,28 +169,103 @@ class StoryController extends Controller
      */
     public function destroy(Story $story)
     {
-        //
+
     }
 
     public function like($id)
     {
-      $vote = new Vote([
-        'user_id'    => Auth::user()->getId(),
-        'story_id'   => $this->id,
-        'vote' => 1,
-      ]);
+      // Get user id
+      $userID = Auth::user()->getId();
 
-      $vote->save();
+      // Get user's vote for this story
+      $userVote = DB::table('votes')->where([
+          ['user_id', '=', $userID],
+          ['story_id', '=', $id],
+        ])->get()->first();
+
+      $userVoteValue = null;
+      // Get user's vote value
+      if(isset($userVote))
+        $userVoteValue = $userVote->vote;
+
+      // Remove the positive vote
+      if($userVoteValue === Vote::UPVOTE)
+      {
+        Vote::destroy($userVote->id);
+      }
+      else
+      {
+        // Remove negative vote and store a positive one
+        if ($userVoteValue === Vote::DOWNVOTE) {
+          Vote::destroy($userVote->id);
+        }
+
+        // Create a new vote
+        $vote = new Vote();
+
+        $vote->user_id = $userID;
+        $vote->story_id = $id;
+        $vote->vote = VOTE::UPVOTE;
+
+        // Store a new one
+        $vote->save();
+      }
+
+      // Get upvotes count
+      $story = Story::find($id);
+      $upvotesCount = $story->getUpvotesCount();
+      $downvotesCount = $story->getDownvotesCount();
+
+      // Return the number of upvotes
+      return array($upvotesCount, $downvotesCount);
     }
 
     public function dislike($id)
     {
-      $vote = new Vote([
-        'user_id'    => Auth::user()->getId(),
-        'story_id'   => $this->id,
-        'vote' => -1,
-      ]);
+      // Get user id
+      $userID = Auth::user()->getId();
 
-      $vote->save();
+      // Get user's vote for this story
+      $userVote = DB::table('votes')->where([
+          ['user_id', '=', $userID],
+          ['story_id', '=', $id],
+        ])->get()->first();
+
+      $userVoteValue = null;
+      // Get user's vote value
+      if(isset($userVote))
+        $userVoteValue = $userVote->vote;
+
+      // Remove the positive vote
+      if($userVoteValue === Vote::DOWNVOTE)
+      {
+        Vote::destroy($userVote->id);
+      }
+      else
+      {
+        // Remove negative vote and store a positive one
+        if ($userVoteValue === Vote::UPVOTE) {
+          Vote::destroy($userVote->id);
+        }
+
+        // Create a new vote
+        $vote = new Vote();
+
+        $vote->user_id = $userID;
+        $vote->story_id = $id;
+        $vote->vote = VOTE::DOWNVOTE;
+
+        // Store a new one
+        $vote->save();
+
+      }
+
+      // Get upvotes count
+      $story = Story::find($id);
+      $upvotesCount = $story->getUpvotesCount();
+      $downvotesCount = $story->getDownvotesCount();
+
+      // Return the number of upvotes
+      return array($upvotesCount, $downvotesCount);
     }
 }

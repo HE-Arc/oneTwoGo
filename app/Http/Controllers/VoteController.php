@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Vote;
 use Illuminate\Http\Request;
 
@@ -78,8 +79,9 @@ class VoteController extends Controller
      * @param  \App\Vote  $vote
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vote $vote)
-    {
-        //
-    }
+     public function destroy($id)
+     {
+         $vote = Vote::findOrFail($id);
+         $vote->delete();
+     }
 }

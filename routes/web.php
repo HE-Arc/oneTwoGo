@@ -31,8 +31,8 @@ Route::post('/story/store', 'StoryController@store')->name('storeStory');
 Route::get('/story/{id}', 'StoryController@access');
 Route::get('/story/show', 'StoryController@show')->name('showStory');
 Route::get('/story/{id}/preview', 'StoryController@preview')->name('story.preview');
-Route::get('/story/{id}/comment', 'StoryController@comment')->name('story.comment')->middleware('auth');
-Route::get('/story/{id}/dislike', 'StoryController@dislike')->name('story.dislike')->middleware('auth');
-Route::get('/story/{id}/like', 'StoryController@like')->name('story.like')->middleware('auth');
+Route::post('/story/{id}/comment', 'StoryController@comment')->name('story.comment')->middleware('auth');
+Route::post('/story/{id}/dislike', 'StoryController@dislike')->name('story.dislike')->middleware('auth');
+Route::post('/story/{id}/like', 'StoryController@like')->name('story.like')->middleware('auth');
 
 Route::get('/constraint/random', 'ConstraintController@random');
