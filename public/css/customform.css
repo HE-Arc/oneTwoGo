@@ -1,6 +1,18 @@
 .form-group {
   margin-top: 25px;
 }
+
+.btn-otg {
+  background-color: #00BC8C;
+  color: white;
+  border-color: #008E68;
+}
+
+.btn-otg:hover {
+  color: #00684A;
+  background-color: #008E68;
+}
+
 /* The customcheck */
 .customcheck {
     display: block;
@@ -79,9 +91,12 @@ height: 300px;
 overflow-y: auto;
 overflow-x: hidden;
 margin-bottom: 25px;
+border-radius: 5px;
+padding: 5px 10px 5px 10px;
 }
+
 .force-overflow {
-min-height: 300px;
+min-height: 290px;
 }
 
 .scrollbar-primary::-webkit-scrollbar {

@@ -82,12 +82,12 @@ class ThemeController extends Controller
           $theme->update(['image' => 'themes\\'.$theme->id.'.'.$extension]);
           // $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
         }*/
-        Debugbar::info($theme);
         if($request->name != $theme->name)
         {
           $theme->update(['name' => $request->name]);
         }
 
+        $theme->constraints()->sync($request->constraints);
         return redirect()->route('themes.index')->with('success','Product updated successfully');
     }
 

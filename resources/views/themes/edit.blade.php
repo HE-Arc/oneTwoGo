@@ -33,7 +33,16 @@
                     <div class="col-xs-4 col-sm-4 col-md-4">
                       <label class="customcheck">
                         {{ $constraint->word }}
-                        <input type="checkbox" name="constraints[]" id="checkBox-$constraint->id" value="{{ $constraint->id }}" />
+                        @php ($added = false)
+                        @foreach ($theme->constraints as $themeConstraint)
+                          @if($constraint->id === $themeConstraint->id)
+                            @php ($added = true)
+                            <input type="checkbox" name="constraints[]" id="checkBox-{{ $constraint->id }}" value="{{ $constraint->id }}" checked />
+                          @endif
+                        @endforeach
+                        @if(!$added)
+                          <input type="checkbox" name="constraints[]" id="checkBox-{{ $constraint->id }}" value="{{ $constraint->id }}" />
+                        @endif
                         <span class="checkmark"></span>
                       </label>
                     </div>
@@ -44,19 +53,18 @@
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <a class="btn btn-primary" href="{{ route('themes.index') }}"> Back</a>
+            <button type="submit" class="btn btn-otg">Submit</button>
+            <a class="btn btn-otg" href="{{ route('themes.index') }}"> Back</a>
           </div>
         </div>
     </form>
-<script type="text/javascript">
+    <script type="text/javascript">
   $(document).ready(function() {
-    $(".customcheck").each(function(index) {
-      $(this).click(function(index) {
-        checkBox = $(this).find(":checkbox")[0];
-        console.log(checkBox.checked);
-        checkBox.checked = !checkBox.checked;
-        console.log(checkBox.checked);
+    $(".customcheck").each(function() {
+      $(this).click(function() {
+        checkbox = $(this).find(':checkbox')[0];
+        console.log(checkbox.checked);
+        checkbox.checked != checkbox.checked;
       });
     });
   });
