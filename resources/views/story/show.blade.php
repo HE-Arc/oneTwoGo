@@ -1,13 +1,21 @@
 @if(!empty($story))
-<div class="card text-center">
-  <div class="card-body">
+
+@php
+$commentaries = $story->getCommentaries();
+$commentariesCount = $commentaries->count();
+@endphp
+
+<div class="card text-center mt-2">
+  <div class="card-header">
     <h5 class="card-title">
       @if(empty($story->title))
         No title found !
       @else
-        {{$story->title}}
+        {{ $story->title }}
       @endif
     </h5>
+  </div>
+  <div class="card-body">
     <p class="card-text text-left">
       @if(empty($story->text))
         no text found
@@ -21,6 +29,7 @@
           I had no choice, impossible to call a controller function from the index view -->
 
         <!-- Protect like, dislike and comment if user is not logged in, with a better way rather than by the route -->
+        <!-- Show the like in blue if user liked it, the dislike in red and comment in yellow -->
 
         <a type="button" class="btn btn-default btn-sm d-inline" onclick="like({{ $story->getId() }})">
           <div class="d-inline" id="upVotesCount">
@@ -34,15 +43,38 @@
           </div>
           <i class="fas fa-thumbs-down d-inline"></i>
         </a>
-        <a type="button" class="btn btn-default btn-sm d-inline">
+        <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->getId() }}').toggle()">
           <div class="d-inline" id="commentariesCount">
-            {{ $story->getCommentaries()->count() }}
+            {{ $commentariesCount }}
           </div>
           <i class="fas fa-comment d-inline"></i>
         </a>
       </p>
     </footer>
   </div>
+  <div class="card-footer"  style="display:none" id="commentarySection{{ $story->getId() }}">
+    <table class="table">
+      <tr>
+        <td>
+          <!-- add commentary -->
+          @include('commentary.create', ['story_id' => $story->getId()])
+          <!-- end of add commentary -->
+        </td>
+      </tr>
+
+      <!-- Foreach commentary -->
+      @forelse($commentaries as $commentary)
+      <tr class="border border-light rounded-circle">
+        <td>
+          @include('commentary.show', ['commentary' => $commentary])
+        </td>
+      </tr>
+      @empty
+        <p>No comment found :c</p>
+      @endforelse
+    </table>
+  </div>
+  <!-- end of commentary -->
 </div>
 
 <!-- SHOW COMMENTARIES CREATION HERE -->

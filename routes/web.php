@@ -29,10 +29,13 @@ Route::get('/story/index', 'StoryController@index')->name('displayStories');
 Route::get('/story/create', 'StoryController@create')->name('createStory')->middleware('auth');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
 Route::get('/story/{id}', 'StoryController@access');
-Route::get('/story/show', 'StoryController@show')->name('showStory');
-Route::get('/story/{id}/preview', 'StoryController@preview')->name('story.preview');
+Route::get('/story/{id}/show', 'StoryController@show')->name('story.show');
 Route::post('/story/{id}/comment', 'StoryController@comment')->name('story.comment')->middleware('auth');
 Route::post('/story/{id}/dislike', 'StoryController@dislike')->name('story.dislike')->middleware('auth');
 Route::post('/story/{id}/like', 'StoryController@like')->name('story.like')->middleware('auth');
+
+Route::post('/commentary/create', 'CommentaryController@create')->name('commentary.create')->middleware('auth');;
+Route::post('/commentary/store', 'CommentaryController@store')->name('commentary.store')->middleware('auth');
+Route::get('/commentary/show', 'CommentaryController@show')->name('commentary.show');
 
 Route::get('/constraint/random', 'ConstraintController@random');

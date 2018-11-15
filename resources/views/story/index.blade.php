@@ -1,20 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-4">
-      <div class="row">
+    <div class="col-md-2 spacer"></div>
+    <!-- Story list -->
+    <div class="col-md-8">
+      <div class="row flex-grow">
         @foreach($stories as $story)
-          @include('story.preview', ['story' => $story])
+          @include('story.show', ['story' => $story])
         @endforeach
       </div>
     </div>
-    <div class="position-fixed col-md-8 " style="max-width:60%; right:5rem;">
-      <div id="story-container">
-
-      </div>
-    </div>
+    <!-- Enf of Story list -->
+    <div class="col-md-2 spacer"></div>
   </div>
 </div>
 @endsection

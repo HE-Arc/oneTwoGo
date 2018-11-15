@@ -94,33 +94,13 @@ class StoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Story  $story
-     * @return \Illuminate\Http\Response
-     */
-    public static function preview(Story $story)
-    {
-        $commentaries = $story->getCommentaries();
-        $commentariesCount = $commentaries->count();
-        $upvotesCount = $story->getUpvotesCount();
-        $downvotesCount = $story->getDownvotesCount();
-
-        if(!isset($commentariesCount)) $commentariesCount = 0;
-        if(!isset($upvotesCount)) $upvotesCount = 0;
-        if(!isset($downvotesCount)) $downvotesCount = 0;
-
-        return view('story.preview', compact('story', 'commentaries', 'commentariesCount', 'upvotesCount', 'downvotesCount'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
      * @param  \App\Story  $project
      * @return \Illuminate\Http\Response
      */
     public function access($id)
     {
-        $story = Story::where('id', $id)->get()->first();
-        return view('story.show')->with('story', $story);
+        $story = Story::firstOrFail($id);
+        return $this->show($story);
     }
 
     /**
@@ -131,11 +111,7 @@ class StoryController extends Controller
      */
     public function show(Story $story)
     {
-        $commentaries = $story->getCommentaries();
-        $upvotesCount = $story->getUpvotesCount();
-        $downvotesCount = $stoey->getDownvotesCount();
-
-        return view('story.show', compact('story', 'commentaries', 'upvotesCount', 'downvotesCount'));
+        return view('story.show', compact('story'));
     }
 
     /**
@@ -174,98 +150,13 @@ class StoryController extends Controller
 
     public function like($id)
     {
-      // Get user id
-      $userID = Auth::user()->getId();
-
-      // Get user's vote for this story
-      $userVote = DB::table('votes')->where([
-          ['user_id', '=', $userID],
-          ['story_id', '=', $id],
-        ])->get()->first();
-
-      $userVoteValue = null;
-      // Get user's vote value
-      if(isset($userVote))
-        $userVoteValue = $userVote->vote;
-
-      // Remove the positive vote
-      if($userVoteValue === Vote::UPVOTE)
-      {
-        Vote::destroy($userVote->id);
-      }
-      else
-      {
-        // Remove negative vote and store a positive one
-        if ($userVoteValue === Vote::DOWNVOTE) {
-          Vote::destroy($userVote->id);
-        }
-
-        // Create a new vote
-        $vote = new Vote();
-
-        $vote->user_id = $userID;
-        $vote->story_id = $id;
-        $vote->vote = VOTE::UPVOTE;
-
-        // Store a new one
-        $vote->save();
-      }
-
-      // Get upvotes count
-      $story = Story::find($id);
-      $upvotesCount = $story->getUpvotesCount();
-      $downvotesCount = $story->getDownvotesCount();
-
-      // Return the number of upvotes
-      return array($upvotesCount, $downvotesCount);
+      $story = Story::findOrFail($id);
+      return $story->like();
     }
 
     public function dislike($id)
     {
-      // Get user id
-      $userID = Auth::user()->getId();
-
-      // Get user's vote for this story
-      $userVote = DB::table('votes')->where([
-          ['user_id', '=', $userID],
-          ['story_id', '=', $id],
-        ])->get()->first();
-
-      $userVoteValue = null;
-      // Get user's vote value
-      if(isset($userVote))
-        $userVoteValue = $userVote->vote;
-
-      // Remove the positive vote
-      if($userVoteValue === Vote::DOWNVOTE)
-      {
-        Vote::destroy($userVote->id);
-      }
-      else
-      {
-        // Remove negative vote and store a positive one
-        if ($userVoteValue === Vote::UPVOTE) {
-          Vote::destroy($userVote->id);
-        }
-
-        // Create a new vote
-        $vote = new Vote();
-
-        $vote->user_id = $userID;
-        $vote->story_id = $id;
-        $vote->vote = VOTE::DOWNVOTE;
-
-        // Store a new one
-        $vote->save();
-
-      }
-
-      // Get upvotes count
-      $story = Story::find($id);
-      $upvotesCount = $story->getUpvotesCount();
-      $downvotesCount = $story->getDownvotesCount();
-
-      // Return the number of upvotes
-      return array($upvotesCount, $downvotesCount);
+      $story = Story::findOrFail($id);
+      return $story->dislike();
     }
 }
