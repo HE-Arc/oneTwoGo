@@ -28,23 +28,33 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
+
+    <h3>Contraintes</h3>
     <div>
-        <h3>Contraintes</h3>
         <span id='constraints'></span>
         <i id='randomize' class="bigger fas fa-random"></i>
     </div>
+
     <h3>Histoire</h3>
     <form id='storyForm' action='{{route('storeStory')}}' method="post" style='width:600px'>
         @csrf
-        <label for='title'>Title</label>
         <div>
-            <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%' value=''>
+            <div class="form-group has-danger">
+                <label class="form-control-label" for="title">Titre</label>
+                <input id='title' type='text' name='title' placeholder="My awesome story" class="form-control">
+                <div class="invalid-feedback">Veuillez spécifier un titre !</div>
+            </div>
         </div>
         <div>
-            <textarea id="text" name='text' class="form-control" rows="10"></textarea>
+            <div class="form-group has-danger">
+                <label class="form-control-label" for="text">Texte</label>
+                <textarea id="text" name='text' class="form-control" rows="10"></textarea>
+                <div class="invalid-feedback">Veuillez utiliser toutes les contraintes</div>
+            </div>
+
         </div>
         <div>
-            <i id='validate' visibility='hidden' class="bigger fas fa-check"></i>
+            <i id='validate' class="bigger fas fa-check"></i>
         </div>
     </form>
 </div>
@@ -60,78 +70,64 @@
         let formDOM = document.getElementById("storyForm");
 
         let themes = <?php echo json_encode($themes); ?>;
+        let storyWords;
 
         let constraintsWords = [];
-        let constraintsWordsQte;
 
-        function getRandomConstraints(themeid) {
-            fetch("/constraint/random?theme_id="+themeid)
+        function getRandomConstraints(theme_id) {
+            fetch("/constraint/random?theme_id=" + theme_id)
                 .then(function(rep) {
                     if (rep.status !== 200) {
                         console.log("Impossible de fetch des nouvelles contraintes");
                         return;
                     }
+                    rep.json().then(addConstraints);
 
-                    rep.json().then(function(data) {
-                        constraintsDOM.innerHTML = "";
-                        constraintsWords = data;
-                        for (let i = 0; i < data.length; i++) {
-                            let constraintDOM = document.createElement("span");
-                            constraintDOM.classList.add("bigger");
-                            constraintDOM.classList.add("badge-pill");
-                            constraintDOM.classList.add("badge-danger");
-                            constraintsDOM.appendChild(constraintDOM);
-                        }
-                        verify();
-                    });
                 })
                 .catch(function(error) {
                     console.log(error)
                 })
         }
 
-        //Same verification algorithme as in the view
-        function verify() {
-            let storyWords = parseTextToWords(textDOM.value);
-            resetConstraintsQte();
+        function addConstraints(data) {
+            constraintsDOM.innerHTML = "";
+            constraintsWords = data;
+            for (let i = 0; i < data.length; i++) {
+                let constraintDOM = document.createElement("span");
+                constraintDOM.classList.add("bigger");
+                constraintDOM.classList.add("badge-pill");
+                constraintDOM.classList.add("badge-danger");
+                constraintsDOM.appendChild(constraintDOM);
+            }
+            updateConstraints();
+        }
+
+        function parseTextToWords(str) {
+            str = str.toLowerCase();
+            //replace every non letter / figure and space by a space
+            str = str.replace(/[^a-zA-Z0-9 ]/g, " ");
+            return str.split(" ");
+        }
+
+        function countConstraints()
+        {
+            constraintsWordsQte = {};
+            for (let i = 0; i < constraintsWords.length; i++) {
+                constraintsWordsQte[constraintsWords[i]] = 0;
+            }
             for (let i = 0; i < storyWords.length; i++) {
                 let storyWord = storyWords[i];
                 if (constraintsWords.includes(storyWord)) {
                     constraintsWordsQte[storyWord]++;
                 }
             }
-            updateConstraints();
-
-            let isValid = isStoryValid();
-            isValid &= titleDOM.value.length > 0;
-            validateDOM.style.visibility = isValid ? "visible" : "hidden";
-            return isValid;
-        }
-
-        function parseTextToWords(str) {
-            str = str.toLowerCase();
-            str = str.replace(/[^a-zA-Z0-9 ]/g, " "); //replace every non letter / figure and space by a space
-            return str.split(" ");
-        }
-
-        function resetConstraintsQte() {
-            constraintsWordsQte = {};
-            for (let i = 0; i < constraintsWords.length; i++) {
-                constraintsWordsQte[constraintsWords[i]] = 0;
-            }
-        }
-
-        function isStoryValid() {
-            let b = true;
-            for (let i = 0; i < constraintsWords.length; i++) {
-                let qte = constraintsWordsQte[constraintsWords[i]];
-                if (qte <= 0)
-                    b = false;
-            }
-            return b;
+            return constraintsWordsQte;
         }
 
         function updateConstraints() {
+            storyWords = parseTextToWords(textDOM.value);
+            constraintsWordsQte = countConstraints();
+
             let children = constraintsDOM.children;
             for (let i = 0; i < children.length; i++) {
                 let child = children[i];
@@ -147,9 +143,58 @@
             }
         }
 
+        function updatePlaceholder(placeholder)
+        {
+            titleDOM.placeholder = placeholder;
+        }
+
         function submit() {
-            if(verify()) //over engineering
+            if(verify())
                 formDOM.submit();
+            else
+            {
+                verifyTitle();
+            }
+        }
+
+        function verifyTitle()
+        {
+            titleDOM.classList.remove("is-invalid");
+            if(titleDOM.value.length <= 0)
+            {
+                titleDOM.classList.add("is-invalid");
+                return false;
+            }
+            return true;
+        }
+
+        //Same verification algorithme as in the view
+        function verifyStory()
+        {
+            updateConstraints();
+            let b = true;
+            for (let i = 0; i < constraintsWords.length; i++) {
+                let qte = constraintsWordsQte[constraintsWords[i]];
+                if (qte <= 0)
+                    b = false;
+            }
+            if(b)
+                setStoryStatus(true);
+
+            return b;
+        }
+
+        function verify()
+        {
+            return setStoryStatus(verifyStory()) && verifyTitle();
+        }
+
+        function setStoryStatus(b)
+        {
+            textDOM.classList.remove("is-invalid");
+            if(!b)
+                textDOM.classList.add("is-invalid");
+            return b;
         }
 
         function currentTheme()
@@ -158,15 +203,14 @@
             return themes[currentIndex];
         }
 
-        updateTheme();
-
         function updateTheme()
         {
             theme = currentTheme();
-            constraints = getRandomConstraints(theme.id);
-            updateConstraints();
-            titleDOM.placeholder = theme.placeholder;
+            getRandomConstraints(theme.id);
+            updatePlaceholder(theme.placeholder);
         }
+
+        updateTheme(); //initial fetch
 
         // Contrôles
         $('#carouselThemes').on('slid.bs.carousel', function () {
@@ -175,10 +219,10 @@
         randomizeDOM.addEventListener("click", updateTheme);
         validateDOM.addEventListener("click", submit);
 
-        titleDOM.addEventListener("keyup", verify);
-        titleDOM.addEventListener("change", verify);
-        textDOM.addEventListener("keyup", verify);
-        textDOM.addEventListener("change", verify);
+        titleDOM.addEventListener("keyup", verifyTitle);
+        titleDOM.addEventListener("change", verifyTitle);
+        textDOM.addEventListener("keyup", verifyStory);
+        textDOM.addEventListener("change", verifyStory);
     });
 </script>
 @endsection
