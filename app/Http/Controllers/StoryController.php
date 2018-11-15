@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DB;
+use App\Vote;
 use App\Story;
 use Illuminate\Http\Request;
 use Session;
@@ -91,24 +93,13 @@ class StoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Story  $story
-     * @return \Illuminate\Http\Response
-     */
-    public function preview(Story $story)
-    {
-        return view('story.preview', compact('story'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
      * @param  \App\Story  $project
      * @return \Illuminate\Http\Response
      */
     public function access($id)
     {
-        $story = Story::where('id', $id)->get()->first();
-        return view('story.show')->with('story', $story);
+        $story = Story::firstOrFail($id);
+        return $this->show($story);
     }
 
     /**
@@ -153,6 +144,18 @@ class StoryController extends Controller
      */
     public function destroy(Story $story)
     {
-        //
+
+    }
+
+    public function like($id)
+    {
+      $story = Story::findOrFail($id);
+      return $story->like();
+    }
+
+    public function dislike($id)
+    {
+      $story = Story::findOrFail($id);
+      return $story->dislike();
     }
 }

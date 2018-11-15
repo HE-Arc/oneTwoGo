@@ -16,5 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ConstraintSeeder::class);
         $this->call(ConstraintThemeSeeder::class);
         $this->call(StoriesSeeder::class);
+        $this->call(CommentariesSeeder::class);
+        $this->call(VotesSeeder::class);
     }
 }
