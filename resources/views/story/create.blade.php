@@ -6,13 +6,13 @@
     <div id="carouselThemes" class="carousel slide" data-ride="carousel" data-interval="false" style="width:600px">
         <ol class="carousel-indicators">
             @for ($i = 0; $i < sizeof($themes); $i++)
-                <li data-target="#carouselThemes" data-slide-to="{{$i}}" data-placeholder="{{$themes[$i]['placeholder']}}" @if ($i == 0)class="active"@endif></li>
+                <li data-target="#carouselThemes" data-slide-to="{{$i}}" @if ($i == 0)class="active"@endif></li>
             @endfor
         </ol>
         <div class="carousel-inner">
             @for ($i = 0; $i < sizeof($themes); $i++)
-                <div class="carousel-item @if ($i == 0) active @endif">
-                    <img class="d-block w-100" src="{{$themes[$i]['image']}}" alt={{$themes[$i]['name']}}>
+                <div data-themeid="{{$themes[$i]['id']}}" data-placeholder="{{$themes[$i]['placeholder']}}" class="carousel-item @if ($i == 0) active @endif">
+                    <img class="d-block w-100" src="{{$themes[$i]['image']}}" alt="{{$themes[$i]['name']}}">
                     <div class="carousel-caption d-none d-md-block">
                         <h5>{{$themes[$i]['name']}}</h5>
                     </div>
@@ -36,13 +36,12 @@
     <h3>Histoire</h3>
     <form id='storyForm' action='{{route('storeStory')}}' method="post" style='width:600px'>
         @csrf
-        <input type="hidden" name="theme_id" value="1" /><!-- ____________________________________________________________________________________ CHANGER LA VALEUR VIA JS ________________-->
         <label for='title'>Title</label>
         <div>
             <input id='title' type='text' name='title' placeholder="My awesome story" style='width:100%' value=''>
         </div>
         <div>
-            <textarea id="text" name='text' class="form-control" rows="10">a b c d e f g h i j k l m n o p q r s t u v w x y z</textarea>
+            <textarea id="text" name='text' class="form-control" rows="10"></textarea>
         </div>
         <div>
             <i id='validate' visibility='hidden' class="bigger fas fa-check"></i>
@@ -60,11 +59,13 @@
         let carouselDOM = document.getElementById("carouselThemes");
         let formDOM = document.getElementById("storyForm");
 
+        let themes = <?php echo json_encode($themes); ?>;
+
         let constraintsWords = [];
         let constraintsWordsQte;
 
-        function getRandomConstraints() {
-            fetch("/constraint/random")
+        function getRandomConstraints(themeid) {
+            fetch("/constraint/random?theme_id="+themeid)
                 .then(function(rep) {
                     if (rep.status !== 200) {
                         console.log("Impossible de fetch des nouvelles contraintes");
@@ -72,7 +73,7 @@
                     }
 
                     rep.json().then(function(data) {
-                        constraints.innerHTML = "";
+                        constraintsDOM.innerHTML = "";
                         constraintsWords = data;
                         for (let i = 0; i < data.length; i++) {
                             let constraintDOM = document.createElement("span");
@@ -146,28 +147,38 @@
             }
         }
 
-        function updateThemePlaceholder() {
-            titleDOM.placeholder = "alsl";
-        }
-
         function submit() {
             if(verify()) //over engineering
                 formDOM.submit();
         }
 
-        getRandomConstraints();
-        randomizeDOM.addEventListener("click", getRandomConstraints);
+        function currentTheme()
+        {
+            currentIndex = $('div.active').index();
+            return themes[currentIndex];
+        }
+
+        updateTheme();
+
+        function updateTheme()
+        {
+            theme = currentTheme();
+            constraints = getRandomConstraints(theme.id);
+            updateConstraints();
+            titleDOM.placeholder = theme.placeholder;
+        }
+
+        // Contrôles
+        $('#carouselThemes').on('slid.bs.carousel', function () {
+            updateTheme();
+        });
+        randomizeDOM.addEventListener("click", updateTheme);
         validateDOM.addEventListener("click", submit);
 
         titleDOM.addEventListener("keyup", verify);
         titleDOM.addEventListener("change", verify);
         textDOM.addEventListener("keyup", verify);
         textDOM.addEventListener("change", verify);
-
-        $('#carouselThemes').on('slide.bs.carousel', function () {
-            getRandomConstraints();
-            updateThemePlaceholder();
-        })
     });
 </script>
 @endsection
