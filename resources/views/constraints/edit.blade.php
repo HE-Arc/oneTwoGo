@@ -36,7 +36,7 @@
                       @if ($theme->active)
                         <div class="col-xs-12 col-sm-12 col-md-12">
                           <label class="customcheck">
-                            {{ $theme->name }}
+                            <span class="a-otg">{{ $theme->name }}</span>
                             @php ($added = false)
                             @foreach ($constraint->themes as $themeConstraint)
                               @if($theme->id === $themeConstraint->id)

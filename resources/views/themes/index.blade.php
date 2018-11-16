@@ -11,7 +11,7 @@
               @foreach ($themes as $theme)
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <label class="customcheck">
-                  {{ $theme->name }}
+                  <a class="a-otg" href="{{ route('themes.edit', $theme->id) }}">{{ $theme->name }}</a>
                   @if($theme->active)
                     <input type="checkbox" class="chkThemes" name="activation-{{ $theme->id }}" id="activation-{{ $theme->id }}" value="{{ $theme->id }}" checked />
                   @else

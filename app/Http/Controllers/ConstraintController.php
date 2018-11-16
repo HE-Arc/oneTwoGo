@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Constraint;
 use App\Theme;
 use Session;
-use App\Theme;
 
 class ConstraintController extends Controller
 {

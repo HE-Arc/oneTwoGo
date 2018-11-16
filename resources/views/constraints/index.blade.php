@@ -10,8 +10,8 @@
           <div class="row">
               @foreach ($constraints as $constraint)
               <div class="col-xs-3 col-sm-3 col-md-3">
-                <label class="customcheck">
-                  {{ $constraint->word }}
+                <label class="customcheck a-otg">
+                  <a class="a-otg" href="{{ route('constraints.edit', $constraint->id) }}">{{ $constraint->word }}</a>
                   @if($constraint->active)
                     <input type="checkbox" class="chkConstraints" name="activation-{{ $constraint->id }}" id="activation-{{ $constraint->id }}" value="{{ $constraint->id }}" checked />
                   @else

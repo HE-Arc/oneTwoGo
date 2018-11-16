@@ -38,7 +38,7 @@
                       @if ($constraint->active)
                         <div class="col-xs-3 col-sm-3 col-md-3">
                           <label class="customcheck">
-                            {{ $constraint->word }}
+                            <span class="a-otg">{{ $constraint->word }}</span>
                             @php ($added = false)
                             @foreach ($theme->constraints as $themeConstraint)
                               @if($constraint->id === $themeConstraint->id)
