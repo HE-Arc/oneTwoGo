@@ -19,31 +19,20 @@ class ThemeController extends Controller
 
     public function create()
     {
-      return view("themes.create", ["theme" => new Theme()]);
+      $constraints = Constraint::where('active', 1)->get();
+      return view("themes.create", ["theme" => new Theme(), "constraints" => $constraints]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'name' => 'required'
+            //'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'name' => 'required',
         ]);
 
-        Theme::create($request->all());
-
+        $theme = Theme::create($request->all());
+        $theme->constraints()->sync($request->constraints);
         return redirect()->route('themes.index')->with('success','Product created successfully.');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Theme  $Theme
-     * @return \Illuminate\Http\Response
-     */
-
-    public function show(Theme $theme)
-    {
-        return view('themes.show',compact('theme'));
     }
 
     /**
@@ -54,7 +43,7 @@ class ThemeController extends Controller
      */
     public function edit(Theme $theme)
     {
-        $constraints = Constraint::all();
+        $constraints = Constraint::where('active', 1)->get();
         return view('themes.edit', ["theme" => $theme, "constraints" => $constraints]);
     }
 
@@ -82,25 +71,16 @@ class ThemeController extends Controller
           $theme->update(['image' => 'themes\\'.$theme->id.'.'.$extension]);
           // $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
         }*/
-        if($request->name != $theme->name)
-        {
-          $theme->update(['name' => $request->name]);
-        }
 
         $theme->constraints()->sync($request->constraints);
+        $theme->update($request->all());
+
         return redirect()->route('themes.index')->with('success','Product updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Theme  $Theme
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Theme $theme)
+    public function toggleActive($id)
     {
-        $theme->delete();
-
-        return redirect()->route('themes.index')->with('success','Product deleted successfully');
+      $theme = Theme::find($id);
+      $theme->update(['active' => !$theme->active]);
     }
 }

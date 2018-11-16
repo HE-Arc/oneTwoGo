@@ -19,7 +19,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource("/themes", "ThemeController");
+Route::post('/themes/{id}/toggleActive', 'ThemeController@toggleActive')->name('themes.toggleActive');
 Route::resource("/constraints", "ConstraintController");
+Route::post('/constraints/{id}/toggleActive', 'ConstraintController@toggleActive')->name('constraints.toggleActive');
 
 Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);

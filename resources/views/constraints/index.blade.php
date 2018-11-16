@@ -1,35 +1,49 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="flex-center position-ref full-height">
+<div class="container">
+  <div class="row justify-content-center">
     <div class="col-md-8">
-      <table class="table table-bordered">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($constraints as $constraint)
-            <tr>
-              <td>{{$constraint->word}}</td>
-              <td>
-                <form action="{{ route('constraints.destroy',$constraint->id) }}" method="POST">
-                  <a class="btn btn-info" href="{{ route('constraints.show',$constraint->id) }}">Show</a>
-                  <a class="btn btn-primary" href="{{ route('constraints.edit',$constraint->id) }}">Edit</a>
-                  @csrf
-                  @method('DELETE')
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </form>
-              </td>
-            </tr>
-          @endforeach
-        </tbody>
-      </table>
+      <h1>Contraintes</h1>
+      <div class="scrollbar scrollbar-primary form-control">
+        <div class="force-overflow">
+          <div class="row">
+              @foreach ($constraints as $constraint)
+              <div class="col-xs-3 col-sm-3 col-md-3">
+                <label class="customcheck">
+                  {{ $constraint->word }}
+                  @if($constraint->active)
+                    <input type="checkbox" class="chkConstraints" name="activation-{{ $constraint->id }}" id="activation-{{ $constraint->id }}" value="{{ $constraint->id }}" checked />
+                  @else
+                    <input type="checkbox" class="chkConstraints" name="activation-{{ $constraint->id }}" id="activation-{{ $constraint->id }}" value="{{ $constraint->id }}" />
+                  @endif
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+              @endforeach
+            </div>
+        </div>
+      </div>
       <div class="pull-right">
-        <a class="btn btn-primary" href="{{ route('constraints.create') }}"> Add Constraint</a>
+        <a class="btn btn-otg" href="{{ route('constraints.create') }}">Nouveau</a>
       </div>
     </div>
   </div>
+  <script>
+    $(document).ready(function() {
+      $('.chkConstraints').each(function() {
+        $(this).click(function() {
+          id = $(this).attr('value');
+          $.ajax({
+              type: 'POST',
+              url : "/constraints/" + id + "/toggleActive",
+              headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+              },
+              success : function () {}
+          });
+        });
+      });
+    });
+  </script>
 @endsection

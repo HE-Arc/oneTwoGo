@@ -16,6 +16,7 @@ class CreateConstraintsTable extends Migration
         Schema::create('constraints', function (Blueprint $table) {
             $table->increments('id');
             $table->string('word')->unique();
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }

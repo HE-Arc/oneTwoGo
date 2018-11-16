@@ -4,33 +4,57 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8">
-        <h2>Adding a new constraint to the database</h2>
+        <h1>Ajout</h1>
         @if ($errors->any())
           <div class="alert alert-danger">
-              <strong>Whoops!</strong> There were some problems with your input.<br><br>
-              <ul>
-                  @foreach ($errors->all() as $error)
-                      <li>{{ $error }}</li>
-                  @endforeach
-              </ul>
+            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <ul>
+              @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
           </div>
-          @endif
+        @endif
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12">
             <form action="{{ route('constraints.store') }}" method="POST">
-              @csrf
-              <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                  <div class="form-group">
-                    <strong>Name:</strong>
-                    <input type="text" name="word" class="form-control" placeholder="Word">
+            @csrf
+            <div class="row">
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                  <label>Texte</label>
+                  <input type="text" name="name" value="" class="form-control" placeholder="Name">
+                  <br />
+                  <label>Espace réservé</label>
+                  <input type="text" name="placeholder" value="" class="form-control" placeholder="Placeholder">
+                  <!--<img src="{{ asset('storage/'.$constraint->image) }}" />
+                  <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
+                  -->
+
+                  <div class="scrollbar scrollbar-primary">
+                    <div class="force-overflow">
+                      <div class="row">
+                        @foreach ($themes->all() as $theme)
+                          @if ($theme->active)
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                              <label class="customcheck">
+                                {{ $theme->word }}
+                                <input type="checkbox" name="themes[]" id="checkBox-{{ $theme->id }}" value="{{ $theme->id }}" />
+                                <span class="checkmark"></span>
+                              </label>
+                            </div>
+                          @endif
+                        @endforeach
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <a class="btn btn-primary" href="{{ route('constraints.index') }}"> Back</a>
-                </div>
               </div>
+              <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                <button type="submit" class="btn btn-otg">Submit</button>
+                <a class="btn btn-otg" href="{{ route('constraints.index') }}"> Back</a>
+              </div>
+            </div>
             </form>
           </div>
         </div>

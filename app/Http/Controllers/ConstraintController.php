@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Constraint;
+use App\Theme;
 use Session;
 
 class ConstraintController extends Controller
@@ -17,7 +18,8 @@ class ConstraintController extends Controller
 
   public function create()
   {
-    return view("constraints.create", ["constraint" => new Constraint()]);
+    $themes = Theme::where('active', 1)->get();
+    return view("constraints.create", ["constraint" => new Constraint(), "themes" => $themes]);
   }
 
   public function store(Request $request)
@@ -25,9 +27,9 @@ class ConstraintController extends Controller
       $request->validate([
           'word' => 'required'
       ]);
-
-      Constraint::create($request->all());
-
+      \Debugbar::info($request->themes);
+      $constraint = Constraint::create($request->all());
+      $constraint->themes()->sync($request->themes);
       return redirect()->route('constraints.index')->with('success','Product created successfully.');
   }
 
@@ -54,11 +56,6 @@ class ConstraintController extends Controller
    * @return \Illuminate\Http\Response
    */
 
-  public function show(Constraint $constraint)
-  {
-      return view('constraints.show',compact('constraint'));
-  }
-
   /**
    * Show the form for editing the specified resource.
    *
@@ -67,7 +64,8 @@ class ConstraintController extends Controller
    */
   public function edit(Constraint $constraint)
   {
-      return view('constraints.edit',compact('constraint'));
+      $themes = Theme::where('active', 1)->get();
+      return view('constraints.edit', ["constraint" => $constraint, "themes" => $themes]);
   }
 
   /**
@@ -83,21 +81,15 @@ class ConstraintController extends Controller
           'word' => 'required'
       ]);
 
+      $constraint->themes()->sync($request->themes);
       $constraint->update($request->all());
 
       return redirect()->route('constraints.index')->with('success','Product updated successfully');
   }
 
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  \App\Constraint  $Constraint
-   * @return \Illuminate\Http\Response
-   */
-  public function destroy(Constraint $constraint)
+  public function toggleActive($id)
   {
-      $constraint->delete();
-
-      return redirect()->route('constraints.index')->with('success','Product deleted successfully');
+    $constraint = Constraint::find($id);
+    $constraint->update(['active' => !$constraint->active]);
   }
 }

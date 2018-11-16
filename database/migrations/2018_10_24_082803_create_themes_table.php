@@ -18,6 +18,7 @@ class CreateThemesTable extends Migration
             $table->string('name', 50)->unique();
             $table->string('placeholder', 50)->nullable();
             $table->string('image',50)->nullable();
+            $table->boolean('active')->default(1);
             $table->timestamps();
         });
     }
