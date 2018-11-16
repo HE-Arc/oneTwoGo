@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Commentary;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,23 @@ class CommentaryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+      $request->validate([
+        'story_id' => 'required|integer',
+        'user_id' => 'required|integer',
+        'comment' => 'required',
+      ]);
+
+      $comment = new Commentary([
+        'story_id' => $request->get('story_id'),
+        'user_id' => $request->get('user_id'),
+        'comment' => $request->get('comment'),
+        'created_at' => Carbon::now(),
+      ]);
+
+      $comment->save();
+
+      return redirect()->route('displayStories')->with('success', 'Comment created successfully.');
     }
 
     /**

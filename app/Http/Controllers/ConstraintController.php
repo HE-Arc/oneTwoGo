@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Constraint;
 use App\Theme;
 use Session;
+use App\Theme;
 
 class ConstraintController extends Controller
 {
@@ -33,20 +34,27 @@ class ConstraintController extends Controller
       return redirect()->route('constraints.index')->with('success','Product created successfully.');
   }
 
-  public function random()
+  public function random(Request $request)
   {
-      $nbConstraints = 6;
-      $allconstraints = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"];
+      $args = $request->all();
+      $theme = Theme::findOrFail($args['theme_id']);
+      $constraints = iterator_to_array($theme->constraints);
+
+      $maxConstraints = 6;
       $randomconstraints = [];
-      for($i = 0; $i < $nbConstraints; $i++)
+      for($i = 0; $i < $maxConstraints && sizeof($constraints) > 0; $i++)
       {
-          $id = rand(0, sizeof($allconstraints) - 1);
-          $randomconstraints[] = $allconstraints[$id];
-          unset($allconstraints[$id]);
-          $allconstraints = array_values($allconstraints);
+          $id = rand(0, sizeof($constraints) - 1);
+          $randomconstraints[] = $constraints[$id];
+          unset($constraints[$id]);
+          $constraints = array_values($constraints); //reset id array
       }
+      //Set in the session the constraints and the theme selected
+      Session::forget('constraints');
       Session::put('constraints', $randomconstraints);
-      return $randomconstraints;
+      Session::forget('theme');
+      Session::put('theme', $theme);
+      return array_map(function($c){return $c['word'];},$randomconstraints); //return only words
   }
 
   /**

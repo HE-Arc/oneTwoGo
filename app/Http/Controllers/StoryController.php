@@ -8,7 +8,7 @@ use App\Story;
 use Illuminate\Http\Request;
 use Session;
 use Auth;
-
+use App\Theme;
 
 class StoryController extends Controller
 {
@@ -30,10 +30,7 @@ class StoryController extends Controller
      */
     public function create()
     {
-        $themes = [
-            array('id' => '1', 'name' => 'theme name', 'description' => 'd1', 'img' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/SIPI_Jelly_Beans_4.1.07.tiff/lossy-page1-256px-SIPI_Jelly_Beans_4.1.07.tiff.jpg'),
-            array('id' => '2', 'name' => 'theme name2', 'description' => 'd2', 'img' => 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/SMPTE_Color_Bars.svg/672px-SMPTE_Color_Bars.svg.png')
-        ];
+        $themes = Theme::all();
         $page = view('story/create', ['themes' => $themes]);
         return $page;
     }
@@ -47,24 +44,28 @@ class StoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-          'theme_id' => 'required|integer',
           'title' => 'required',
           'text' => 'required',
         ]);
 
+        $constraintsList = Session::get('constraints');
+        $constraintsListWords = array_map(function($w){return $w['word'];}, $constraintsList);
+        $themeid = Session::get('theme')->id;
+
         //Same verification algorithme as in the view
-        $isValid = $this->verify($request['text']);
+        $isValid = $this->verify($constraintsListWords, $request['text']);
         if($isValid)
         {
             $story = new Story([
             'title' => $request->get('title'),
             'text' => $request->get('text'),
             'user_id' => Auth::user()->getId(),
-            'theme_id' => $request->get('theme_id'),
+            'theme_id' => $themeid,
             'deleteVoted' => 0,
             ]);
 
             $story->save();
+
             return redirect()->route('displayStories')->with('success', 'Story created successfully.');
         }
         else
@@ -73,13 +74,11 @@ class StoryController extends Controller
         }
     }
 
-    public function verify($text)
+    public function verify($constraints, $text)
     {
         $textToLower = strtolower($text);
         $textParsed = preg_replace("/[^a-zA-Z0-9 ]/i", " ", $textToLower); //replace every non letter / figure and space by a space
         $words = explode(" ", $textParsed);
-
-        $constraints = Session::get('constraints');
 
         foreach($words as $word)
         {
@@ -94,33 +93,13 @@ class StoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Story  $story
-     * @return \Illuminate\Http\Response
-     */
-    public static function preview(Story $story)
-    {
-        $commentaries = $story->getCommentaries();
-        $commentariesCount = $commentaries->count();
-        $upvotesCount = $story->getUpvotesCount();
-        $downvotesCount = $story->getDownvotesCount();
-
-        if(!isset($commentariesCount)) $commentariesCount = 0;
-        if(!isset($upvotesCount)) $upvotesCount = 0;
-        if(!isset($downvotesCount)) $downvotesCount = 0;
-
-        return view('story.preview', compact('story', 'commentaries', 'commentariesCount', 'upvotesCount', 'downvotesCount'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
      * @param  \App\Story  $project
      * @return \Illuminate\Http\Response
      */
     public function access($id)
     {
-        $story = Story::where('id', $id)->get()->first();
-        return view('story.show')->with('story', $story);
+        $story = Story::firstOrFail($id);
+        return $this->show($story);
     }
 
     /**
@@ -131,11 +110,7 @@ class StoryController extends Controller
      */
     public function show(Story $story)
     {
-        $commentaries = $story->getCommentaries();
-        $upvotesCount = $story->getUpvotesCount();
-        $downvotesCount = $stoey->getDownvotesCount();
-
-        return view('story.show', compact('story', 'commentaries', 'upvotesCount', 'downvotesCount'));
+        return view('story.show', compact('story'));
     }
 
     /**
@@ -174,98 +149,13 @@ class StoryController extends Controller
 
     public function like($id)
     {
-      // Get user id
-      $userID = Auth::user()->getId();
-
-      // Get user's vote for this story
-      $userVote = DB::table('votes')->where([
-          ['user_id', '=', $userID],
-          ['story_id', '=', $id],
-        ])->get()->first();
-
-      $userVoteValue = null;
-      // Get user's vote value
-      if(isset($userVote))
-        $userVoteValue = $userVote->vote;
-
-      // Remove the positive vote
-      if($userVoteValue === Vote::UPVOTE)
-      {
-        Vote::destroy($userVote->id);
-      }
-      else
-      {
-        // Remove negative vote and store a positive one
-        if ($userVoteValue === Vote::DOWNVOTE) {
-          Vote::destroy($userVote->id);
-        }
-
-        // Create a new vote
-        $vote = new Vote();
-
-        $vote->user_id = $userID;
-        $vote->story_id = $id;
-        $vote->vote = VOTE::UPVOTE;
-
-        // Store a new one
-        $vote->save();
-      }
-
-      // Get upvotes count
-      $story = Story::find($id);
-      $upvotesCount = $story->getUpvotesCount();
-      $downvotesCount = $story->getDownvotesCount();
-
-      // Return the number of upvotes
-      return array($upvotesCount, $downvotesCount);
+      $story = Story::findOrFail($id);
+      return $story->like();
     }
 
     public function dislike($id)
     {
-      // Get user id
-      $userID = Auth::user()->getId();
-
-      // Get user's vote for this story
-      $userVote = DB::table('votes')->where([
-          ['user_id', '=', $userID],
-          ['story_id', '=', $id],
-        ])->get()->first();
-
-      $userVoteValue = null;
-      // Get user's vote value
-      if(isset($userVote))
-        $userVoteValue = $userVote->vote;
-
-      // Remove the positive vote
-      if($userVoteValue === Vote::DOWNVOTE)
-      {
-        Vote::destroy($userVote->id);
-      }
-      else
-      {
-        // Remove negative vote and store a positive one
-        if ($userVoteValue === Vote::UPVOTE) {
-          Vote::destroy($userVote->id);
-        }
-
-        // Create a new vote
-        $vote = new Vote();
-
-        $vote->user_id = $userID;
-        $vote->story_id = $id;
-        $vote->vote = VOTE::DOWNVOTE;
-
-        // Store a new one
-        $vote->save();
-
-      }
-
-      // Get upvotes count
-      $story = Story::find($id);
-      $upvotesCount = $story->getUpvotesCount();
-      $downvotesCount = $story->getDownvotesCount();
-
-      // Return the number of upvotes
-      return array($upvotesCount, $downvotesCount);
+      $story = Story::findOrFail($id);
+      return $story->dislike();
     }
 }
