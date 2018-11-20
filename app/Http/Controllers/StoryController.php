@@ -20,7 +20,12 @@ class StoryController extends Controller
     public function index()
     {
         $stories = Story::all();
-        return view('story.index', ['stories'=>$stories]);
+        return view('story.index', ['stories'=> $stories]);
+    }
+
+    public function page()
+    {
+        return Story::paginate();
     }
 
     /**
@@ -30,7 +35,7 @@ class StoryController extends Controller
      */
     public function create()
     {
-        $themes = Theme::all();
+        $themes = Theme::where('active', 1)->get();;
         $page = view('story/create', ['themes' => $themes]);
         return $page;
     }

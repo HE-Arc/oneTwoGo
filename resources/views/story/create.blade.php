@@ -3,6 +3,8 @@
 @section('content')
 <div class='container'>
     <h2>Commence à écrire ton histoire !</h2>
+
+    <h3>Thème</h3>
     <div id="carouselThemes" class="carousel slide" data-ride="carousel" data-interval="false" style="width:600px">
         <ol class="carousel-indicators">
             @for ($i = 0; $i < sizeof($themes); $i++)
