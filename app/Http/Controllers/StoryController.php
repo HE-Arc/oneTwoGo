@@ -25,7 +25,12 @@ class StoryController extends Controller
 
     public function page()
     {
-        return Story::paginate();
+        return Story::paginate(2);
+    }
+
+    public function paged()
+    {
+        return view("story.paged");
     }
 
     /**
