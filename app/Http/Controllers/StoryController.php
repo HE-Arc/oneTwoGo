@@ -19,18 +19,27 @@ class StoryController extends Controller
      */
     public function index()
     {
-        $stories = Story::all();
-        return view('story.index', ['stories'=> $stories]);
+        //old code with the view for every stories
+        // $stories = Story::all();
+        // return view('story.index', ['stories'=> $stories]);
+        return view("story.paged");
     }
 
     public function page()
     {
-        return Story::paginate(2);
-    }
+        //it's not how we should do it be it makes the job done...
+        $storiesPaged = Story::paginate(3);
+        $output = "";
 
-    public function paged()
-    {
-        return view("story.paged");
+        if(sizeof($storiesPaged) <= 0)
+            return abort(403, 'Unauthorized action.');
+
+        foreach ($storiesPaged as $story)
+        {
+            $output .= view("story.show", ['story'=> $story]);
+        }
+        return $output;
+
     }
 
     /**
