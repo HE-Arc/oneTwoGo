@@ -57,7 +57,9 @@ $commentariesCount = $commentaries->count();
       <tr>
         <td>
           <!-- add commentary -->
+          @if(Auth::check())
           @include('commentary.create', ['story_id' => $story->getId()])
+          @endif
           <!-- end of add commentary -->
         </td>
       </tr>

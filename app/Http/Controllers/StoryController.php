@@ -39,7 +39,6 @@ class StoryController extends Controller
             $output .= view("story.show", ['story'=> $story]);
         }
         return $output;
-
     }
 
     /**
