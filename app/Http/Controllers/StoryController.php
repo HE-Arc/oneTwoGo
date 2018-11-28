@@ -54,8 +54,8 @@ class StoryController extends Controller
 
     public function randomPage()
     {
-        //csrf token give a random string by session but containt assic so crc32 give a random int rempresentation then cast it to string cause inRandomOrder require so
-        $storiesPaged = Story::inRandomOrder("".crc32(csrf_token()))->paginate(3);
+        $seed = Session::get("randomPageSeed"); //if unset -> null
+        $storiesPaged = Story::inRandomOrder($seed)->paginate(3); //if seed == null -> like no seed
         return $this->paged($storiesPaged);
     }
 
@@ -63,7 +63,7 @@ class StoryController extends Controller
     {
         $output = "";
 
-        if(is_array($stories) && sizeof($stories) > 0)
+        if(count($stories) <= 0)
             abort(403, 'Unauthorized action.');
 
         foreach ($stories as $story)
@@ -75,6 +75,7 @@ class StoryController extends Controller
 
     public function random()
     {
+        Session::put("randomPageSeed", rand()); //every time this route is used get a new random seed
         return view("story.paged")->with("routeAJAX", route("stories.randomPage"));
     }
 
