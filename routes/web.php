@@ -27,11 +27,13 @@ Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 
 Route::redirect('/story', '/story/create', 301);
-Route::get('/story/index', 'StoryController@empty')->name('displayStories');
 Route::get('/story/random', 'StoryController@random')->name('stories.random');
+Route::get('/story/randomPage', 'StoryController@randomPage')->name('stories.randomPage');
 Route::get('/story/fresh', 'StoryController@fresh')->name('stories.fresh');
+Route::get('/story/freshPage', 'StoryController@freshPage')->name('stories.freshPage');
 Route::get('/story/top', 'StoryController@top')->name('stories.top');
-Route::get('/story/page', 'StoryController@page')->name('pageStory');
+Route::get('/story/topPage', 'StoryController@topPage')->name('stories.topPage');
+
 Route::get('/story/create', 'StoryController@create')->name('createStory')->middleware('auth');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
 Route::get('/story/{id}', 'StoryController@access');

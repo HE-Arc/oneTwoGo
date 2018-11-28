@@ -17,12 +17,7 @@ class StoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function empty()
-    {
-        return $this->paged(null, 'displayStories');
-    }
-
-    public function top()
+    public function topPage()
     {
         // get 10 top stories
         $stories = Story::all();
@@ -38,7 +33,7 @@ class StoryController extends Controller
 
             $evalutedStories[$story->getId()] = ((2 * $up) - (3 * $dn) + (5 * $cc));
         }
-        
+
         // Sort by score
         arsort($evalutedStories);
 
@@ -46,49 +41,51 @@ class StoryController extends Controller
         $keys = array_slice(array_keys($evalutedStories), 0, 10);
 
         // Get stories
-        $storiesPaged = Story::whereIn('id', $keys)->get();
+        $storiesPaged = Story::whereIn('id', $keys)->paginate(3);
 
-        return $this->paged($storiesPaged, 'stories.top');
+        return $this->paged($storiesPaged);
+    }
+
+    public function freshPage()
+    {
+        $storiesPaged = Story::orderBy('created_at', 'asc')->paginate(3);
+        return $this->paged($storiesPaged);
+    }
+
+    public function randomPage()
+    {
+        //csrf token give a random string by session but containt assic so crc32 give a random int rempresentation then cast it to string cause inRandomOrder require so
+        $storiesPaged = Story::inRandomOrder("".crc32(csrf_token()))->paginate(3);
+        return $this->paged($storiesPaged);
+    }
+
+    private function paged($stories)
+    {
+        $output = "";
+
+        if(is_array($stories) && sizeof($stories) > 0)
+            abort(403, 'Unauthorized action.');
+
+        foreach ($stories as $story)
+        {
+            $output .= view("story.show", ['story'=> $story]);
+        }
+        return $output;
+    }
+
+    public function random()
+    {
+        return view("story.paged")->with("routeAJAX", route("stories.randomPage"));
     }
 
     public function fresh()
     {
-        $storiesPaged = Story::orderBy('created_at', 'asc')->paginate(3);
-        return $this->paged($storiesPaged, 'stories.fresh');
+        return view("story.paged")->with("routeAJAX", route("stories.freshPage"));
     }
 
-    public function random() 
+    public function top()
     {
-        $storiesPaged = Story::inRandomOrder()->paginate(3);
-        return $this->paged($storiesPaged, 'stories.random');
-    }
-
-    public function page()
-    {
-        //it's not how we should do it be it makes the job done...
-        $storiesPaged = Story::paginate(3);
-        return $this->paged($storiesPaged, 'displayStories');
-    }
-
-    private function paged($stories, $roadName) 
-    {
-        $output = "";
-
-        if(is_array($stories))
-        {
-            if(sizeof($stories) <= 0)
-                return abort(403, 'Unauthorized action.');
-
-            foreach ($stories as $story)
-            {
-                $output .= view("story.show", ['story'=> $story]);
-            }
-
-            return $output->with('roadName', $roadName);
-        }
-        else {
-            return view("story.paged")->with('roadName', $roadName);
-        }
+        return view("story.paged")->with("routeAJAX", route("stories.topPage"));
     }
 
     /**
@@ -134,11 +131,11 @@ class StoryController extends Controller
 
             $story->save();
 
-            return redirect()->route('displayStories')->with('success', 'Story created successfully.');
+            return redirect()->route('story.random')->with('success', 'Story created successfully.');
         }
         else
         {
-            return redirect()->route('displayStories')->with('failure', 'Story couldn\'t be added.');
+            return redirect()->route('story.random')->with('failure', 'Story couldn\'t be added.');
         }
     }
 

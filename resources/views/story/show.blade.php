@@ -46,7 +46,7 @@ $commentariesCount = $commentaries->count();
             {{ $commentariesCount }}
           </div>
           <i class="fas fa-comment d-inline"></i>
-        </a>
+      </a>
     </footer>
   </div>
   <div class="card-footer"  style="display:none" id="commentarySection{{ $story->getId() }}">

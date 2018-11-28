@@ -44,9 +44,6 @@
               <a class="nav-link" href="{{ route('createStory') }}">Create</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('displayStories') }}">All</a>
-            </li>
-            <li class="nav-item mr-4 ml-4">
               <a class="nav-link" href="{{ route('stories.random') }}">Random</a>
             </li>
             <li class="nav-item mr-4 ml-4">

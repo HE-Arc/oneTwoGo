@@ -29,7 +29,7 @@
         let fullyLoaded = document.getElementById("fullyLoaded");
         let errorOnLoad = document.getElementById("errorOnLoad");
         let loadNewStoriesButton = document.getElementById("loadNewStoriesButton");
-        let nextPageUrl = "{{ route($roadName) }}";
+        let nextPageUrl = "{{ $routeAJAX }}";
         let page = 1;
         let disable = false;
 
