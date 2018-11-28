@@ -17,9 +17,9 @@ class StoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function empty()
     {
-        return $this->paged(null);
+        return $this->paged(null, 'displayStories');
     }
 
     public function top()
@@ -48,31 +48,31 @@ class StoryController extends Controller
         // Get stories
         $storiesPaged = Story::whereIn('id', $keys)->get();
 
-        return $this->paged($storiesPaged);
+        return $this->paged($storiesPaged, 'stories.top');
     }
 
     public function fresh()
     {
         $storiesPaged = Story::orderBy('created_at', 'asc')->paginate(3);
-        return $this->paged($storiesPaged);
+        return $this->paged($storiesPaged, 'stories.fresh');
     }
 
     public function random() 
     {
         $storiesPaged = Story::inRandomOrder()->paginate(3);
-        return $this->paged($storiesPaged);
+        return $this->paged($storiesPaged, 'stories.random');
     }
 
     public function page()
     {
         //it's not how we should do it be it makes the job done...
         $storiesPaged = Story::paginate(3);
-        return $this->paged($storiesPaged);
+        return $this->paged($storiesPaged, 'displayStories');
     }
 
-    private function paged($stories) 
+    private function paged($stories, $roadName) 
     {
-        $output = view("story.paged");
+        $output = "";
 
         if(is_array($stories))
         {
@@ -83,8 +83,12 @@ class StoryController extends Controller
             {
                 $output .= view("story.show", ['story'=> $story]);
             }
+
+            return $output->with('roadName', $roadName);
         }
-        return $output;
+        else {
+            return view("story.paged")->with('roadName', $roadName);
+        }
     }
 
     /**

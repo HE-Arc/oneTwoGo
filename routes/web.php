@@ -27,7 +27,7 @@ Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
 
 Route::redirect('/story', '/story/create', 301);
-Route::get('/story/index', 'StoryController@index')->name('displayStories');
+Route::get('/story/index', 'StoryController@empty')->name('displayStories');
 Route::get('/story/random', 'StoryController@random')->name('stories.random');
 Route::get('/story/fresh', 'StoryController@fresh')->name('stories.fresh');
 Route::get('/story/top', 'StoryController@top')->name('stories.top');

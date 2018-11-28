@@ -22,13 +22,14 @@
         <div class="col-md-2 spacer"></div>
     </div>
 </div>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         let storyLoaded = document.getElementById("storyLoaded");
         let fullyLoaded = document.getElementById("fullyLoaded");
         let errorOnLoad = document.getElementById("errorOnLoad");
         let loadNewStoriesButton = document.getElementById("loadNewStoriesButton");
-        let nextPageUrl = "{{route("pageStory")}}";
+        let nextPageUrl = "{{ route($roadName) }}";
         let page = 1;
         let disable = false;
 
