@@ -6,6 +6,8 @@ use DB;
 use Auth;
 use App\Vote;
 use App\Commentary;
+use App\User;
+use App\Theme;
 use Illuminate\Database\Eloquent\Model;
 
 class Story extends Model
@@ -32,30 +34,19 @@ class Story extends Model
       return $this->id;
     }
 
-    public function getCommentaries()
-    {
-      return Commentary::where('story_id', $this->id)->get();
-    }
-
     public function getCommentariesCount()
     {
-      return getCommentaries()->count();
+      return $this->commentaries()->count();
     }
 
     public function getUpvotesCount()
     {
-      return DB::table('votes')->where([
-          ['story_id', '=', $this->id],
-          ['vote', '=', '1'],
-      ])->count();
+      return $this->votes()->where('vote', '=', '1')->count();
     }
 
     public function getDownvotesCount()
     {
-      return DB::table('votes')->where([
-          ['story_id', '=', $this->id],
-          ['vote', '=', '-1'],
-      ])->count();
+      return $this->votes()->where('vote', '=', '-1')->count();
     }
 
     public function like()
@@ -65,7 +56,7 @@ class Story extends Model
       $userID = Auth::user()->getId();
 
       // Get user's vote for this story
-      $userVote = DB::table('votes')->where([
+      $userVote = Vote::where([
           ['user_id', '=', $userID],
           ['story_id', '=', $this->id],
         ])->get()->first();
@@ -112,7 +103,7 @@ class Story extends Model
       $userID = Auth::user()->getId();
 
       // Get user's vote for this story
-      $userVote = DB::table('votes')->where([
+      $userVote = Vote::where([
           ['user_id', '=', $userID],
           ['story_id', '=', $this->id],
         ])->get()->first();
@@ -159,6 +150,26 @@ class Story extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function commentaries()
+    {
+      return $this->hasMany(Commentary::class);
+    }
+
+    public function votes()
+    {
+      return $this->hasMany(Vote::class);
+    }
+
+    public function owner()
+    {
+      return $this->hasOne(User::class);
+    }
+
+    public function theme()
+    {
+      return $this->hasOne(Theme::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

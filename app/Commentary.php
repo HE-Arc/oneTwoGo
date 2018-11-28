@@ -2,27 +2,29 @@
 
 namespace App;
 
+use App\User;
+use App\Story;
 use Illuminate\Database\Eloquent\Model;
 
 class Commentary extends Model
 {
-  protected $table = 'commentaries';
-  protected $fillable = [
-    'user_id', 'story_id', 'comment'
-  ];
+    protected $table = 'commentaries';
+    protected $fillable = [
+        'user_id', 'story_id', 'comment'
+    ];
 
-  public function getStory()
-  {
-      return DB::table('stories')->where('id', $this->story_id)->get()->first();
-  }
+    public function getId()
+    {
+        return $this->id;
+    }
 
-  public function getOwner()
-  {
-      return DB::table('users')->where('id', $this->user_id)->get()->first();
-  }
+    public function story()
+    {
+        return $this->belongsTo(Story::class);
+    }
 
-  public function getId()
-  {
-      return $this->id;
-  }
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

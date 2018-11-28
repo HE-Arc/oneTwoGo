@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\User;
+use App\Story;
 use Illuminate\Database\Eloquent\Model;
 
 class Vote extends Model
@@ -22,5 +24,15 @@ class Vote extends Model
   public function getId()
   {
       return $this->id;
+  }
+
+  public function story()
+  {
+      return $this->belongsTo(Story::class);
+  }
+
+  public function owner()
+  {
+      return $this->belongsTo(User::class);
   }
 }

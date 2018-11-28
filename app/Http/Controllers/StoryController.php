@@ -19,24 +19,70 @@ class StoryController extends Controller
      */
     public function index()
     {
-        //old code with the view for every stories
-        // $stories = Story::all();
-        // return view('story.index', ['stories'=> $stories]);
-        return view("story.paged");
+        return $this->paged(null);
+    }
+
+    public function top()
+    {
+        // get 10 top stories
+        $stories = Story::all();
+        $evalutedStories = [];
+        foreach($stories as $story)
+        {
+            $votes = $story->votes();
+            $up = $votes->where('vote', '=',  '1')->count();
+            $dn = $votes->where('vote', '=', '-1')->count();
+
+            $commentaries = $story->commentaries();
+            $cc = $commentaries->count();
+
+            $evalutedStories[$story->getId()] = ((2 * $up) - (3 * $dn) + (5 * $cc));
+        }
+        
+        // Sort by score
+        arsort($evalutedStories);
+
+        // Get top 10 keys
+        $keys = array_slice(array_keys($evalutedStories), 0, 10);
+
+        // Get stories
+        $storiesPaged = Story::whereIn('id', $keys)->get();
+
+        return $this->paged($storiesPaged);
+    }
+
+    public function fresh()
+    {
+        $storiesPaged = Story::orderBy('created_at', 'asc')->paginate(3);
+        return $this->paged($storiesPaged);
+    }
+
+    public function random() 
+    {
+        $storiesPaged = Story::inRandomOrder()->paginate(3);
+        return $this->paged($storiesPaged);
     }
 
     public function page()
     {
         //it's not how we should do it be it makes the job done...
         $storiesPaged = Story::paginate(3);
-        $output = "";
+        return $this->paged($storiesPaged);
+    }
 
-        if(sizeof($storiesPaged) <= 0)
-            return abort(403, 'Unauthorized action.');
+    private function paged($stories) 
+    {
+        $output = view("story.paged");
 
-        foreach ($storiesPaged as $story)
+        if(is_array($stories))
         {
-            $output .= view("story.show", ['story'=> $story]);
+            if(sizeof($stories) <= 0)
+                return abort(403, 'Unauthorized action.');
+
+            foreach ($stories as $story)
+            {
+                $output .= view("story.show", ['story'=> $story]);
+            }
         }
         return $output;
     }

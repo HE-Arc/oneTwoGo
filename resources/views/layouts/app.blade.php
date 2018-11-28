@@ -44,16 +44,16 @@
               <a class="nav-link" href="{{ route('createStory') }}">Create</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('displayStories') }}">Random</a>
+              <a class="nav-link" href="{{ route('displayStories') }}">All</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('displayStories') }}">Fresh</a>
+              <a class="nav-link" href="{{ route('stories.random') }}">Random</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('displayStories') }}">Hot!</a>
+              <a class="nav-link" href="{{ route('stories.fresh') }}">Fresh</a>
             </li>
             <li class="nav-item mr-4 ml-4">
-              <a class="nav-link" href="{{ route('displayStories') }}">Top!</a>
+              <a class="nav-link" href="{{ route('stories.top') }}">Top!</a>
             </li>
           </ul>
         </div>

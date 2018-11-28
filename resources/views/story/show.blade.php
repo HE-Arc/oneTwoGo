@@ -1,7 +1,7 @@
 @if(!empty($story))
 
 @php
-$commentaries = $story->getCommentaries();
+$commentaries = $story->commentaries();
 $commentariesCount = $commentaries->count();
 @endphp
 
