@@ -18,10 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::resource("/themes", "ThemeController");
-Route::post('/themes/{id}/toggleActive', 'ThemeController@toggleActive')->name('themes.toggleActive');
-Route::resource("/constraints", "ConstraintController");
-Route::post('/constraints/{id}/toggleActive', 'ConstraintController@toggleActive')->name('constraints.toggleActive');
+Route::resource("/themes", "ThemeController")->middleware('admin');
+Route::post('/themes/{id}/toggleActive', 'ThemeController@toggleActive')->name('themes.toggleActive')->middleware('admin');
+Route::resource("/constraints", "ConstraintController")->middleware('admin');
+Route::post('/constraints/{id}/toggleActive', 'ConstraintController@toggleActive')->name('constraints.toggleActive')->middleware('admin');
 
 Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
