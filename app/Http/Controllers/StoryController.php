@@ -132,11 +132,13 @@ class StoryController extends Controller
 
             $story->save();
 
-            return redirect()->route('story.random')->with('success', 'Story created successfully.');
+            $story->constraints()->saveMany($constraintsList);
+            
+            return redirect()->route('stories.random')->with('success', 'Story created successfully.');
         }
         else
         {
-            return redirect()->route('story.random')->with('failure', 'Story couldn\'t be added.');
+            return redirect()->route('stories.random')->with('failure', 'Story couldn\'t be added.');
         }
     }
 

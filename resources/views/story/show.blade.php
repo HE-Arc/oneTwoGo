@@ -5,7 +5,7 @@ $commentaries = $story->commentaries();
 $commentariesCount = $commentaries->count();
 @endphp
 
-<div class="card text-center mt-2">
+<div class="card text-center mt-2 w-100">
   <div class="card-header">
     <h5 class="card-title">
       @if(empty($story->title))
@@ -16,6 +16,9 @@ $commentariesCount = $commentaries->count();
     </h5>
   </div>
   <div class="card-body">
+        @foreach ($story->constraints as $constraint)
+            <span class="badge badge-pill badge-success">{{ $constraint->word }}</span>
+        @endforeach
     <p class="card-text text-left">
       @if(empty($story->text))
         no text found

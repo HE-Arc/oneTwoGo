@@ -12,4 +12,9 @@ class Constraint extends Model
   {
       return $this->belongsToMany('App\Theme');
   }
+
+  public function story()
+  {
+      return $this->belongsToMany('App\Story');
+  }
 }

@@ -7,7 +7,7 @@
         <!-- Story list -->
         <div class="col-md-8">
             <div class="row flex-grow">
-                <div id="storyLoaded">
+                <div id="storyLoaded" class='w-100'>
                 </div>
             </div>
             <div style='text-align:center; margin-top:10px;'>

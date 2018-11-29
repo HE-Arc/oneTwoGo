@@ -52,7 +52,7 @@ class CommentaryController extends Controller
 
       $comment->save();
 
-      return redirect()->route('story.index')->with('success', 'Comment created successfully.');
+      return redirect()->route('stories.random')->with('success', 'Comment created successfully.');
     }
 
     /**

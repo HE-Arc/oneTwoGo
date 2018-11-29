@@ -156,6 +156,11 @@ class Story extends Model
       return $this->hasMany(Commentary::class);
     }
 
+    public function constraints()
+    {
+      return $this->belongsToMany('App\Constraint');
+    }
+
     public function votes()
     {
       return $this->hasMany(Vote::class);

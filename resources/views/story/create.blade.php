@@ -11,13 +11,11 @@
                 <li data-target="#carouselThemes" data-slide-to="{{$i}}" @if ($i == 0)class="active"@endif></li>
             @endfor
         </ol>
-        <div class="carousel-inner">
+        <div class="carousel-inner carousel-text">
             @for ($i = 0; $i < sizeof($themes); $i++)
                 <div data-themeid="{{$themes[$i]['id']}}" data-placeholder="{{$themes[$i]['placeholder']}}" class="carousel-item @if ($i == 0) active @endif">
-                    <img class="d-block w-100" src="{{$themes[$i]['image']}}" alt="{{$themes[$i]['name']}}">
-                    <div class="carousel-caption d-none d-md-block">
-                        <h5>{{$themes[$i]['name']}}</h5>
-                    </div>
+                    <!--<img class="d-block w-100" src="{{$themes[$i]['image']}}" alt="{{$themes[$i]['name']}}">-->
+                    <h5 class='center'>{{$themes[$i]['name']}}</h5>
                 </div>
             @endfor
         </div>
@@ -32,10 +30,10 @@
     </div>
 
     <h3>Contraintes</h3>
-    <div>
+    <p>
         <span id='constraints'></span>
         <i id='randomize' class="bigger fas fa-random"></i>
-    </div>
+    </p>
 
     <h3>Histoire</h3>
     <form id='storyForm' action='{{route('storeStory')}}' method="post" style='width:600px'>
@@ -43,7 +41,7 @@
         <div>
             <div class="form-group has-danger">
                 <label class="form-control-label" for="title">Titre</label>
-                <input id='title' type='text' name='title' placeholder="My awesome story" class="form-control">
+                <input id='title' type='text' name='title' placeholder="" class="form-control">
                 <div class="invalid-feedback">Veuillez spécifier un titre !</div>
             </div>
         </div>
@@ -53,7 +51,6 @@
                 <textarea id="text" name='text' class="form-control" rows="10"></textarea>
                 <div class="invalid-feedback">Veuillez utiliser toutes les contraintes</div>
             </div>
-
         </div>
         <div>
             <i id='validate' class="bigger fas fa-check"></i>
@@ -154,9 +151,7 @@
             if(verify())
                 formDOM.submit();
             else
-            {
                 verifyTitle();
-            }
         }
 
         function verifyTitle()

@@ -134,3 +134,11 @@ background-color: #00BC8C; }
 -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 background-color: #F5F5F5;
 border-radius: 10px; }
+
+.center {
+    text-align:center;
+}
+
+.carousel-text {
+    height:60px;
+}
