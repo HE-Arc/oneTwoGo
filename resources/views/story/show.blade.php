@@ -29,24 +29,24 @@ $commentariesCount = $commentaries->count();
 
         <!-- Protect like, dislike and comment if user is not logged in, with a better way rather than by the route -->
         <!-- Show the like in blue if user liked it, the dislike in red and comment in yellow -->
-        <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.likeAJAX({{ $story->getId() }})">
+        <a class="btn btn-default btn-sm d-inline" onclick="Votes.likeAJAX({{ $story->getId() }})">
           <div class="d-inline" id="upVotesCount{{$story->getId()}}">
             {{ $story->getUpvotesCount() }}
           </div>
           <i class="fas fa-thumbs-up d-inline"></i>
         </a>
-        <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->getId() }})">
+        <a class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->getId() }})">
           <div class="d-inline" id="downVotesCount{{$story->getId()}}">
             {{ $story->getDownvotesCount() }}
           </div>
           <i class="fas fa-thumbs-down d-inline"></i>
         </a>
-        <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->getId() }}').toggle()">
+        <a class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->getId() }}').toggle()">
           <div class="d-inline" id="commentariesCount">
             {{ $commentariesCount }}
           </div>
           <i class="fas fa-comment d-inline"></i>
-      </a>
+        </a>
     </footer>
   </div>
   <div class="card-footer"  style="display:none" id="commentarySection{{ $story->getId() }}">

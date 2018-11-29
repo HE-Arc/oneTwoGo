@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use DB;
-use App\Vote;
-use App\Story;
-use Illuminate\Http\Request;
 use Session;
 use Auth;
 use App\Theme;
+use App\Vote;
+use App\Story;
+use Illuminate\Http\Request;
 
 class StoryController extends Controller
 {

@@ -94,7 +94,10 @@ class Story extends Model
       $downvotesCount = $this->getDownvotesCount();
 
       // Return the number of upvotes
-      return array($upvotesCount, $downvotesCount);
+      return response()->json([
+        'upvoteCount' => $upvotesCount,
+        'downvoteCount' => $downvotesCount
+      ]);
     }
 
     public function dislike()
@@ -142,7 +145,10 @@ class Story extends Model
       $downvotesCount = $this->getDownvotesCount();
 
       // Return the number of upvotes
-      return array($upvotesCount, $downvotesCount);
+      return response()->json([
+        'upvoteCount' => $upvotesCount,
+        'downvoteCount' => $downvotesCount
+      ]);
     }
 
     /*
