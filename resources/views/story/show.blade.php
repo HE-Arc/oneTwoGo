@@ -31,19 +31,19 @@
 
             <!-- Protect like, dislike and comment if user is not logged in, with a better way rather than by the route -->
             <!-- Show the like in blue if user liked it, the dislike in red and comment in yellow -->
-            <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.likeAJAX({{ $story->getId() }})">
-              <div id="upVotesCount{{$story->getId()}}" class="d-inline">
+            <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.likeAJAX({{ $story->id }})">
+              <div id="upVotesCount{{$story->id}}" class="d-inline">
                 {{ $story->getUpvotesCount() }}
               </div>
-              <i id="upVoteThumb{{$story->getId()}}" class="@if($story->getDidIVote("1")) text-success @endif fas fa-thumbs-up d-inline"></i>
+              <i id="upVoteThumb{{$story->id}}" class="@if($story->getDidIVote("1")) text-success @endif fas fa-thumbs-up d-inline"></i>
             </a>
-            <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->getId() }})">
-              <div id="downVotesCount{{$story->getId()}}" class="d-inline">
+            <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->id }})">
+              <div id="downVotesCount{{$story->id}}" class="d-inline">
                 {{ $story->getDownvotesCount() }}
               </div>
-              <i id="downVoteThumb{{$story->getId()}}" class="@if($story->getDidIVote("-1")) text-danger @endif fas fa-thumbs-down d-inline"></i>
+              <i id="downVoteThumb{{$story->id}}" class="@if($story->getDidIVote("-1")) text-danger @endif fas fa-thumbs-down d-inline"></i>
             </a>
-            <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->getId() }}').toggle()">
+            <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->id }}').toggle()">
               <div class="d-inline" id="commentariesCount">
                 {{ $story->commentaries->count() }}
               </div>
@@ -55,13 +55,13 @@
         </div>
     </footer>
   </div>
-  <div class="card-footer"  style="display:none" id="commentarySection{{ $story->getId() }}">
+  <div class="card-footer"  style="display:none" id="commentarySection{{ $story->id }}">
     <table class="table">
       <tr>
         <td>
           <!-- add commentary -->
           @if(Auth::check())
-          @include('commentary.create', ['story_id' => $story->getId()])
+          @include('commentary.create', ['story_id' => $story->id])
           @endif
           <!-- end of add commentary -->
         </td>

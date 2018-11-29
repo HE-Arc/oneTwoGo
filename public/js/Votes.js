@@ -10,7 +10,7 @@ class Votes {
           success : function (data) {
             $('#upVotesCount'+id).html(data[0]);
             $('#downVotesCount'+id).html(data[1]);
-            $('#upVoteThumb'+id).toggleClass("text-danger", true);
+            $('#upVoteThumb'+id).toggleClass("text-success", true);
             $('#downVoteThumb'+id).toggleClass("text-danger", false);
           }
       });
@@ -27,7 +27,7 @@ class Votes {
           success : function (data) {
             $('#upVotesCount'+id).html(data[0]);
             $('#downVotesCount'+id).html(data[1]);
-            $('#upVoteThumb'+id).toggleClass("text-danger", false);
+            $('#upVoteThumb'+id).toggleClass("text-success", false);
             $('#downVoteThumb'+id).toggleClass("text-danger", true);
           }
       });

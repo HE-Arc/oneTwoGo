@@ -46,6 +46,8 @@ class Story extends Model
 
     public function getDidIVote($v)
     {
+      if(Auth::user() == null)
+        return false;
       return $this->votes()->where('vote', '=', $v)->where('user_id', Auth::user()->getId())->count() == 1;
     }
 
