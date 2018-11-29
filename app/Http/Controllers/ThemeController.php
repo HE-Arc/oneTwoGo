@@ -13,7 +13,7 @@ class ThemeController extends Controller
 {
     public function index()
     {
-      $themes =  Theme::all();
+      $themes = Theme::all();
       return view('themes.index', ["themes"=>$themes]);
     }
 

@@ -19,8 +19,26 @@ class StoryController extends Controller
      */
     public function index()
     {
-        $stories = Story::all();
-        return view('story.index', ['stories'=>$stories]);
+        //old code with the view for every stories
+        // $stories = Story::all();
+        // return view('story.index', ['stories'=> $stories]);
+        return view("story.paged");
+    }
+
+    public function page()
+    {
+        //it's not how we should do it be it makes the job done...
+        $storiesPaged = Story::paginate(3);
+        $output = "";
+
+        if(sizeof($storiesPaged) <= 0)
+            return abort(403, 'Unauthorized action.');
+
+        foreach ($storiesPaged as $story)
+        {
+            $output .= view("story.show", ['story'=> $story]);
+        }
+        return $output;
     }
 
     /**
@@ -30,7 +48,7 @@ class StoryController extends Controller
      */
     public function create()
     {
-        $themes = Theme::all();
+        $themes = Theme::where('active', 1)->get();;
         $page = view('story/create', ['themes' => $themes]);
         return $page;
     }
