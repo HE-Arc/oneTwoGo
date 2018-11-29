@@ -44,6 +44,11 @@ class Story extends Model
       return $this->votes()->where('vote', '=', '1')->count();
     }
 
+    public function getDidIVote($v)
+    {
+      return $this->votes()->where('vote', '=', $v)->where('user_id', Auth::user()->getId())->count() == 1;
+    }
+
     public function getDownvotesCount()
     {
       return $this->votes()->where('vote', '=', '-1')->count();
@@ -51,7 +56,6 @@ class Story extends Model
 
     public function like()
     {
-
       // Get user id
       $userID = Auth::user()->getId();
 
@@ -166,9 +170,9 @@ class Story extends Model
       return $this->hasMany(Vote::class);
     }
 
-    public function owner()
+    public function user()
     {
-      return $this->hasOne(User::class);
+      return $this->belongsTo('App\User');
     }
 
     public function theme()

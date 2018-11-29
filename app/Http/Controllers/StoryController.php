@@ -133,7 +133,7 @@ class StoryController extends Controller
             $story->save();
 
             $story->constraints()->saveMany($constraintsList);
-            
+
             return redirect()->route('stories.random')->with('success', 'Story created successfully.');
         }
         else
