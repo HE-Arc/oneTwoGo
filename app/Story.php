@@ -151,6 +151,11 @@ class Story extends Model
       return array($upvotesCount, $downvotesCount);
     }
 
+    public function getParagraphs()
+    {
+      return explode("<br />", $this->text);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

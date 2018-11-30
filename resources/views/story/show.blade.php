@@ -15,13 +15,17 @@
         <span class="badge badge-pill badge-success">{{ $constraint->word }}</span>
     @endforeach
     <div id="storyTextLimiter{{$story->id}}" class="story-text-closed">
-      <p id='storyText{{$story->id}}' class="card-text text-left">
+      <div id='storyText{{$story->id}}' class="card-text text-left">
         @if(empty($story->text))
           no text found
         @else
-          {{ $story->text }}
+          @foreach($story->getParagraphs() as $paragraph)
+          <p>
+            {{ $paragraph }}
+          </p>
+          @endforeach
         @endif
-      </p>
+      </div>
     </div>
     <i id="storyExpendIcon{{$story->id}}" onclick='Story.toggleStory(this, {{$story->id}})' class="fas fa-angle-down" style='font-size:30px'></i>
     <footer class="blockquote-footer row">
