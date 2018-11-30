@@ -25,12 +25,14 @@ class StoryController extends Controller
         $evalutedStories = [];
         foreach($stories as $story)
         {
-            $votes = $story->votes();
+            $votes = $story->votes;
             $up = $votes->where('vote', '=',  '1')->count();
             $dn = $votes->where('vote', '=', '-1')->count();
 
             $commentaries = $story->commentaries();
             $cc = $commentaries->count();
+
+            //echo "id:".$story->id."_up:".$up."_dn:".$dn."_cc:".$cc;
 
             $evalutedStories[$story->getId()] = ((2 * $up) - (3 * $dn) + (5 * $cc));
         }
@@ -41,8 +43,11 @@ class StoryController extends Controller
         // Get top 10 keys
         $keys = array_slice(array_keys($evalutedStories), 0, 10);
 
-        // Get stories
-        $storiesPaged = Story::whereIn('id', $keys)->paginate(3);
+        // Implode keys
+        $implodedKeys = implode(',', $keys);
+
+        // Fetch top stories
+        $storiesPaged = Story::whereIn('id', $keys)->orderByRaw(DB::raw("FIELD(id, $implodedKeys)"))->paginate(3); 
 
         return $this->paged($storiesPaged);
     }
