@@ -56,33 +56,16 @@
         </div>
     </footer>
   </div>
-  <div class="card-footer"  style="display:none" id="commentarySection{{ $story->id }}">
-    <table class="table">
-      <tr>
-        <td>
-          <!-- add commentary -->
-          @if(Auth::check())
-          @include('commentary.create', ['story_id' => $story->id])
-          @endif
-          <!-- end of add commentary -->
-        </td>
-      </tr>
-
-      <!-- Foreach commentary -->
-      @forelse($story->commentaries as $commentary)
-      <tr class="border border-light rounded-circle">
-        <td>
-          @include('commentary.show', ['commentary' => $commentary])
-        </td>
-      </tr>
-      @empty
-        <p>No comment found :c</p>
-      @endforelse
-    </table>
-  </div>
-  <!-- end of commentary -->
+	<div id="commentarySection{{ $story->id }}" class="card-footer" style="display:none">
+		<h5>Comments</h5>
+		@if(Auth::check())
+			@include('commentary.create', ['story_id' => $story->id])
+		@endif
+		<table id='comments-story-{{ $story->id }}' class="table">
+			@foreach($story->commentaries as $commentary)
+				@include('commentary.show', ['commentary' => $commentary])
+			@endforeach
+		</table>
+	</div>
 </div>
-
-<!-- SHOW COMMENTARIES CREATION HERE -->
-<!-- SHOW COMMENTARIES HERE -->
 @endif
