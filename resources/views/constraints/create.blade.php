@@ -23,22 +23,16 @@
               <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
                   <label>Texte</label>
-                  <input type="text" name="name" value="" class="form-control" placeholder="Name">
+                  <input type="text" name="word" value="" class="form-control" placeholder="Word">
                   <br />
-                  <label>Espace réservé</label>
-                  <input type="text" name="placeholder" value="" class="form-control" placeholder="Placeholder">
-                  <!--<img src="{{ asset('storage/'.$constraint->image) }}" />
-                  <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
-                  -->
-
                   <div class="scrollbar scrollbar-primary">
                     <div class="force-overflow">
                       <div class="row">
                         @foreach ($themes->all() as $theme)
                           @if ($theme->active)
-                            <div class="col-xs-4 col-sm-4 col-md-4">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
                               <label class="customcheck">
-                                {{ $theme->word }}
+                                {{ $theme->name }}
                                 <input type="checkbox" name="themes[]" id="checkBox-{{ $theme->id }}" value="{{ $theme->id }}" />
                                 <span class="checkmark"></span>
                               </label>
