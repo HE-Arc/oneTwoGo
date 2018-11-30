@@ -54,7 +54,7 @@ class StoryController extends Controller
 
     public function freshPage()
     {
-        $storiesPaged = Story::orderBy('created_at', 'asc')->paginate(3);
+        $storiesPaged = Story::orderBy('created_at', 'DESC')->paginate(3);
         return $this->paged($storiesPaged);
     }
 
