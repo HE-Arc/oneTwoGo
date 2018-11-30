@@ -159,7 +159,7 @@ class Story extends Model
 
     public function commentaries()
     {
-      return $this->hasMany(Commentary::class);
+      return $this->hasMany('App\Commentary')->orderBy("created_at", "desc");
     }
 
     public function constraints()

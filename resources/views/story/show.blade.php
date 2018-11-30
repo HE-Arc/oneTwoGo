@@ -1,9 +1,6 @@
 @if(!empty($story))
 
-@php
-// $commentariesCount = $commentaries->count();
-@endphp
-<div class="card text-center mt-2 w-100">
+<div class="card story-card text-center mt-2 w-100">
   <div class="card-header">
     <h5 class="card-title">
       @if(empty($story->title))
@@ -17,13 +14,16 @@
     @foreach ($story->constraints as $constraint)
         <span class="badge badge-pill badge-success">{{ $constraint->word }}</span>
     @endforeach
-    <p class="card-text text-left">
-      @if(empty($story->text))
-        no text found
-      @else
-        {{ $story->text }}
-      @endif
-    </p>
+    <div id="storyTextLimiter{{$story->id}}" class="story-text-closed">
+      <p id='storyText{{$story->id}}' class="card-text text-left">
+        @if(empty($story->text))
+          no text found
+        @else
+          {{ $story->text }}
+        @endif
+      </p>
+    </div>
+    <i id="storyExpendIcon{{$story->id}}" onclick='Story.toggleStory(this, {{$story->id}})' class="fas fa-angle-down" style='font-size:30px'></i>
     <footer class="blockquote-footer row">
         <div class="col text-left">
             <!-- VERY VERY UGLY way to get likes, dislikes and comments but ...
@@ -35,7 +35,7 @@
               <div id="upVotesCount{{$story->id}}" class="d-inline">
                 {{ $story->getUpvotesCount() }}
               </div>
-              <i id="upVoteThumb{{$story->id}}" class="@if($story->getDidIVote("1")) text-success @endif fas fa-thumbs-up d-inline"></i>
+              <i id="upVoteThumb{{$story->id}}" class="@if($story->getDidIVote("1")) text-primary @endif fas fa-thumbs-up d-inline"></i>
             </a>
             <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->id }})">
               <div id="downVotesCount{{$story->id}}" class="d-inline">
@@ -44,7 +44,7 @@
               <i id="downVoteThumb{{$story->id}}" class="@if($story->getDidIVote("-1")) text-danger @endif fas fa-thumbs-down d-inline"></i>
             </a>
             <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->id }}').toggle()">
-              <div class="d-inline" id="commentariesCount">
+              <div id="comments-count-{{ $story->id }}" class="d-inline">
                 {{ $story->commentaries->count() }}
               </div>
               <i class="fas fa-comment d-inline"></i>
@@ -55,33 +55,16 @@
         </div>
     </footer>
   </div>
-  <div class="card-footer"  style="display:none" id="commentarySection{{ $story->id }}">
-    <table class="table">
-      <tr>
-        <td>
-          <!-- add commentary -->
-          @if(Auth::check())
-          @include('commentary.create', ['story_id' => $story->id])
-          @endif
-          <!-- end of add commentary -->
-        </td>
-      </tr>
-
-      <!-- Foreach commentary -->
-      @forelse($story->commentaries as $commentary)
-      <tr class="border border-light rounded-circle">
-        <td>
-          @include('commentary.show', ['commentary' => $commentary])
-        </td>
-      </tr>
-      @empty
-        <p>No comment found :c</p>
-      @endforelse
-    </table>
-  </div>
-  <!-- end of commentary -->
+	<div id="commentarySection{{ $story->id }}" class="card-footer" style="display:none">
+		<h5>Comments</h5>
+		@if(Auth::check())
+			@include('commentary.create', ['story_id' => $story->id])
+		@endif
+		<table id='comments-story-{{ $story->id }}' class="table">
+			@foreach($story->commentaries as $commentary)
+				@include('commentary.show', ['commentary' => $commentary])
+			@endforeach
+		</table>
+	</div>
 </div>
-
-<!-- SHOW COMMENTARIES CREATION HERE -->
-<!-- SHOW COMMENTARIES HERE -->
 @endif
