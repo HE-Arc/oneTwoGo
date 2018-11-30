@@ -17,13 +17,14 @@
     @foreach ($story->constraints as $constraint)
         <span class="badge badge-pill badge-success">{{ $constraint->word }}</span>
     @endforeach
-    <p class="card-text text-left">
+    <p id='storyText{{$story->id}}' class="card-text text-left story-text-closed">
       @if(empty($story->text))
         no text found
       @else
         {{ $story->text }}
       @endif
     </p>
+    <i onclick='Story.toggleStory(this, {{$story->id}})' class="fas fa-angle-down" style='font-size:30px'></i>
     <footer class="blockquote-footer row">
         <div class="col text-left">
             <!-- VERY VERY UGLY way to get likes, dislikes and comments but ...

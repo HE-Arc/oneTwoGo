@@ -22,6 +22,7 @@ Route::resource("/themes", "ThemeController")->middleware('admin');
 Route::post('/themes/{id}/toggleActive', 'ThemeController@toggleActive')->name('themes.toggleActive')->middleware('admin');
 Route::resource("/constraints", "ConstraintController")->middleware('admin');
 Route::post('/constraints/{id}/toggleActive', 'ConstraintController@toggleActive')->name('constraints.toggleActive')->middleware('admin');
+Route::get('/constraint/random', 'ConstraintController@random')->name('constraints.random');
 
 Route::get('resizeImage', 'ImageController@resizeImage');
 Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
@@ -45,5 +46,3 @@ Route::post('/story/{id}/like', 'StoryController@like')->name('story.like')->mid
 Route::post('/commentary/create', 'CommentaryController@create')->name('commentary.create')->middleware('auth');;
 Route::post('/commentary/store', 'CommentaryController@store')->name('commentary.store')->middleware('auth');
 Route::get('/commentary/show', 'CommentaryController@show')->name('commentary.show');
-
-Route::get('/constraint/random', 'ConstraintController@random');
