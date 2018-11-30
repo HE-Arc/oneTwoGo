@@ -13,9 +13,9 @@ class Votes {
             let thumbUp = $('#upVoteThumb'+id);
             let thumbDown = $('#downVoteThumb'+id);
             if(thumbDown.hasClass("text-danger"))
-                thumbUp.toggleClass("text-success", true);
+                thumbUp.toggleClass("text-primary", true);
             else
-                thumbUp.toggleClass("text-success");
+                thumbUp.toggleClass("text-primary");
             thumbDown.toggleClass("text-danger", false);
           }
       });
@@ -34,11 +34,11 @@ class Votes {
             $('#downVotesCount'+id).html(data[1]);
             let thumbUp = $('#upVoteThumb'+id);
             let thumbDown = $('#downVoteThumb'+id);
-            if(thumbUp.hasClass("text-success"))
+            if(thumbUp.hasClass("text-primary"))
                 thumbDown.toggleClass("text-danger", true);
             else
                 thumbDown.toggleClass("text-danger");
-            thumbUp.toggleClass("text-success", false);
+            thumbUp.toggleClass("text-primary", false);
           }
       });
     }

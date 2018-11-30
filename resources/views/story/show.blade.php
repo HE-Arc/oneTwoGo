@@ -35,7 +35,7 @@
               <div id="upVotesCount{{$story->id}}" class="d-inline">
                 {{ $story->getUpvotesCount() }}
               </div>
-              <i id="upVoteThumb{{$story->id}}" class="@if($story->getDidIVote("1")) text-success @endif fas fa-thumbs-up d-inline"></i>
+              <i id="upVoteThumb{{$story->id}}" class="@if($story->getDidIVote("1")) text-primary @endif fas fa-thumbs-up d-inline"></i>
             </a>
             <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->id }})">
               <div id="downVotesCount{{$story->id}}" class="d-inline">
