@@ -124,7 +124,7 @@ class StoryController extends Controller
         {
             $story = new Story([
             'title' => $request->get('title'),
-            'text' => $request->get('text'),
+            'text' => nl2br($request->get('text')),
             'user_id' => Auth::user()->getId(),
             'theme_id' => $themeid,
             'deleteVoted' => 0,
