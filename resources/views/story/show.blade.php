@@ -45,7 +45,7 @@
               <i id="downVoteThumb{{$story->id}}" class="@if($story->getDidIVote("-1")) text-danger @endif fas fa-thumbs-down d-inline"></i>
             </a>
             <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->id }}').toggle()">
-              <div class="d-inline" id="commentariesCount">
+              <div id="comments-count-{{ $story->id }}" class="d-inline">
                 {{ $story->commentaries->count() }}
               </div>
               <i class="fas fa-comment d-inline"></i>

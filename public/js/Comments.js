@@ -1,12 +1,10 @@
 class Comments {
 	static addAJAX(storyId) {
-		let comment = document.getElementById("comment-text-"+storyId);
-		if(comment.value == "")
-		{
+		let comment = document.getElementById("comment-text-" + storyId);
+		if (comment.value == "") {
 			comment.classList.add("is-invalid");
 			return;
-		}
-		else
+		} else
 			comment.classList.remove("is-invalid");
 		$.ajax({
 			type: 'POST',
@@ -20,13 +18,15 @@ class Comments {
 			},
 			success: function(comment) {
 				Comments.addToTable(storyId, comment);
+				let count = document.getElementById("comments-count-" + storyId);
+				count.innerHTML = ""+(parseInt(count.innerHTML)+1);
 			}
 		});
 		comment.value = "";
 	}
 
 	static addToTable(storyId, comment) {
-		let storyTable = document.getElementById("comments-story-"+storyId);
+		let storyTable = document.getElementById("comments-story-" + storyId);
 		storyTable.innerHTML = comment + storyTable.innerHTML;
 	}
 
