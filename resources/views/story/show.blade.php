@@ -51,7 +51,7 @@
           </a>
         </div>
         <div class="col text-right">
-            <p>Posté par : {{$story->user->name}}@if($story->created_at), {{$story->created_at}}@endif</p>
+            <p>Posté par : <a href="{{ route('stories.byUser', ['id' => $story->user->id]) }}">{{$story->user->name}}</a>@if($story->created_at), {{$story->created_at}}@endif</p>
         </div>
     </footer>
   </div>

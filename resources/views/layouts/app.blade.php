@@ -73,6 +73,7 @@
 
               <div class="dropdown-menu dropdown-menu-right dropdown-otg" aria-labelledby="navbarDropdown">
                 <ul  class="ml-auto mr-auto">
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('stories.byUser', ['id' => Auth::user()->id]) }}">My stories</a>
                   @if (Auth::user()->admin)
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('themes.index') }}">Themes</a>
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('constraints.index') }}">Constraints</a>

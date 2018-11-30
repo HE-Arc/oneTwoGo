@@ -6,6 +6,7 @@ use DB;
 use App\Vote;
 use App\Story;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Session;
 use Auth;
 use App\Theme;
@@ -56,6 +57,17 @@ class StoryController extends Controller
     {
         $seed = Session::get("randomPageSeed"); //if unset -> null
         $storiesPaged = Story::inRandomOrder($seed)->paginate(3); //if seed == null -> like no seed
+        return $this->paged($storiesPaged);
+    }
+
+    public function byUser($id)
+    {
+        return view("story.paged")->with("routeAJAX", route("stories.byUserPage", ['id' => $id]));
+    }
+
+    public function byUserPage($id)
+    {
+        $storiesPaged = Story::where('user_id', $id)->paginate(3);
         return $this->paged($storiesPaged);
     }
 

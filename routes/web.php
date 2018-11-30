@@ -33,6 +33,8 @@ Route::get('/story/fresh', 'StoryController@fresh')->name('stories.fresh');
 Route::get('/story/freshPage', 'StoryController@freshPage')->name('stories.freshPage');
 Route::get('/story/top', 'StoryController@top')->name('stories.top');
 Route::get('/story/topPage', 'StoryController@topPage')->name('stories.topPage');
+Route::get('/story/byUser/{id}', 'StoryController@byUser')->name('stories.byUser');
+Route::get('/story/byUserPage/{id}', 'StoryController@byUserPage')->name('stories.byUserPage');
 
 Route::get('/story/create', 'StoryController@create')->name('createStory')->middleware('auth');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
