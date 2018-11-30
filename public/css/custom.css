@@ -23,6 +23,30 @@
   background-color: #008E68;
 }
 
+.navbar-collapse > ul.navbar-nav > li.li-otg > a.nav-link:focus {
+  color: white !important;
+}
+
+ .navbar-collapse > ul.navbar-nav > li.li-otg > a.nav-link:hover, .home-otg:hover {
+  color: #00684A !important;
+  background-color: #008E68;
+  border-radius: 4px;
+  padding-left: 8px;
+}
+
+.home-otg{
+  padding: 8px;
+}
+
+.dropdown-otg{
+  background-color: #303030;
+}
+
+.dropdown-item-otg:hover {
+  background-color: #00BC8C;
+  border-radius: 4px;
+}
+
 .a-otg {
   color: white;
 }
@@ -141,4 +165,8 @@ border-radius: 10px; }
 
 .carousel-text {
     height:60px;
+}
+
+.dropdown-divider {
+   border-color: #008E68;
 }

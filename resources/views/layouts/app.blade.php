@@ -29,8 +29,8 @@
 </head>
 <body>
   <div id="app">
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-      <a class="navbar-brand" href="{{ url('/') }}">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
+      <a class="navbar-brand home-otg" href="{{ url('/') }}">
         {{ config('app.name', 'OTG!') }}
       </a>
       <div class="container">
@@ -40,53 +40,60 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <!-- Left Side Of Navbar -->
           <ul class="navbar-nav ml-auto mr-auto">
-            <li class="nav-item mr-4 ml-4">
+            <li class="nav-item mr-4 ml-4 li-otg">
               <a class="nav-link" href="{{ route('createStory') }}">Create</a>
             </li>
-            <li class="nav-item mr-4 ml-4">
+            <li class="nav-item mr-4 ml-4 li-otg">
               <a class="nav-link" href="{{ route('stories.random') }}">Random</a>
             </li>
-            <li class="nav-item mr-4 ml-4">
+            <li class="nav-item mr-4 ml-4 li-otg">
               <a class="nav-link" href="{{ route('stories.fresh') }}">Fresh</a>
             </li>
-            <li class="nav-item mr-4 ml-4">
+            <li class="nav-item mr-4 ml-4 li-otg">
               <a class="nav-link" href="{{ route('stories.top') }}">Top!</a>
             </li>
+          </ul>
+          <div class="dropdown-divider"></div>
+          <ul class="navbar-nav">
+            <!-- Authentication Links -->
+            @guest
+            <li class="nav-item mr-4 ml-4 li-otg">
+              <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+            </li>
+            <li class="nav-item mr-4 ml-4 li-otg">
+              @if (Route::has('register'))
+              <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+              @endif
+            </li>
+            @else
+            <li class="nav-item mr-4 ml-4 li-otg dropdown">
+              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                {{ Auth::user()->name }} <span class="caret"></span>
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-right dropdown-otg" aria-labelledby="navbarDropdown">
+                <ul  class="ml-auto mr-auto">
+                  @if (Auth::user()->admin)
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('themes.index') }}">Themes</a>
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('constraints.index') }}">Constraints</a>
+                  @endif
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('logout') }}"
+                    onclick="event.preventDefault();
+                    document.getElementById('logout-form').submit();">
+                    {{ __('Logout') }}
+                  </a>
+                  <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                  </form>
+                </ul>
+              </div>
+            </li>
+            @endguest
           </ul>
         </div>
       </div>
       <!-- Right Side Of Navbar -->
-      <ul class="navbar-nav ml-auto">
-        <!-- Authentication Links -->
-        @guest
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-        </li>
-        <li class="nav-item">
-          @if (Route::has('register'))
-          <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-          @endif
-        </li>
-        @else
-        <li class="nav-item dropdown">
-          <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-            {{ Auth::user()->name }} <span class="caret"></span>
-          </a>
 
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{{ route('logout') }}"
-              onclick="event.preventDefault();
-              document.getElementById('logout-form').submit();">
-              {{ __('Logout') }}
-            </a>
-
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-              @csrf
-            </form>
-          </div>
-        </li>
-        @endguest
-      </ul>
     </nav>
     <main class="py-4 mt-5">
       @yield('content')
