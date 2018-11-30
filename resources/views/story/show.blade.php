@@ -1,9 +1,6 @@
 @if(!empty($story))
 
-@php
-// $commentariesCount = $commentaries->count();
-@endphp
-<div class="card text-center mt-2 w-100">
+<div class="card story-card text-center mt-2 w-100">
   <div class="card-header">
     <h5 class="card-title">
       @if(empty($story->title))
@@ -17,14 +14,16 @@
     @foreach ($story->constraints as $constraint)
         <span class="badge badge-pill badge-success">{{ $constraint->word }}</span>
     @endforeach
-    <p id='storyText{{$story->id}}' class="card-text text-left story-text-closed">
-      @if(empty($story->text))
-        no text found
-      @else
-        {{ $story->text }}
-      @endif
-    </p>
-    <i onclick='Story.toggleStory(this, {{$story->id}})' class="fas fa-angle-down" style='font-size:30px'></i>
+    <div id="storyTextLimiter{{$story->id}}" class="story-text-closed">
+      <p id='storyText{{$story->id}}' class="card-text text-left">
+        @if(empty($story->text))
+          no text found
+        @else
+          {{ $story->text }}
+        @endif
+      </p>
+    </div>
+    <i id="storyExpendIcon{{$story->id}}" onclick='Story.toggleStory(this, {{$story->id}})' class="fas fa-angle-down" style='font-size:30px'></i>
     <footer class="blockquote-footer row">
         <div class="col text-left">
             <!-- VERY VERY UGLY way to get likes, dislikes and comments but ...
