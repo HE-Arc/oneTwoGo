@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h1>Edition</h1>
+      <h1 class="mb-5">Edition de contrainte</h1>
       @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -22,14 +22,22 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-              <label>Texte</label>
-              <input type="text" name="word" value="{{ $constraint->word }}" class="form-control" placeholder="Word">
+              <input type="hidden" name="use" id="use" value="{{$constraint->use}}" />
+              <div class="text-center">
+                @if ($constraint->use)
+                  <input type="checkbox" id="toggleUse" data-onstyle="toggle-otg" data-offstyle="danger" data-toggle="toggle" data-on="Obligatoire" data-off="Interdit" checked>
+                @else
+                  <input type="checkbox" id="toggleUse" data-onstyle="toggle-otg" data-offstyle="danger" data-toggle="toggle" data-on="Obligatoire" data-off="Interdit">
+                @endif
+              </div>
+              <label class="mb-0 mt-4">Mot</label>
+              <input type="text" name="word" value="{{ $constraint->word }}" class="form-control" placeholder="Mot"><span class="float-right mb-2">
               <br />
               <!--<img src="{{ asset('storage/'.$constraint->image) }}" />
               <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
             -->
 
-              <div class="scrollbar scrollbar-primary form-control">
+              <div class="scrollbar scrollbar-primary form-control mt-4">
                 <div class="force-overflow">
                   <div class="row">
                     @foreach ($themes->all() as $theme)
@@ -63,4 +71,18 @@
           </div>
         </div>
     </form>
+    <script>
+      $(document).ready(function() {
+        $('#toggle-group label').click(function() {
+          var use = $('#use');
+          if (use.val() == '1')
+          {
+            use.val('0');
+          }
+          else {
+            use.val('1');
+          }
+        });
+      });
+    </script>
 @endsection

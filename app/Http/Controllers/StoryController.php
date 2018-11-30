@@ -160,14 +160,31 @@ class StoryController extends Controller
         $textParsed = preg_replace("/[^a-zA-Z0-9 ]/i", " ", $textToLower); //replace every non letter / figure and space by a space
         $words = explode(" ", $textParsed);
 
-        foreach($words as $word)
+        $forbidden = 0;
+        $needed = length($constraints);
+        foreach($constraints as $constraint)
+        {
+          if(in_array($constraint, $words))
+          {
+              if ($constraint->use)
+              {
+                $forbidden++;
+              }
+              else
+              {
+                $needed++;
+              }
+          }
+        }
+
+        /*foreach($words as $word)
         {
             if(in_array($word, $constraints))
             {
                 unset($constraints[array_search($word, $constraints)]);
             }
-        }
-        return sizeof($constraints) == 0;
+        }*/
+        return $forbidden == 0 && $needed == 0;
     }
 
     /**

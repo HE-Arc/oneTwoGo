@@ -24,11 +24,13 @@ class ConstraintThemeSeeder extends Seeder
     array(2,3),
     array(2,5),
     array(3,4),
-    array(4,4)
+    array(4,4),
+    array(6,1),
+    array(8,1)
     );
 
     for ($i=0; $i < count($pivots); ++$i) {
-      $this->savePivot($pivots[$i][0],$pivots[$i][1]);
+      $this->savePivot($pivots[$i][0], $pivots[$i][1]);
     }
   }
 }
