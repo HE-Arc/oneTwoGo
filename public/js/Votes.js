@@ -10,8 +10,13 @@ class Votes {
           success : function (data) {
             $('#upVotesCount'+id).html(data[0]);
             $('#downVotesCount'+id).html(data[1]);
-            $('#upVoteThumb'+id).toggleClass("text-success", true);
-            $('#downVoteThumb'+id).toggleClass("text-danger", false);
+            let thumbUp = $('#upVoteThumb'+id);
+            let thumbDown = $('#downVoteThumb'+id);
+            if(thumbDown.hasClass("text-danger"))
+                thumbUp.toggleClass("text-primary", true);
+            else
+                thumbUp.toggleClass("text-primary");
+            thumbDown.toggleClass("text-danger", false);
           }
       });
     }
@@ -27,8 +32,13 @@ class Votes {
           success : function (data) {
             $('#upVotesCount'+id).html(data[0]);
             $('#downVotesCount'+id).html(data[1]);
-            $('#upVoteThumb'+id).toggleClass("text-success", false);
-            $('#downVoteThumb'+id).toggleClass("text-danger", true);
+            let thumbUp = $('#upVoteThumb'+id);
+            let thumbDown = $('#downVoteThumb'+id);
+            if(thumbUp.hasClass("text-primary"))
+                thumbDown.toggleClass("text-danger", true);
+            else
+                thumbDown.toggleClass("text-danger");
+            thumbUp.toggleClass("text-primary", false);
           }
       });
     }
