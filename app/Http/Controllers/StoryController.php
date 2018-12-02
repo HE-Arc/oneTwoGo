@@ -127,11 +127,10 @@ class StoryController extends Controller
         ]);
 
         $constraintsList = Session::get('constraints');
-        $constraintsListWords = array_map(function($w){return $w['word'];}, $constraintsList);
         $themeid = Session::get('theme')->id;
 
         //Same verification algorithme as in the view
-        $isValid = $this->verify($constraintsListWords, $request['text']);
+        $isValid = $this->verify($constraintsList, $request['text']);
         if($isValid)
         {
             $story = new Story([
@@ -157,34 +156,21 @@ class StoryController extends Controller
     public function verify($constraints, $text)
     {
         $textToLower = strtolower($text);
-        $textParsed = preg_replace("/[^a-zA-Z0-9 ]/i", " ", $textToLower); //replace every non letter / figure and space by a space
+        $textParsed = preg_replace("/[,.^'?\-;:!~+#&()=\n]/i", " ", $textToLower); //replace every non letter / figure and space by a space
         $words = explode(" ", $textParsed);
 
-        $forbidden = 0;
-        $needed = length($constraints);
-        foreach($constraints as $constraint)
-        {
-          if(in_array($constraint, $words))
-          {
-              if ($constraint->use)
-              {
-                $forbidden++;
-              }
-              else
-              {
-                $needed++;
-              }
-          }
+        foreach($constraints as $constraint){
+            $count = 0;
+            foreach($words as $word)
+            {
+                if($word == $constraint['word'])
+                    $count++;
+            }
+            if($constraint['use'] == 1 && $count <= 0 || $constraint['use'] == 0 && $count > 0)
+                return false;
         }
 
-        /*foreach($words as $word)
-        {
-            if(in_array($word, $constraints))
-            {
-                unset($constraints[array_search($word, $constraints)]);
-            }
-        }*/
-        return $forbidden == 0 && $needed == 0;
+        return true;
     }
 
     /**
