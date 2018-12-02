@@ -12,7 +12,7 @@
   </div>
   <div class="card-body">
     @foreach ($story->constraints as $constraint)
-        <span class="badge badge-pill badge-success">{{ $constraint->word }}</span>
+        <span class="badge badge-pill @if($constraint->use == 1) badge-success @else badge-danger @endif">{{ $constraint->word }}</span>
     @endforeach
     <div id="storyTextLimiter{{$story->id}}" class="story-text-closed">
       <div id='storyText{{$story->id}}' class="card-text text-left">

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Constraint extends Model
 {
-  protected $fillable = ['word', 'active'];
+  protected $fillable = ['word', 'use', 'active'];
 
   public function themes()
   {

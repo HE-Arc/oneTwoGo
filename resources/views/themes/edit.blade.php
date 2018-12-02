@@ -4,7 +4,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-8">
-      <h1>Edition</h1>
+      <h1 class="mb-5">Edition de thème</h1>
       @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -22,11 +22,10 @@
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">
-              <label>Texte</label>
-              <input type="text" name="name" value="{{ $theme->name }}" class="form-control" placeholder="Name">
-              <br />
-              <label>Espace réservé</label>
-              <input type="text" name="placeholder" value="{{ $theme->placeholder }}" class="form-control" placeholder="Placeholder">
+              <label>Titre</label>
+              <input type="text" name="name" value="{{ $theme->name }}" class="form-control" placeholder="Titre">
+              <label class="mt-4">Espace réservé</label>
+              <input type="text" name="placeholder" value="{{ $theme->placeholder }}" class="form-control" placeholder="Espace réservé">
               <!--<img src="{{ asset('storage/'.$theme->image) }}" />
               <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
             -->

@@ -37,13 +37,13 @@ class ConstraintController extends Controller
   {
       $args = $request->all();
       $theme = Theme::findOrFail($args['theme_id']);
-      $constraints = iterator_to_array($theme->constraints);
+      $constraints = array_values(iterator_to_array($theme->constraints->where('active', 1)));
 
       $maxConstraints = 6;
       $randomconstraints = [];
       for($i = 0; $i < $maxConstraints && sizeof($constraints) > 0; $i++)
       {
-          $id = rand(0, sizeof($constraints) - 1);
+          $id = random_int(0, sizeof($constraints) - 1);
           $randomconstraints[] = $constraints[$id];
           unset($constraints[$id]);
           $constraints = array_values($constraints); //reset id array
@@ -53,7 +53,7 @@ class ConstraintController extends Controller
       Session::put('constraints', $randomconstraints);
       Session::forget('theme');
       Session::put('theme', $theme);
-      return array_map(function($c){return $c['word'];},$randomconstraints); //return only words
+      return array_map(function($c){return $c;},$randomconstraints); //return only words
   }
 
   /**

@@ -12,6 +12,11 @@
   background-color: #303030 !important;
 }
 
+.btn-toggle-otg {
+  background-color: #00BC8C !important;
+  color: white !important;
+}
+
 .btn-otg {
   background-color: #00BC8C;
   color: white;
