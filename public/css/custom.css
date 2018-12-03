@@ -6,6 +6,9 @@
 .table-borderless>tfoot>tr>td {
     border: none;
 }
+.blockquote-footer::before {
+		content: "" !important;
+}
 
 .table-borderless {
   background-color: #303030;
