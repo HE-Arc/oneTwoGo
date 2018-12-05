@@ -49,6 +49,14 @@
 
                     rep.text().then(function(text) {
                         storyLoaded.innerHTML += text;
+
+                        // retrieve script js
+                        var start = text.indexOf("<script>");
+                        var end = text.indexOf("<\/script>");
+                        var script = text.substring(start + 8, end);
+
+                        // launch script js
+                        eval(script);
                     });
                 });
             }
@@ -69,5 +77,4 @@
         loadNewStories();
     });
 </script>
-
 @endsection

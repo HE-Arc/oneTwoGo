@@ -27,7 +27,7 @@
         @endif
       </div>
     </div>
-    <i id="storyExpendIcon{{$story->id}}" onclick='Story.toggleStory(this, {{$story->id}})' class="fas fa-angle-down" style='font-size:30px'></i>
+    <i id="storyExpendIcon{{$story->id}}" onclick='Story.toggleStory(this, {{$story->id}})' class="storyExpendIconClass fas fa-angle-down" style='font-size:30px'></i>
     <footer class="blockquote-footer row">
         <div class="col text-left">
             <!-- VERY VERY UGLY way to get likes, dislikes and comments but ...
@@ -71,4 +71,28 @@
 		</table>
 	</div>
 </div>
+
+<script>
+// can't use a static method because it's call by eval()
+function hideIcon(id) {
+    // If text is smaller than his container, hide toggle button
+
+    var height = $("#storyText"+id).css('height');
+    var maxHeight = $('#storyTextLimiter'+id).css('max-height');
+
+    height = parseInt(height.substring(0, height.length - 2));
+    maxHeight = parseInt(maxHeight.substring(0, maxHeight.length - 2));
+
+    if (height < maxHeight) {
+        $('#storyExpendIcon'+id).css('display','none');
+    }
+}
+
+  $(document).ready(function() {
+      $(".storyExpendIconClass").each(function() {
+        var id = parseInt($(this)[0].id.substring(15));
+        hideIcon(id);
+      });
+  });
+</script>
 @endif
