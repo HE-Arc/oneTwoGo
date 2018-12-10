@@ -11,7 +11,7 @@
                 </div>
             </div>
             <div style='text-align:center; margin-top:10px;'>
-                <input id='loadNewStoriesButton' type="button" class="btn btn-success" value='Load new stories'>
+                <input id='loadNewStoriesButton' type="button" class="btn btn-success" value='Charger de nouvelles histoires'>
                 <span id='fullyLoaded' hidden>Toutes les histoires ont été chargées</span>
                 <span id='errorOnLoad' hidden>Une erreur est survenue lors du chargement de la page</span>
             </div>
