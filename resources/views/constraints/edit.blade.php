@@ -7,7 +7,7 @@
       <h1 class="mb-5">Edition de contrainte</h1>
       @if ($errors->any())
         <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <strong>Whoops!</strong> Il semble qu'une erreur soit survenue.<br><br>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -32,11 +32,6 @@
               </div>
               <label class="mb-0 mt-4">Mot</label>
               <input type="text" name="word" value="{{ $constraint->word }}" class="form-control" placeholder="Mot"><span class="float-right mb-2">
-              <br />
-              <!--<img src="{{ asset('storage/'.$constraint->image) }}" />
-              <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
-            -->
-
               <div class="scrollbar scrollbar-primary form-control mt-4">
                 <div class="force-overflow">
                   <div class="row">
@@ -66,8 +61,8 @@
             </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" class="btn btn-otg">Submit</button>
-            <a class="btn btn-otg" href="{{ route('constraints.index') }}"> Back</a>
+            <button type="submit" class="btn btn-otg">Valider</button>
+            <a class="btn btn-otg" href="{{ route('constraints.index') }}">Annuler</a>
           </div>
         </div>
     </form>

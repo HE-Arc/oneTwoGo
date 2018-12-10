@@ -7,7 +7,7 @@
         <h1 class="mb-5">Création de thème</h1>
         @if ($errors->any())
           <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <strong>Whoops!</strong> Il semble qu'une erreur soit survenue.<br><br>
             <ul>
               @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -24,8 +24,8 @@
                 <div class="form-group">
                   <label>Titre</label>
                   <input type="text" name="name" value="" class="form-control" placeholder="Titre">
-                  <label class= "mt-4">Espace réservé</label>
-                  <input type="text" name="placeholder" value="" class="form-control" placeholder="Espace réservé">
+                  <label class= "mt-4">Proposition de titre</label>
+                  <input type="text" name="placeholder" value="" class="form-control" placeholder="Proposition">
                   <!--<img src="{{ asset('storage/'.$theme->image) }}" />
                   <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
                   -->
@@ -48,8 +48,8 @@
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <button type="submit" class="btn btn-otg">Submit</button>
-                <a class="btn btn-otg" href="{{ route('themes.index') }}"> Back</a>
+                <button type="submit" class="btn btn-otg">Valider</button>
+                <a class="btn btn-otg" href="{{ route('themes.index') }}">Annuler</a>
               </div>
             </div>
             </form>

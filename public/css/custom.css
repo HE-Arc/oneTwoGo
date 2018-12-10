@@ -178,3 +178,7 @@ border-radius: 10px; }
 .dropdown-divider {
    border-color: #008E68;
 }
+
+div.toggle-group>span.toggle-handle.btn.btn-default {
+  background-color: white !important;
+}

@@ -45,13 +45,13 @@
           <!-- Left Side Of Navbar -->
           <ul class="navbar-nav ml-auto mr-auto">
             <li class="nav-item mr-4 ml-4 li-otg">
-              <a class="nav-link" href="{{ route('createStory') }}">Create</a>
+              <a class="nav-link" href="{{ route('createStory') }}">Ecrire</a>
             </li>
             <li class="nav-item mr-4 ml-4 li-otg">
-              <a class="nav-link" href="{{ route('stories.random') }}">Random</a>
+              <a class="nav-link" href="{{ route('stories.random') }}">Aléatoire</a>
             </li>
             <li class="nav-item mr-4 ml-4 li-otg">
-              <a class="nav-link" href="{{ route('stories.fresh') }}">Fresh</a>
+              <a class="nav-link" href="{{ route('stories.fresh') }}">Nouveau</a>
             </li>
             <li class="nav-item mr-4 ml-4 li-otg">
               <a class="nav-link" href="{{ route('stories.top') }}">Top!</a>
@@ -62,11 +62,11 @@
             <!-- Authentication Links -->
             @guest
             <li class="nav-item mr-4 ml-4 li-otg">
-              <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+              <a class="nav-link" href="{{ route('login') }}">{{ __('Connexion') }}</a>
             </li>
             <li class="nav-item mr-4 ml-4 li-otg">
               @if (Route::has('register'))
-              <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+              <a class="nav-link" href="{{ route('register') }}">{{ __('Inscription') }}</a>
               @endif
             </li>
             @else
@@ -77,10 +77,10 @@
 
               <div class="dropdown-menu dropdown-menu-right dropdown-otg" aria-labelledby="navbarDropdown">
                 <ul  class="ml-auto mr-auto">
-                  <a class="dropdown-item dropdown-item-otg" href="{{ route('stories.byUser', ['id' => Auth::user()->id]) }}">My stories</a>
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('stories.byUser', ['id' => Auth::user()->id]) }}">Mes histoires</a>
                   @if (Auth::user()->admin)
-                  <a class="dropdown-item dropdown-item-otg" href="{{ route('themes.index') }}">Themes</a>
-                  <a class="dropdown-item dropdown-item-otg" href="{{ route('constraints.index') }}">Constraints</a>
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('themes.index') }}">Thèmes</a>
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('constraints.index') }}">Constraintes</a>
                   @endif
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('logout') }}"
                     onclick="event.preventDefault();

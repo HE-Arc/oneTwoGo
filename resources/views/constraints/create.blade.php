@@ -7,7 +7,7 @@
         <h1 class="mb-5">Création de contrainte</h1>
         @if ($errors->any())
           <div class="alert alert-danger">
-            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+            <strong>Whoops!</strong> Il semble qu'une erreur soit survenue.<br><br>
             <ul>
               @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -48,8 +48,8 @@
                 </div>
               </div>
               <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                <button type="submit" class="btn btn-otg">Submit</button>
-                <a class="btn btn-otg" href="{{ route('constraints.index') }}"> Back</a>
+                <button type="submit" class="btn btn-otg">Valider</button>
+                <a class="btn btn-otg" href="{{ route('constraints.index') }}">Annuler</a>
               </div>
             </div>
             </form>

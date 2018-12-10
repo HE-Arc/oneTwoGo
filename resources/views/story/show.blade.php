@@ -4,7 +4,7 @@
   <div class="card-header">
     <h5 class="card-title">
       @if(empty($story->title))
-        No title found !
+        Aucun titre trouvé !
       @else
         {{ $story->title }}
       @endif
