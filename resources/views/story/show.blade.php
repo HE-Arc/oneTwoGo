@@ -35,19 +35,19 @@
 
             <!-- Protect like, dislike and comment if user is not logged in, with a better way rather than by the route -->
             <!-- Show the like in blue if user liked it, the dislike in red and comment in yellow -->
-            <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.likeAJAX({{ $story->id }})">
-              <div id="upVotesCount{{$story->id}}" class="d-inline">
+            <a type="button" class="vote-otg btn btn-default btn-sm d-inline @if (!Auth::check())default-a-cursor-otg @endif" @if (Auth::check()) onclick="Votes.likeAJAX({{ $story->id }})" @endif>
+              <div id="upVotesCount{{$story->id}}" class="d-inline @if($story->getDidIVote("1")) text-primary @endif">
                 {{ $story->getUpvotesCount() }}
               </div>
               <i id="upVoteThumb{{$story->id}}" class="@if($story->getDidIVote("1")) text-primary @endif fas fa-thumbs-up d-inline"></i>
             </a>
-            <a type="button" class="btn btn-default btn-sm d-inline" onclick="Votes.dislikeAJAX({{ $story->id }})">
-              <div id="downVotesCount{{$story->id}}" class="d-inline">
+            <a type="button" class="btn btn-default btn-sm vote-otg d-inline @if (!Auth::check())default-a-cursor-otg @endif"  @if (Auth::check()) onclick="Votes.dislikeAJAX({{ $story->id }})"  @endif>
+              <div id="downVotesCount{{$story->id}}" class="d-inline @if($story->getDidIVote("-1")) text-danger @endif"">
                 {{ $story->getDownvotesCount() }}
               </div>
               <i id="downVoteThumb{{$story->id}}" class="@if($story->getDidIVote("-1")) text-danger @endif fas fa-thumbs-down d-inline"></i>
             </a>
-            <a type="button" class="btn btn-default btn-sm d-inline" onclick="$('#commentarySection{{ $story->id }}').toggle()">
+            <a type="button" class="btn btn-default btn-sm vote-otg d-inline" onclick="$('#commentarySection{{ $story->id }}').toggle()">
               <div id="comments-count-{{ $story->id }}" class="d-inline">
                 {{ $story->commentaries->count() }}
               </div>

@@ -4,7 +4,7 @@
 <div class="row">
 	<div class="col-3 spacer"></div>
 	<div class='col-6 card mb-3'>
-		<h2 class='card-header center'>Écrit une histoire !</h2>
+		<h2 class='card-header center'>Écris une histoire !</h2>
 		<div class='card-body'>
 			<h3>Thème</h3>
 			<div id="carouselThemes" class="carousel slide w-100" data-ride="carousel" data-interval="false" style="width:600px">
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div>
-				<i id='validate' class="bigger fas fa-check"></i>
+				<div class="btn btn-otg float-right">Envoyer</div>
 			</div>
             <!-- Form used for the csrf request -->
             <form id='form'>
