@@ -101,6 +101,7 @@
 				constraintDOM.id = "constraint-" + i;
 				constraintDOM.style.display = "inline-block";
 				constraintDOM.classList.add("bigger");
+				constraintDOM.classList.add("badge-otg");
                 constraints.push(data[i]);
                 if(data[i].use == 1)
                     mustContainDOM.appendChild(constraintDOM);
