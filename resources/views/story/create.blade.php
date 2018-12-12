@@ -104,9 +104,15 @@
 				constraintDOM.classList.add("badge-otg");
                 constraints.push(data[i]);
                 if(data[i].use == 1)
+				{
+					constraintDOM.classList.add("border-success");
                     mustContainDOM.appendChild(constraintDOM);
+				}
                 else
+				{
+					constraintDOM.classList.add("border-danger");
                     mustntContainDOM.appendChild(constraintDOM);
+				}
 			}
 			updateConstraints();
 		}
@@ -145,21 +151,33 @@
 
 				if(constraint.use == 0) //musnt contain
 				{
-					constraintDOM.classList.remove("badge-otg-no");
-					constraintDOM.classList.remove("badge-otg-no-outline");
+					constraintDOM.classList.remove("text-white");
+					constraintDOM.classList.remove("text-danger");
+					constraintDOM.classList.remove("bg-danger");
 					if(constraint.qte > 0)
-						constraintDOM.classList.add("badge-otg-no");
+					{
+						constraintDOM.classList.add("bg-danger");
+						constraintDOM.classList.add("text-white");
+					}
 					else
-						constraintDOM.classList.add("badge-otg-no-outline");
+					{
+						constraintDOM.classList.add("text-danger");
+					}
 				}
 				if(constraint.use == 1) //must contain
 				{
-					constraintDOM.classList.remove("badge-otg-yes");
-					constraintDOM.classList.remove("badge-otg-yes-outline");
+					constraintDOM.classList.remove("text-white");
+					constraintDOM.classList.remove("text-success");
+					constraintDOM.classList.remove("bg-success");
 					if(constraint.qte > 0)
-						constraintDOM.classList.add("badge-otg-yes");
+					{
+						constraintDOM.classList.add("bg-success");
+						constraintDOM.classList.add("text-white");
+					}
 					else
-						constraintDOM.classList.add("badge-otg-yes-outline");
+					{
+						constraintDOM.classList.add("text-success");
+					}
 				}
 			}
 		}

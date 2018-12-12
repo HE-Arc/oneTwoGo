@@ -252,28 +252,6 @@ a.vote-otg {
   padding: 2px 5px 2px 5px;
   margin-right: 10px;
   border-radius: 5px;
-}
-
-.badge-otg-yes {
-  background-color: green;
-  color: white;
-  border: 1px solid green;
-}
-
-.badge-otg-yes-outline {
-  background-color: transparent;
-  color: green;
-  border: 1px solid green;
-}
-
-.badge-otg-no {
-  background-color: red;
-  color: white;
-  border: 1px solid red;
-}
-
-.badge-otg-no-outline {
-  background-color: transparent;
-  color: red;
-  border: 1px solid red;
+  border: 1px solid;
+  transition: 1s;
 }
