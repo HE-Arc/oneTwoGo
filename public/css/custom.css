@@ -253,6 +253,8 @@ a.vote-otg {
   color: white;
   border: 1px solid green;
   border-radius: 4px;
+  padding: 5px;
+  margin-right: 5px;
 }
 
 .badge-otg-yes-outline {
@@ -260,6 +262,8 @@ a.vote-otg {
   color: green;
   border: 1px solid green;
   border-radius: 4px;
+  padding: 5px;
+  margin-right: 5px;
 }
 
 .badge-otg-no {
@@ -267,6 +271,8 @@ a.vote-otg {
   color: white;
   border: 1px solid red;
   border-radius: 4px;
+  padding: 5px;
+  margin-right: 5px;
 }
 
 .badge-otg-no-outline {
@@ -274,4 +280,6 @@ a.vote-otg {
   color: red;
   border: 1px solid red;
   border-radius: 4px;
+  padding: 5px;
+  margin-right: 5px;
 }
