@@ -79,7 +79,7 @@
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('stories.byUser', ['id' => Auth::user()->id]) }}">Mes histoires</a>
                   @if (Auth::user()->admin)
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('themes.index') }}">Thèmes</a>
-                  <a class="dropdown-item dropdown-item-otg" href="{{ route('constraints.index') }}">Constraintes</a>
+                  <a class="dropdown-item dropdown-item-otg" href="{{ route('constraints.index') }}">Contraintes</a>
                   @endif
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('logout') }}"
                     onclick="event.preventDefault();

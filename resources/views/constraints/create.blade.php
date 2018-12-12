@@ -57,19 +57,19 @@
         </div>
       </div>
     </div>
-  </div>
-  <script>
-    $(document).ready(function() {
-      $('#toggle-group label').click(function() {
-        var use = $('#use');
-        if (use.val() == '1')
-        {
-          use.val('0');
-        }
-        else {
-          use.val('1');
-        }
+    <script type="text/javascript">;
+      $(document).ready(function() {
+        $('.toggle-group').click(function() {
+          var use = $('#use');
+          if (use.val() == '1')
+          {
+            use.val('0');
+          }
+          else {
+            use.val('1');
+          }
+        });
       });
-    });
-  </script>
+    </script>
+  </div>
 @endsection

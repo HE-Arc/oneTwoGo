@@ -66,9 +66,9 @@
           </div>
         </div>
     </form>
-    <script>
+    <script type="text/javascript">
       $(document).ready(function() {
-        $('#toggle-group label').click(function() {
+        $('.toggle-group').click(function() {
           var use = $('#use');
           if (use.val() == '1')
           {
