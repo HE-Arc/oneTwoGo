@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div>
-				<div class="btn btn-otg float-right">Envoyer</div>
+				<div id='validate' class="btn btn-otg float-right">Envoyer</div>
 			</div>
             <!-- Form used for the csrf request -->
             <form id='form'>
@@ -101,7 +101,6 @@
 				constraintDOM.id = "constraint-" + i;
 				constraintDOM.style.display = "inline-block";
 				constraintDOM.classList.add("bigger");
-				constraintDOM.classList.add("badge-pill");
                 constraints.push(data[i]);
                 if(data[i].use == 1)
                     mustContainDOM.appendChild(constraintDOM);
@@ -143,11 +142,23 @@
                 let constraintDOM = document.getElementById(id);
 				constraintDOM.innerHTML = constraint.word + "&nbsp;(" + constraint.qte + ")";
 
-				constraintDOM.classList.remove("badge-danger", "badge-success");
-				if (constraint.qte > 0 && constraint.use == 1 || constraint.qte <= 0 && constraint.use == 0) {
-					constraintDOM.classList.add("badge-success");
-				} else {
-					constraintDOM.classList.add("badge-danger");
+				if(constraint.use == 0) //musnt contain
+				{
+					constraintDOM.classList.remove("badge-otg-no");
+					constraintDOM.classList.remove("badge-otg-no-outline");
+					if(constraint.qte > 0)
+						constraintDOM.classList.add("badge-otg-no");
+					else
+						constraintDOM.classList.add("badge-otg-no-outline");
+				}
+				if(constraint.use == 1) //must contain
+				{
+					constraintDOM.classList.remove("badge-otg-yes");
+					constraintDOM.classList.remove("badge-otg-yes-outline");
+					if(constraint.qte > 0)
+						constraintDOM.classList.add("badge-otg-yes");
+					else
+						constraintDOM.classList.add("badge-otg-yes-outline");
 				}
 			}
 		}
