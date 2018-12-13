@@ -1,7 +1,7 @@
 # One Two Go !
 Quésako ?!
 
-One Two Go (parfois stylisé : One Two GOOOOOO!), est un projet d'étudiant visant à améliorer nos connaissances en développment Web, notamment le Framework Laravel.
+One Two Go (parfois stylisé : One Two G/O+/ !!!), est un projet d'étudiant visant à améliorer nos connaissances en développment Web, notamment le Framework Laravel.
 
 Le but du site est de pouvoir consulter des histoires fantastiques aux retournements inattendus, fins bouleversantes ou à la morale bien saucée, proposé par les utilisateurs !
 
