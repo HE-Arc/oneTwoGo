@@ -26,10 +26,6 @@
               <input type="text" name="name" value="{{ $theme->name }}" class="form-control" placeholder="Titre">
               <label class="mt-4">Espace réservé</label>
               <input type="text" name="placeholder" value="{{ $theme->placeholder }}" class="form-control" placeholder="Espace réservé">
-              <!--<img src="{{ asset('storage/'.$theme->image) }}" />
-              <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
-            -->
-
               <div class="scrollbar scrollbar-primary form-control">
                 <div class="force-overflow">
                   <div class="row">

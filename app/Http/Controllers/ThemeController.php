@@ -26,8 +26,9 @@ class ThemeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            //'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'name' => 'required',
+            'placeholder' => 'required',
+            'active' => 'required'
         ]);
 
         $theme = Theme::create($request->all());
@@ -57,21 +58,12 @@ class ThemeController extends Controller
     public function update(Request $request, Theme $theme)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'placeholder' => 'required',
+            'active' => 'required'
         ]);
 
-        /*if($request->has('image'))
-        {
-          $image = $request->file('image');
-          $image_resize = Image::make($image->getRealPath());
-          $image_resize->resize(20, 20);
-          $extension = $image->getClientOriginalExtension();
-          $image_resize->storeAs('themes', $theme->id.'.'.$extension,'public');
-          Storage::put('app/public/themes/'.$theme->id.'.'.$extension)
-          $theme->update(['image' => 'themes\\'.$theme->id.'.'.$extension]);
-          // $theme->update(['image' => $image->storeAs('themes', $theme->id.'.'.$extension,'public')]);
-        }*/
-
+        // Synchronize the pivot table
         $theme->constraints()->sync($request->constraints);
         $theme->update($request->all());
 

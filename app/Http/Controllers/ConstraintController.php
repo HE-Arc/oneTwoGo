@@ -25,7 +25,9 @@ class ConstraintController extends Controller
   public function store(Request $request)
   {
       $request->validate([
-          'word' => 'required'
+          'word' => 'required',
+          'use' => 'required',
+          'active' => 'required'
       ]);
       \Debugbar::info($request->themes);
       $constraint = Constraint::create($request->all());
@@ -85,7 +87,9 @@ class ConstraintController extends Controller
   public function update(Request $request, Constraint $constraint)
   {
       $request->validate([
-          'word' => 'required'
+          'word' => 'required',
+          'use' => 'required',
+          'active' => 'required'
       ]);
 
       $constraint->themes()->sync($request->themes);

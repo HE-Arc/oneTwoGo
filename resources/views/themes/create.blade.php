@@ -26,10 +26,6 @@
                   <input type="text" name="name" value="" class="form-control" placeholder="Titre">
                   <label class= "mt-4">Proposition de titre</label>
                   <input type="text" name="placeholder" value="" class="form-control" placeholder="Proposition">
-                  <!--<img src="{{ asset('storage/'.$theme->image) }}" />
-                  <input type="file" accept="image/*" name="image" class="form-control" placeholder="Image">
-                  -->
-
                   <div class="scrollbar scrollbar-primary">
                     <div class="force-overflow">
                       <div class="row">
