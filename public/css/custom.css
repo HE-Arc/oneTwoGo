@@ -64,6 +64,19 @@
   text-decoration: none;
 }
 
+.a-theme-otg {
+  -webkit-transition: all 100ms ease-in;
+  -ms-transition: all 100ms ease-in;
+  -moz-transition: all 100ms ease-in;
+  transition: all 100ms ease-in;
+  font-size:15px;
+}
+
+.a-theme-otg:hover {
+  font-size:20px;
+  text-decoration: underline;
+}
+
 /* The customcheck */
 .customcheck {
     display: block;

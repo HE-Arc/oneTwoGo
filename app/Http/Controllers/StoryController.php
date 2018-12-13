@@ -81,6 +81,17 @@ class StoryController extends Controller
         return $this->paged($storiesPaged);
     }
 
+    public function byTheme($id)
+    {
+        return view("story.paged")->with("routeAJAX", route("stories.byThemePage", ['id' => $id]));
+    }
+
+    public function byThemePage($id)
+    {
+        $storiesPaged = Story::where('theme_id', $id)->paginate(3);
+        return $this->paged($storiesPaged);
+    }
+
     private function paged($stories)
     {
         $output = "";

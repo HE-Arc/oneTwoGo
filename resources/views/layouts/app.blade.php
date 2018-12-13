@@ -55,6 +55,18 @@
             <li class="nav-item mr-4 ml-4 li-otg">
               <a class="nav-link" href="{{ route('stories.top') }}">Top!</a>
             </li>
+            <li class="nav-item mr-4 ml-4 li-otg dropdown">
+              <a id="navbarDropdownTheme" class="nav-link dropdown-toggle a-otg" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                Thèmes <span class="caret"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right dropdown-otg" aria-labelledby="navbarDropdownTheme">
+                <ul  class="ml-auto mr-auto">
+                  @foreach (App\Theme::all() as $theme)
+                    <a class="dropdown-item dropdown-item-otg" href="{{ route('stories.byTheme', ['id' => $theme->id]) }}">{{ $theme->name }}</a>
+                  @endforeach
+                </ul>
+              </div>
+            </li>
           </ul>
           <div class="dropdown-divider"></div>
           <ul class="navbar-nav">
@@ -70,11 +82,11 @@
             </li>
             @else
             <li class="nav-item mr-4 ml-4 li-otg dropdown">
-              <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+              <a id="navbarDropdownUser" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                 {{ Auth::user()->name }} <span class="caret"></span>
               </a>
 
-              <div class="dropdown-menu dropdown-menu-right dropdown-otg" aria-labelledby="navbarDropdown">
+              <div class="dropdown-menu dropdown-menu-right dropdown-otg" aria-labelledby="navbarDropdownUser">
                 <ul  class="ml-auto mr-auto">
                   <a class="dropdown-item dropdown-item-otg" href="{{ route('stories.byUser', ['id' => Auth::user()->id]) }}">Mes histoires</a>
                   @if (Auth::user()->admin)

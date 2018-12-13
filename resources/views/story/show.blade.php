@@ -9,7 +9,7 @@
               {{ $story->title }}
           @endif
       </h4>
-    <span class="text-muted">{{ $story->theme->name }}</span>
+    <a href="{{ route('stories.byTheme', ['id' => $story->theme->id]) }}" class="a-otg a-theme-otg"><span class="text-muted a-theme-otg">{{ $story->theme->name }}</span></a>
   </div>
   <div class="card-body">
     @foreach ($story->constraints as $constraint)

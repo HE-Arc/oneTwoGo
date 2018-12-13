@@ -24,9 +24,6 @@ Route::resource("/constraints", "ConstraintController")->middleware('admin');
 Route::post('/constraints/{id}/toggleActive', 'ConstraintController@toggleActive')->name('constraints.toggleActive')->middleware('admin');
 Route::get('/constraint/random', 'ConstraintController@random')->name('constraints.random');
 
-Route::get('resizeImage', 'ImageController@resizeImage');
-Route::post('resizeImagePost',['as'=>'resizeImagePost','uses'=>'ImageController@resizeImagePost']);
-
 Route::redirect('/story', '/story/create', 301);
 Route::get('/story/random', 'StoryController@random')->name('stories.random');
 Route::get('/story/randomPage', 'StoryController@randomPage')->name('stories.randomPage');
@@ -36,6 +33,8 @@ Route::get('/story/top', 'StoryController@top')->name('stories.top');
 Route::get('/story/topPage', 'StoryController@topPage')->name('stories.topPage');
 Route::get('/story/byUser/{id}', 'StoryController@byUser')->name('stories.byUser');
 Route::get('/story/byUserPage/{id}', 'StoryController@byUserPage')->name('stories.byUserPage');
+Route::get('/story/byTheme/{id}', 'StoryController@byTheme')->name('stories.byTheme');
+Route::get('/story/byThemePage/{id}', 'StoryController@byThemePage')->name('stories.byThemePage');
 
 Route::get('/story/create', 'StoryController@create')->name('createStory')->middleware('auth');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
