@@ -33,276 +33,291 @@
 
 			<h3>Contraintes <i id='randomize' class="fas fa-random"></i></h3>
 			<div>
-                <h4>Doit contenir</h4>
+				<h4>Doit contenir</h4>
 				<span id='mustContain'></span>
-                <h4>Ne doit pas contenir</h4>
+				<h4>Ne doit pas contenir</h4>
 				<span id='mustntContain'></span>
 			</div>
 			<p class='w-100'>
 				<div class="form-group has-danger">
 					<h3 class="form-control-label" for="title">Titre</h3>
-					<input id='title' type='text' name='title' placeholder="" class="form-control">
-					<div id="titleToBig" class="invalid-feedback">Le titre est trop long (MAX: 50)</div>
-					<div class="invalid-feedback" id="noTitle">Veuillez spécifier un titre !</div>
+					<input id='title' type='text' name='title' placeholder="" class="form-control" maxlength="{{ $lenghtConstraints[1] }}">
+					<div id='titleMinSizeFeedback' class="invalid-feedback">Le titre est trop court, minimum {{ $lenghtConstraints[0] }} charactères</div>
+					<div id='titleMaxSizeFeedback' class="invalid-feedback">Le titre ne peut pas être plus long que {{ $lenghtConstraints[1] }} charactères</div>
 				</div>
 			</p>
 			<div>
 				<div class="form-group has-danger">
 					<h3 class="form-control-label" for="text">Texte</h3>
-					<textarea id="text" name='text' class="form-control" rows="10"></textarea>
-					<div id="textToBig" class="invalid-feedback">Le texte est trop long (MAX: 4270)</div>
-					<div class="invalid-feedback">Veuillez respecter toutes les contraintes de votre histoire</div>
+					<textarea id="text" name='text' class="form-control" rows="10" maxlength="{{ $lenghtConstraints[3] }}"></textarea>
+					<div id='textMinSizeFeedback' class="invalid-feedback">Le texte est trop court, minimum {{ $lenghtConstraints[2] }} charactères @if($lenghtConstraints[2] == 280), car on est pas Twitter =} @endif</div>
+					<div id='textMaxSizeFeedback' class="invalid-feedback">Le texte ne peut pas être plus long que {{ $lenghtConstraints[3] }} charactères</div>
+					<div id='textConstraintFeedback' class="invalid-feedback">Veuillez respecter toutes les contraintes de votre histoire</div>
 				</div>
 			</div>
 			<div>
 				<div id='validate' class="btn btn-otg float-right">Envoyer</div>
 			</div>
-            <!-- Form used for the csrf request -->
-            <form id='form'>
-                @csrf
-            </form>
+			<!-- Form used for the csrf request -->
+			<form id='form'>
+				@csrf
+			</form>
 		</div>
-	<div class="col-3 spacer"></div>
-</div>
-<script>
-	document.addEventListener("DOMContentLoaded", function() {
+		<div class="col-3 spacer"></div>
+	</div>
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			let mustContainDOM = document.getElementById("mustContain");
+			let mustntContainDOM = document.getElementById("mustntContain");
+			let randomizeDOM = document.getElementById("randomize");
+			let titleDOM = document.getElementById("title");
+			let textDOM = document.getElementById("text");
+			let validateDOM = document.getElementById("validate");
+			let carouselDOM = document.getElementById("carouselThemes");
 
-    let mustContainDOM = document.getElementById("mustContain");
-    let mustntContainDOM = document.getElementById("mustntContain");
-		let randomizeDOM = document.getElementById("randomize");
-		let titleDOM = document.getElementById("title");
-		let textDOM = document.getElementById("text");
-		let validateDOM = document.getElementById("validate");
-		let carouselDOM = document.getElementById("carouselThemes");
-		let titleToBigDOM = document.getElementById("titleToBig");
-		let noTitleDOM = document.getElementById("noTitle");
-		let textToBigDOM = document.getElementById("textToBig");
+			//Feedbacks
+			let titleMinSizeFeedback = document.getElementById("titleMinSizeFeedback");
+			let titleMaxSizeFeedback = document.getElementById("titleMaxSizeFeedback");
+			let textMinSizeFeedback = document.getElementById("textMinSizeFeedback");
+			let textMaxSizeFeedback = document.getElementById("textMaxSizeFeedback");
+			let textConstraintFeedback = document.getElementById("textConstraintFeedback");
 
-		let themes = <?php echo json_encode($themes); ?>;
+			let minCharactersTitle = {{ $lenghtConstraints[0] }};
+			let maxCharactersTitle = {{ $lenghtConstraints[1] }};
+			let minCharactersStory = {{ $lenghtConstraints[2] }};
+			let maxCharactersStory = {{ $lenghtConstraints[3] }};
 
-        let constraints = [];
+			let themes = <?php echo json_encode($themes); ?>;
 
-		function getRandomConstraints(theme_id) {
-			fetch("/constraint/random?theme_id=" + theme_id)
-				.then(function(rep) {
-					if (rep.status !== 200) {
-						console.log("Impossible de fetch des nouvelles contraintes");
-						return;
+			let constraints = [];
+
+			function getRandomConstraints(theme_id) {
+				fetch("/constraint/random?theme_id=" + theme_id)
+					.then(function(rep) {
+						if (rep.status !== 200) {
+							console.log("Impossible de fetch des nouvelles contraintes");
+							return;
+						}
+						rep.json().then(addConstraints);
+
+					})
+					.catch(function(error) {
+						console.log(error)
+					})
+			}
+
+			function addConstraints(data) {
+				mustContainDOM.innerHTML = "";
+				mustntContainDOM.innerHTML = "";
+				constraints = [];
+				for (let i = 0; i < data.length; i++) {
+					let constraintDOM = document.createElement("span");
+					constraintDOM.id = "constraint-" + i;
+					constraintDOM.style.display = "inline-block";
+					constraintDOM.classList.add("bigger");
+					constraintDOM.classList.add("badge-otg");
+					constraints.push(data[i]);
+					if (data[i].use == 1) {
+						constraintDOM.classList.add("border-success");
+						mustContainDOM.appendChild(constraintDOM);
+					} else {
+						constraintDOM.classList.add("border-danger");
+						mustntContainDOM.appendChild(constraintDOM);
 					}
-					rep.json().then(addConstraints);
-
-				})
-				.catch(function(error) {
-					console.log(error)
-				})
-		}
-
-		function addConstraints(data) {
-			mustContainDOM.innerHTML = "";
-			mustntContainDOM.innerHTML = "";
-            constraints = [];
-			for (let i = 0; i < data.length; i++) {
-				let constraintDOM = document.createElement("span");
-				constraintDOM.id = "constraint-" + i;
-				constraintDOM.style.display = "inline-block";
-				constraintDOM.classList.add("bigger");
-				constraintDOM.classList.add("badge-otg");
-                constraints.push(data[i]);
-                if(data[i].use == 1)
-				{
-					constraintDOM.classList.add("border-success");
-                    mustContainDOM.appendChild(constraintDOM);
 				}
-                else
-				{
-					constraintDOM.classList.add("border-danger");
-                    mustntContainDOM.appendChild(constraintDOM);
+				updateConstraints();
+			}
+
+			function parseTextToWords(str) {
+				str = str.toLowerCase();
+				//replace every non special character with a space
+				str = str.replace(/[,.^'?\-;:!~+#&()=\n]/g, " ");
+				return str.split(" ");
+			}
+
+			function updateCounts() {
+				storyWords = parseTextToWords(textDOM.value);
+				for (let i = 0; i < constraints.length; i++) {
+					constraints[i]["qte"] = 0;
+				}
+				constraintWords = constraints.map(function(c) {
+					return c.word;
+				});
+				for (let i = 0; i < storyWords.length; i++) {
+					let storyWord = storyWords[i];
+					let index = constraintWords.indexOf(storyWord);
+					if (index != -1) {
+						constraints[index].qte++;
+					}
 				}
 			}
-			updateConstraints();
-		}
 
-		function parseTextToWords(str) {
-			str = str.toLowerCase();
-			//replace every non special character with a space
-			str = str.replace(/[,.^'?\-;:!~+#&()=\n]/g, " ");
-			return str.split(" ");
-		}
+			function updateConstraints() {
+				updateCounts();
 
-		function updateCounts()
-		{
-			storyWords = parseTextToWords(textDOM.value);
-			for (let i = 0; i < constraints.length; i++) {
-				constraints[i]["qte"] = 0;
-			}
-            constraintWords = constraints.map(function(c){return c.word;});
-			for (let i = 0; i < storyWords.length; i++) {
-				let storyWord = storyWords[i];
-                let index = constraintWords.indexOf(storyWord);
-				if (index != -1) {
-					constraints[index].qte++;
-				}
-			}
-		}
+				for (let i = 0; i < constraints.length; i++) {
+					let constraint = constraints[i];
+					let id = "constraint-" + i;
+					let constraintDOM = document.getElementById(id);
+					constraintDOM.innerHTML = constraint.word + "&nbsp;(" + constraint.qte + ")";
 
-		function updateConstraints() {
-			updateCounts();
-
-			for (let i = 0; i < constraints.length; i++) {
-                let constraint = constraints[i];
-                let id = "constraint-" + i;
-                let constraintDOM = document.getElementById(id);
-				constraintDOM.innerHTML = constraint.word + "&nbsp;(" + constraint.qte + ")";
-
-				if(constraint.use == 0) //musnt contain
-				{
-					constraintDOM.classList.remove("text-white");
-					constraintDOM.classList.remove("text-danger");
-					constraintDOM.classList.remove("bg-danger");
-					if(constraint.qte > 0)
+					if (constraint.use == 0) //musnt contain
 					{
-						constraintDOM.classList.add("bg-danger");
-						constraintDOM.classList.add("text-white");
+						constraintDOM.classList.remove("text-white");
+						constraintDOM.classList.remove("text-danger");
+						constraintDOM.classList.remove("bg-danger");
+						if (constraint.qte > 0) {
+							constraintDOM.classList.add("bg-danger");
+							constraintDOM.classList.add("text-white");
+						} else {
+							constraintDOM.classList.add("text-danger");
+						}
 					}
-					else
+					if (constraint.use == 1) //must contain
 					{
-						constraintDOM.classList.add("text-danger");
+						constraintDOM.classList.remove("text-white");
+						constraintDOM.classList.remove("text-success");
+						constraintDOM.classList.remove("bg-success");
+						if (constraint.qte > 0) {
+							constraintDOM.classList.add("bg-success");
+							constraintDOM.classList.add("text-white");
+						} else {
+							constraintDOM.classList.add("text-success");
+						}
 					}
 				}
-				if(constraint.use == 1) //must contain
+			}
+
+			function updatePlaceholder(placeholder) {
+				titleDOM.placeholder = placeholder;
+			}
+
+
+			function verifyTitle() {
+				titleMinSizeFeedback.style.display = "none";
+				titleMaxSizeFeedback.style.display = "none";
+
+				if(titleDOM.value.length <= minCharactersTitle)
 				{
-					constraintDOM.classList.remove("text-white");
-					constraintDOM.classList.remove("text-success");
-					constraintDOM.classList.remove("bg-success");
-					if(constraint.qte > 0)
+					titleMinSizeFeedback.style.display = "block";
+					return false;
+				}
+
+				if(titleDOM.value.length == maxCharactersTitle)
+				{
+					titleMaxSizeFeedback.style.display = "block";
+				}
+
+				if(titleDOM.value.length > maxCharactersTitle) {
+					return false;
+				}
+
+				return true;
+			}
+
+			//Same verification algorithme as in the view
+			function verifyStory(showmessage = false) {
+				updateConstraints();
+
+				textMinSizeFeedback.style.display = "none";
+				textMaxSizeFeedback.style.display = "none";
+				textConstraintFeedback.style.display = "none";
+
+				let bMin = true;
+				let bMax = true;
+				let bMConstraint = true;
+
+				if(textDOM.value.length <= minCharactersStory)
+				{
+					bMin = false;
+					textMinSizeFeedback.style.display = "block";
+				}
+
+				if(textDOM.value.length > maxCharactersStory)
+				{
+					bMax = false;
+					textMaxSizeFeedback.style.display = "block";
+				}
+
+				if(textDOM.value.length == maxCharactersStory)
+					textMaxSizeFeedback.style.display = "block";
+
+				for (let i = 0; i < constraints.length; i++) {
+					let constraint = constraints[i];
+					if (constraint.use == 1 && constraint.qte <= 0 || constraint.use == 0 && constraint.qte > 0)
 					{
-						constraintDOM.classList.add("bg-success");
-						constraintDOM.classList.add("text-white");
-					}
-					else
-					{
-						constraintDOM.classList.add("text-success");
+						bMConstraint = false;
 					}
 				}
-			}
-		}
 
-		function updatePlaceholder(placeholder)
-		{
-			titleDOM.placeholder = placeholder;
-		}
+				if(showmessage && !bMConstraint)
+					textConstraintFeedback.style.display = "block";
 
-
-		function verifyTitle()
-		{
-			titleDOM.classList.remove("is-invalid");
-			noTitleDOM.style.display = "none";
-			titleToBigDOM.style.display = "none";
-
-			if(titleDOM.value.length <= 0)
-			{
-				titleDOM.classList.add("is-invalid");
-				noTitleDOM.style.display = "block";
-				return false;
+				return bMin && bMax && bMConstraint;
 			}
 
-			if (titleDOM.value.length > 50)
-			{
-				titleDOM.classList.add("is-invalid");
-				titleToBigDOM.style.display = "block";
-				return false;
+			function verify(showmessage = false) {
+				let titleOk = verifyTitle();
+				let storyOk = verifyStory(showmessage);
+				return titleOk && storyOk;
 			}
 
-			return true;
-		}
+			function submit() {
+				let isok = verify(true);
+				if (isok) {
+					let form = document.getElementById("form");
 
-		//Same verification algorithme as in the view
-		function verifyStory(showmessage = false)
-		{
-      textDOM.classList.remove("is-invalid");
+					form.setAttribute("method", "post");
+					form.setAttribute("action", "/story/store");
 
-			textToBigDOM.style.display = "none";
+					let params = {
+						title: titleDOM.value,
+						text: textDOM.value,
+					};
 
-			updateConstraints();
-			let b = true;
+					for (let key in params) {
+						let hiddenField = document.createElement("input");
+						hiddenField.setAttribute("type", "hidden");
+						hiddenField.setAttribute("name", key);
+						hiddenField.setAttribute("value", params[key]);
 
-			if (textDOM.value.length > 4270) // basic sizeof A4 page in Microsoft Word
-			{
-				textToBigDOM.style.display = "block";
+						form.appendChild(hiddenField);
+					}
+
+					document.body.appendChild(form);
+					form.submit();
+				}
 			}
 
-			for (let i = 0; i < constraints.length; i++) {
-                let constraint = constraints[i];
-				if (constraint.use == 1 && constraint.qte <= 0 || constraint.use == 0 && constraint.qte > 0)
-					b = false;
+			function currentTheme() {
+				currentIndex = $('div.active').index();
+				return themes[currentIndex];
 			}
 
-			if(!b && showmessage)
-				textDOM.classList.add("is-invalid");
+			function updateTheme() {
+				theme = currentTheme();
+				getRandomConstraints(theme.id);
+				updatePlaceholder(theme.placeholder);
+			}
 
-			return b;
-		}
+			updateTheme(); //initial fetch
 
-		function verify(showmessage = false)
-		{
-			return verifyTitle() & verifyStory(showmessage);
-		}
+			// Contrôles
+			$('#carouselThemes').on('slid.bs.carousel', function() {
+				updateTheme();
+			});
 
-    function submit() {
-        let isok = verify(true);
-        if(isok)
-        {
-            let form = document.getElementById("form");
+			randomizeDOM.addEventListener("click", updateTheme);
+			validateDOM.addEventListener("click", submit);
 
-            form.setAttribute("method", "post");
-            form.setAttribute("action", "/story/store");
-
-            let params = {
-                title : titleDOM.value,
-                text : textDOM.value,
-            };
-
-            for(let key in params) {
-                let hiddenField = document.createElement("input");
-                hiddenField.setAttribute("type", "hidden");
-                hiddenField.setAttribute("name", key);
-                hiddenField.setAttribute("value", params[key]);
-
-                form.appendChild(hiddenField);
-            }
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-
-		function currentTheme()
-		{
-			currentIndex = $('div.active').index();
-			return themes[currentIndex];
-		}
-
-		function updateTheme()
-		{
-			theme = currentTheme();
-			getRandomConstraints(theme.id);
-			updatePlaceholder(theme.placeholder);
-		}
-
-		updateTheme(); //initial fetch
-
-		// Contrôles
-		$('#carouselThemes').on('slid.bs.carousel', function () {
-			updateTheme();
+			titleDOM.addEventListener("keyup", verifyTitle);
+			// titleDOM.addEventListener("change", verifyTitle);
+			textDOM.addEventListener("keyup", function() {
+				verifyStory()
+			}); //because  of the show message default value cant use the functer
+			textDOM.addEventListener("change", function() {
+				verifyStory()
+			});
 		});
-
-		randomizeDOM.addEventListener("click", updateTheme);
-		validateDOM.addEventListener("click", submit);
-
-		titleDOM.addEventListener("keyup", verifyTitle);
-		titleDOM.addEventListener("change", verifyTitle);
-		textDOM.addEventListener("keyup", function() {verifyStory()}); //because  of the show message default value cant use the functer
-		textDOM.addEventListener("change", function() {verifyStory()});
-	});
-</script>
-@endsection
+	</script>
+	@endsection

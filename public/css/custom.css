@@ -255,7 +255,3 @@ a.vote-otg {
   border: 1px solid;
   transition: 1s;
 }
-
-#textToBig, #titleToBig, #noTitle, #badConstraint {
-  display: none;
-}

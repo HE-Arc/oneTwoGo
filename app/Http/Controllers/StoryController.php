@@ -13,6 +13,11 @@ use App\Theme;
 
 class StoryController extends Controller
 {
+    static $minCharsTitle = 0;
+    static $maxCharsTitle = 30;
+    static $minCharsStory = 280;
+    static $maxCharsStory = 2500; // basic sizeof A4 page in Microsoft Word
+
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +52,7 @@ class StoryController extends Controller
         $implodedKeys = implode(',', $keys);
 
         // Fetch top stories
-        $storiesPaged = Story::whereIn('id', $keys)->orderByRaw(DB::raw("FIELD(id, $implodedKeys)"))->paginate(3); 
+        $storiesPaged = Story::whereIn('id', $keys)->orderByRaw(DB::raw("FIELD(id, $implodedKeys)"))->paginate(3);
 
         return $this->paged($storiesPaged);
     }
@@ -114,7 +119,7 @@ class StoryController extends Controller
     public function create()
     {
         $themes = Theme::where('active', 1)->get();;
-        $page = view('story/create', ['themes' => $themes]);
+        $page = view('story/create', ['themes' => $themes, 'lenghtConstraints' => [self::$minCharsTitle, self::$maxCharsTitle, self::$minCharsStory, self::$maxCharsStory]]);
         return $page;
     }
 
@@ -136,11 +141,13 @@ class StoryController extends Controller
 
         //Same verification algorithme as in the view
         $isValid = $this->verify($constraintsList, $request['text']);
+        $nbCharsTitle = strlen($request['text']);
+        $isValid &= ($nbCharsTitle < self::$minCharsTitle || $nbCharsTitle > self::$maxCharsTitle);
         if($isValid)
         {
             $story = new Story([
-            'title' => $request->get('title'),
-            'text' => nl2br($request->get('text')),
+            'title' => $request['title'],
+            'text' => nl2br($request['text']),
             'user_id' => Auth::user()->getId(),
             'theme_id' => $themeid,
             'deleteVoted' => 0,
@@ -162,6 +169,10 @@ class StoryController extends Controller
     {
         $textToLower = strtolower($text);
         $textParsed = preg_replace("/[,.^'?\-;:!~+#&()=\n]/i", " ", $textToLower); //replace every non letter / figure and space by a space
+        $nbChars = strlen($textParsed);
+        if($nbChars < self::$minCharsStory || $nbChars > self::$maxCharsStory)
+            return false;
+
         $words = explode(" ", $textParsed);
 
         foreach($constraints as $constraint){
