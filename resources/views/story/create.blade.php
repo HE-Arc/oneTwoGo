@@ -42,14 +42,16 @@
 				<div class="form-group has-danger">
 					<h3 class="form-control-label" for="title">Titre</h3>
 					<input id='title' type='text' name='title' placeholder="" class="form-control">
-					<div class="invalid-feedback">Veuillez spécifier un titre !</div>
+					<div id="titleToBig" class="invalid-feedback">Le titre est trop long (MAX: 50)</div>
+					<div class="invalid-feedback" id="noTitle">Veuillez spécifier un titre !</div>
 				</div>
 			</p>
 			<div>
 				<div class="form-group has-danger">
 					<h3 class="form-control-label" for="text">Texte</h3>
 					<textarea id="text" name='text' class="form-control" rows="10"></textarea>
-					<div class="invalid-feedback">Veuillez respecter toutes les contraintes</div>
+					<div id="textToBig" class="invalid-feedback">Le texte est trop long (MAX: 4270)</div>
+					<div class="invalid-feedback">Veuillez respecter toutes les contraintes de votre histoire</div>
 				</div>
 			</div>
 			<div>
@@ -65,13 +67,16 @@
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 
-        let mustContainDOM = document.getElementById("mustContain");
-        let mustntContainDOM = document.getElementById("mustntContain");
+    let mustContainDOM = document.getElementById("mustContain");
+    let mustntContainDOM = document.getElementById("mustntContain");
 		let randomizeDOM = document.getElementById("randomize");
 		let titleDOM = document.getElementById("title");
 		let textDOM = document.getElementById("text");
 		let validateDOM = document.getElementById("validate");
 		let carouselDOM = document.getElementById("carouselThemes");
+		let titleToBigDOM = document.getElementById("titleToBig");
+		let noTitleDOM = document.getElementById("noTitle");
+		let textToBigDOM = document.getElementById("textToBig");
 
 		let themes = <?php echo json_encode($themes); ?>;
 
@@ -191,21 +196,41 @@
 		function verifyTitle()
 		{
 			titleDOM.classList.remove("is-invalid");
+			noTitleDOM.style.display = "none";
+			titleToBigDOM.style.display = "none";
+
 			if(titleDOM.value.length <= 0)
 			{
 				titleDOM.classList.add("is-invalid");
+				noTitleDOM.style.display = "block";
 				return false;
 			}
+
+			if (titleDOM.value.length > 50)
+			{
+				titleDOM.classList.add("is-invalid");
+				titleToBigDOM.style.display = "block";
+				return false;
+			}
+
 			return true;
 		}
 
 		//Same verification algorithme as in the view
 		function verifyStory(showmessage = false)
 		{
-            textDOM.classList.remove("is-invalid");
+      textDOM.classList.remove("is-invalid");
+
+			textToBigDOM.style.display = "none";
 
 			updateConstraints();
 			let b = true;
+
+			if (textDOM.value.length > 4270) // basic sizeof A4 page in Microsoft Word
+			{
+				textToBigDOM.style.display = "block";
+			}
+
 			for (let i = 0; i < constraints.length; i++) {
                 let constraint = constraints[i];
 				if (constraint.use == 1 && constraint.qte <= 0 || constraint.use == 0 && constraint.qte > 0)
@@ -223,33 +248,33 @@
 			return verifyTitle() & verifyStory(showmessage);
 		}
 
-        function submit() {
-            let isok = verify(true);
-            if(isok)
-            {
-                let form = document.getElementById("form");
+    function submit() {
+        let isok = verify(true);
+        if(isok)
+        {
+            let form = document.getElementById("form");
 
-                form.setAttribute("method", "post");
-                form.setAttribute("action", "/story/store");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", "/story/store");
 
-                let params = {
-                    title : titleDOM.value,
-                    text : textDOM.value,
-                };
+            let params = {
+                title : titleDOM.value,
+                text : textDOM.value,
+            };
 
-                for(let key in params) {
-                    let hiddenField = document.createElement("input");
-                    hiddenField.setAttribute("type", "hidden");
-                    hiddenField.setAttribute("name", key);
-                    hiddenField.setAttribute("value", params[key]);
+            for(let key in params) {
+                let hiddenField = document.createElement("input");
+                hiddenField.setAttribute("type", "hidden");
+                hiddenField.setAttribute("name", key);
+                hiddenField.setAttribute("value", params[key]);
 
-                    form.appendChild(hiddenField);
-                }
-
-                document.body.appendChild(form);
-                form.submit();
+                form.appendChild(hiddenField);
             }
+
+            document.body.appendChild(form);
+            form.submit();
         }
+    }
 
 		function currentTheme()
 		{
