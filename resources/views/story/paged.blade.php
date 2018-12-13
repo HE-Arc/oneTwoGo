@@ -51,6 +51,7 @@
                         storyLoaded.innerHTML += text;
 
                         // retrieve script js
+                        // it is not evaluate if added in innerHTML
                         var start = text.indexOf("<script>");
                         var end = text.indexOf("<\/script>");
                         var script = text.substring(start + 8, end);
@@ -68,13 +69,20 @@
             var offset = d.scrollTop + window.innerHeight;
             var height = d.offsetHeight;
 
-            if (offset >= height) {
+            // the - 10 is to resolve the problem of precision scroll
+            if (offset >= height - 10) {
                 loadNewStories();
             }
         };
 
         loadNewStoriesButton.addEventListener("click", loadNewStories);
         loadNewStories();
+
+        // if there is no scroll we can add stories
+        if(document.documentElement.scrollHeight <= document.documentElement.clientHeight)
+        {
+            loadNewStories();
+        }
     });
 </script>
 @endsection
