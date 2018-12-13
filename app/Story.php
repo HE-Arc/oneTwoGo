@@ -184,7 +184,7 @@ class Story extends Model
 
     public function theme()
     {
-      return $this->hasOne(Theme::class);
+      return $this->belongsTo('App\Theme');
     }
 
     /*

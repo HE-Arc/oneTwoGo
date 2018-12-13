@@ -2,13 +2,14 @@
 
 <div class="card story-card text-center mt-2 w-100">
   <div class="card-header">
-    <h5 class="card-title">
-      @if(empty($story->title))
-        Aucun titre trouvé !
-      @else
-        {{ $story->title }}
-      @endif
-    </h5>
+      <h4 class="card-title">
+          @if(empty($story->title))
+              Aucun titre trouvé !
+          @else
+              {{ $story->title }}
+          @endif
+      </h4>
+    <span class="text-muted">{{ $story->theme->name }}</span>
   </div>
   <div class="card-body">
     @foreach ($story->constraints as $constraint)

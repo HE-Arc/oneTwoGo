@@ -202,17 +202,6 @@ class StoryController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Story  $story
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Story $story)
-    {
-        return view('story.show', compact('story'));
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Story  $story
