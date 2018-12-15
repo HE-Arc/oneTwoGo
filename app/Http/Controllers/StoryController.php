@@ -168,35 +168,28 @@ class StoryController extends Controller
 
             $story->constraints()->saveMany($constraintsList);
 
-            return redirect()->route('stories.random')->with('success', 'Story created successfully.');
+            return redirect()->route('stories.fresh')->with('success', 'Story created successfully.');
         }
         else
         {
-            return redirect()->route('stories.random')->with('failure', 'Story couldn\'t be added.');
+            return redirect()->route('stories.fresh')->with('failure', 'Story couldn\'t be added.');
         }
     }
 
     public function verify($constraints, $text)
     {
-        $textToLower = strtolower($text);
-        $textParsed = preg_replace("/[,.^'?\-;:!~+#&()=\n]/i", " ", $textToLower); //replace every non letter / figure and space by a space
-        $nbChars = strlen($textParsed);
+        $nbChars = strlen($text);
         if($nbChars < self::$minCharsStory || $nbChars > self::$maxCharsStory)
             return false;
 
-        $words = explode(" ", $textParsed);
-
         foreach($constraints as $constraint){
-            $count = 0;
-            foreach($words as $word)
-            {
-                if($word == $constraint['word'])
-                    $count++;
-            }
+
+            $regex = "/".$constraint['word']."/i";
+            preg_match_all($regex, $text, $matches);
+            $count = sizeof($matches[0]);
             if($constraint['use'] == 1 && $count <= 0 || $constraint['use'] == 0 && $count > 0)
                 return false;
         }
-
         return true;
     }
 

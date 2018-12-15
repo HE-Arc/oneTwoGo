@@ -128,26 +128,22 @@
 				updateConstraints();
 			}
 
-			function parseTextToWords(str) {
-				str = str.toLowerCase();
-				//replace every non special character with a space
-				str = str.replace(/[,.^'?\-;:!~+#&()=\n]/g, " ");
-				return str.split(" ");
-			}
-
 			function updateCounts() {
-				storyWords = parseTextToWords(textDOM.value);
+				textParsed = textDOM.value;
 				for (let i = 0; i < constraints.length; i++) {
 					constraints[i]["qte"] = 0;
 				}
-				constraintWords = constraints.map(function(c) {
+
+				let constraintWords = constraints.map(function(c) {
 					return c.word;
 				});
-				for (let i = 0; i < storyWords.length; i++) {
-					let storyWord = storyWords[i];
-					let index = constraintWords.indexOf(storyWord);
-					if (index != -1) {
-						constraints[index].qte++;
+
+				for (let i = 0; i < constraintWords.length; i++) {
+					let constraint = constraintWords[i];
+					let regex = new RegExp(constraint, 'gi');
+					let found = textParsed.match(regex);
+					if(found != null){
+						constraints[i]["qte"] = found.length;
 					}
 				}
 			}
