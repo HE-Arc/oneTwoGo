@@ -10,6 +10,10 @@ use Session;
 
 class ConstraintController extends Controller
 {
+    static $nbConstraints = 10;
+    static $maxMustHave = 6;
+    static $maxMustntHave = 6;
+
   public function index()
   {
     $constraints =  Constraint::all();
@@ -41,12 +45,15 @@ class ConstraintController extends Controller
       $theme = Theme::findOrFail($args['theme_id']);
       $constraints = array_values(iterator_to_array($theme->constraints->where('active', 1)));
 
-      $maxConstraints = 6;
       $randomconstraints = [];
-      for($i = 0; $i < $maxConstraints && sizeof($constraints) > 0; $i++)
+      for($i = 0; $i < self::$nbConstraints && sizeof($constraints) > 0; $i++)
       {
           $id = random_int(0, sizeof($constraints) - 1);
-          $randomconstraints[] = $constraints[$id];
+
+          $constraint = $constraints[$id];
+
+          $randomconstraints[] = $constraint;
+
           unset($constraints[$id]);
           $constraints = array_values($constraints); //reset id array
       }

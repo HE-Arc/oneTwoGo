@@ -2,35 +2,80 @@
 
 use Illuminate\Database\Seeder;
 use App\Theme;
+use App\Constraint;
 
 class ThemeSeeder extends Seeder
 {
-  private function saveTheme($name, $placeholder, $active)
-  {
-    $t = new Theme();
-    $t->name = $name;
-    $t->placeholder = $placeholder;
-    $t->active = $active;
-    $t->save();
-  }
-
-  /**
-   * Run the database seeds.
-   *
-   * @return void
-   */
-  public function run()
-  {
-    $themes = array (
-      array("Et si les marmottes vendaient des parpaings", "Bois ou parpaings", true),
-      array("La princesse a mangé un tacos", "C'est moi qui décide", true),
-      array("La physique quantique pour les nuls", "Mort et pas mort", false),
-      array("La baleine de la mer rouge", "J'aurais peut-être dû tourner à droite", false),
-      array("L'apartheid entre les souris et les rats", "Mangeons le même fromage", true)
-    );
-
-    for ($i=0; $i < count($themes); ++$i) {
-      $this->saveTheme($themes[$i][0], $themes[$i][1], $themes[$i][2]);
+    private function saveTheme($name, $placeholder, $active)
+    {
+        $t = new Theme();
+        $t->name = $name;
+        $t->placeholder = $placeholder;
+        $t->active = $active;
+        $t->save();
+        return $t->id;
     }
-  }
+
+    private function savePivot($constraint_id, $theme_id)
+    {
+        DB::table('constraint_theme')->insert([
+        'constraint_id' => $constraint_id,
+        'theme_id' => $theme_id
+        ]);
+    }
+
+    private function saveConstraint($word, $use, $active)
+    {
+        $c = new Constraint();
+        $c->word = $word;
+        $c->use = $use;
+        $c->active = $active;
+        $c->save();
+        return $c->id;
+    }
+
+    private function seedTheme($filename)
+    {
+        $json = File::get($filename);
+        $data = json_decode($json);
+        $themeid = $this->saveTheme($data->themename, $data->placeholder, random_int(0,10) != 0);
+        foreach($data->constraints as $constraint)
+        {
+            try
+            {
+                $constraintid = $this->saveConstraint($constraint, random_int(0,1) != 0, random_int(0,10) != 0);
+            }
+            catch(Exception $e)
+            {
+                $constraintid = Constraint::where('word', $constraint)->first()->id;
+            }
+            try
+            {
+                $this->savePivot($constraintid, $themeid);
+            }
+            catch(Exception $e)
+            {
+                echo "double in : ".$data->themename." :".$constraint."\n";
+            }
+        }
+    }
+
+    /**
+    * Run the database seeds.
+    *
+    * @return void
+    */
+    public function run()
+    {
+        // Pour le seeding de thème, utilisation de https://www.rimessolides.com pour trouver des mots par champs lexicale
+        $folder = "database/data/";
+        $files = scandir($folder);
+        unset($files[0]);
+        unset($files[1]);
+        foreach($files as $file)
+        {
+            $path = $folder.$file;
+            $this->seedTheme($path);
+        }
+    }
 }
