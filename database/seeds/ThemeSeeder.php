@@ -43,11 +43,11 @@ class ThemeSeeder extends Seeder
         {
             try
             {
-                $constraintid = $this->saveConstraint($constraint, random_int(0,1) != 0, random_int(0,10) != 0);
+                $constraintid = $this->saveConstraint($constraint->word, $constraint->use, random_int(0,10) != 0);
             }
             catch(Exception $e)
             {
-                $constraintid = Constraint::where('word', $constraint)->first()->id;
+                $constraintid = Constraint::where('word', $constraint->word)->first()->id;
             }
             try
             {
