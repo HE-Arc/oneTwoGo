@@ -5,14 +5,6 @@ use Illuminate\Database\Seeder;
 
 class StoriesSeeder extends Seeder
 {
-    private function savePivot($constraint_id, $story_id)
-    {
-        DB::table('constraint_story')->insert([
-        'constraint_id' => $constraint_id,
-        'story_id' => $story_id
-        ]);
-    }
-
     /**
      * Run the database seeds.
      * 'theme_id' => 1,
