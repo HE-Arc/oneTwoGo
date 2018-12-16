@@ -6,7 +6,7 @@
           @if(empty($story->title))
               Aucun titre trouvé !
           @else
-              {{ $story->title }}
+              <a href="{{ route('stories.byId', ['id' => $story->id]) }}" class="a-otg a-title-otg"><span class="a-title-otg">{{ $story->title }}</span></a>
           @endif
       </h4>
     <a href="{{ route('stories.byTheme', ['id' => $story->theme->id]) }}" class="a-otg a-theme-otg"><span class="text-muted a-theme-otg">{{ $story->theme->name }}</span></a>

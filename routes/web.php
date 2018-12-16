@@ -35,6 +35,8 @@ Route::get('/story/byUser/{id}', 'StoryController@byUser')->name('stories.byUser
 Route::get('/story/byUserPage/{id}', 'StoryController@byUserPage')->name('stories.byUserPage');
 Route::get('/story/byTheme/{id}', 'StoryController@byTheme')->name('stories.byTheme');
 Route::get('/story/byThemePage/{id}', 'StoryController@byThemePage')->name('stories.byThemePage');
+Route::get('/story/byId/{id}', 'StoryController@byId')->name('stories.byId');
+Route::get('/story/byIdPage/{id}', 'StoryController@byIdPage')->name('stories.byIdPage');
 
 Route::get('/story/create', 'StoryController@create')->name('createStory')->middleware('auth');
 Route::post('/story/store', 'StoryController@store')->name('storeStory');
