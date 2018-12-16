@@ -17,7 +17,8 @@ class ConstraintStory extends Migration
             $table->unsignedInteger('constraint_id');
             $table->foreign('constraint_id')->references('id')->on('constraints');
             $table->unsignedInteger('story_id');
-            $table->foreign('story_id')->references('id')->on('stories');            $table->timestamps();
+            $table->foreign('story_id')->references('id')->on('stories');
+            $table->timestamps();
         });
     }
 

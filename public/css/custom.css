@@ -64,17 +64,30 @@
   text-decoration: none;
 }
 
-.a-theme-otg {
+.a-theme-otg, .a-title-otg {
   -webkit-transition: all 100ms ease-in;
   -ms-transition: all 100ms ease-in;
   -moz-transition: all 100ms ease-in;
   transition: all 100ms ease-in;
+}
+
+.a-theme-otg {
   font-size:15px;
 }
 
 .a-theme-otg:hover {
   font-size:16px;
   text-decoration: underline;
+}
+
+.a-title-otg {
+  font-size:20px;
+}
+
+.a-title-otg:hover {
+  font-size: 21px;
+  text-decoration: underline;
+  color: white;
 }
 
 /* The customcheck */
