@@ -50,7 +50,7 @@
 				<div class="form-group has-danger">
 					<h3 class="form-control-label" for="text">Texte</h3>
 					<textarea id="text" name='text' class="form-control" rows="10" maxlength="{{ $lenghtConstraints[3] }}"></textarea>
-					<div id='textMinSizeFeedback' class="invalid-feedback">Le texte est trop court, minimum {{ $lenghtConstraints[2] }} charactères @if($lenghtConstraints[2] == 280), car on est pas Twitter =} @endif</div>
+					<div id='textMinSizeFeedback' class="invalid-feedback">Le texte est trop court, minimum {{ $lenghtConstraints[2] }} charactères</div>
 					<div id='textMaxSizeFeedback' class="invalid-feedback">Le texte ne peut pas être plus long que {{ $lenghtConstraints[3] }} charactères</div>
 					<div id='textConstraintFeedback' class="invalid-feedback">Veuillez respecter toutes les contraintes de votre histoire</div>
 				</div>
